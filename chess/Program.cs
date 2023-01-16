@@ -64,8 +64,11 @@ namespace program
             bool errorcell = false;
             int answer;
             int advantage;
+            string color;
             string greenlosses = "";
             string redlosses = "";
+            int kingplace1 = -1;
+            int kingplace2 = -1;
             List<int> greenfirstcoordeath = new();
             List<int> greensecondcoordeath = new();
             List<int> redfirstcoordeath = new();
@@ -78,6 +81,10 @@ namespace program
             List<int> secondcoordeath = new();
             List<int> firstcoorblock = new();
             List<int> secondcoorblock = new();
+            List<int> oppositefirstcoordeath = new();
+            List<int> oppositesecondcoordeath = new();
+            List<int> myfirstcoordeath = new();
+            List<int> mysecondcoordeath = new();
             Console.WriteLine("Обозначения: Т - тура, Н - horse, С - слон, Q - queen, К - король, П - пешка");
             Console.WriteLine("Структура хода: сначала пишешь букву и цифру клетки, где стоит фигура, потом куда хочешь ею походить(пример G3 E3)");
             Console.WriteLine("Для рокировки - рокировка вправо/рокировка влево");
@@ -1445,60 +1452,83 @@ namespace program
                     redsecondcoorblock = secondcoorblock;
                 }
             }
+            bool free_area_around_king(int limitcoor1, int limitcoor2, int x, int y)
+            { 
+                if (kinggreenplace1 != limitcoor1 && kinggreenplace2 != limitcoor2 && matrix[x, y] != allyП && matrix[x, y] != allyC && matrix[x, y] != allyH && matrix[x, y] != allyT && matrix[x, y] != allyT1 && matrix[x, y] != allyQ)
+                {
+                    temp = matrix[kingplace1, kingplace2];
+                    matrix[kingplace1, kingplace2] = "*";
+                    chax(x, y, color);
+                    matrix[kingplace1, kingplace2] = temp;
+                    if (chaxmat == false)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
             bool end(string color)
             {
+                string oppositecolor = "";
                 bool killed = false;
                 bool blocked = false;
                 string temp;
                 int tempdigit1;
                 int tempdigit2;
-                int range;
-                int kingplace1 = -1;
-                int kingplace2 = -1;
+                int range1;
+                int range2;
                 if (color == "green")
                 {
+                    enemyally("Kg");
+                    oppositecolor = "red";
                     kingplace1 = kinggreenplace1;
                     kingplace2 = kinggreenplace2;
                 }
                 else if (color == "red")
                 {
+                    enemyally("Kr");
+                    oppositecolor = "gren";
                     kingplace1 = kingredplace1;
                     kingplace2 = kingredplace2;
                 }
-                chax(kingplace1, kingplace2, color);
-                if (greenchaxmat)
+                enemyally(matrix[kingplace1, kingplace2]);
+                if (chax(kingplace1, kingplace2, color))
                 {
-                    range = greenfirstcoordeath.Count;
-                    for (int i = 0; i < range; i++)
+                    range1 = firstcoordeath.Count;
+                    myfirstcoordeath = firstcoordeath;
+                    mysecondcoordeath = secondcoordeath;
+                    for (int i = 0; i < range1; i++)
                     {
-                        chax(greenfirstcoordeath[i], greensecondcoordeath[i], "red");
-                        if (redchaxmat)
+                        if (chax(firstcoordeath[i], secondcoordeath[i], oppositecolor))
                         {
-                            for (int j = 0; j < redfirstcoordeath.Count; j++)
+                            range2 = firstcoordeath.Count;
+                            oppositefirstcoordeath = firstcoordeath;
+                            oppositesecondcoordeath = secondcoordeath;
+                            for (int j = 0; j < range2; j++)
                             {
-                                if (matrix[redfirstcoordeath[j], redsecondcoordeath[j]] == "Kg")
+                                if (matrix[oppositefirstcoordeath[j], oppositesecondcoordeath[j]] == allyK)
                                 {
-                                    chax(greenfirstcoordeath[i], greensecondcoordeath[i], "green");
-                                    if (greenchaxmat)
+                                    chax(myfirstcoordeath[i], mysecondcoordeath[i], color);
+                                    if (chaxmat)
                                     {
                                         continue;
                                     }
                                 }
-                                temp = matrix[greenfirstcoordeath[i], greensecondcoordeath[i]];
-                                tempdigit1 = greenfirstcoordeath[i];
-                                tempdigit2 = greensecondcoordeath[i];
-                                matrix[greenfirstcoordeath[i], greensecondcoordeath[i]] = matrix[redfirstcoordeath[j], redsecondcoordeath[j]];
-                                matrix[redfirstcoordeath[j], redsecondcoordeath[j]] = "*";
-                                chax(kinggreenplace1, kinggreenplace2, "green");
-                                matrix[redfirstcoordeath[j], redsecondcoordeath[j]] = matrix[tempdigit1, tempdigit2];
+                                temp = matrix[myfirstcoordeath[i], mysecondcoordeath[i]];
+                                tempdigit1 = myfirstcoordeath[i];
+                                tempdigit2 = mysecondcoordeath[i];
+                                matrix[myfirstcoordeath[i], mysecondcoordeath[i]] = matrix[oppositefirstcoordeath[j], oppositesecondcoordeath[j]];
+                                matrix[oppositefirstcoordeath[j], oppositesecondcoordeath[j]] = "*";
+                                chax(kingplace1, kingplace2, color);
+                                matrix[oppositefirstcoordeath[j], oppositesecondcoordeath[j]] = matrix[tempdigit1, tempdigit2];
                                 matrix[tempdigit1, tempdigit2] = temp;
-                                if (greenchaxmat == false)
+                                if (chaxmat == false)
                                 {
-                                    greenkilled = true;
+                                    killed = true;
                                     break;
                                 }
                             }
-                            redchaxmat = false;
+                            chaxmat = false;
                         }
                         redfirstcoorblock.Clear();
                         redsecondcoorblock.Clear();
@@ -1509,106 +1539,33 @@ namespace program
                         {
                             if (matrix[i, j] == "*")
                             {
-                                block(i, j, "green");
-                                for (int k = 0; k < redfirstcoorblock.Count; k++)
+                                block(i, j, color);
+                                for (int k = 0; k < firstcoorblock.Count; k++)
                                 {
-                                    matrix[i, j] = matrix[redfirstcoorblock[k], redsecondcoorblock[k]];
-                                    matrix[redfirstcoorblock[k], redsecondcoorblock[k]] = "*";
-                                    chax(kinggreenplace1, kinggreenplace2, "green");
-                                    matrix[redfirstcoorblock[k], redsecondcoorblock[k]] = matrix[i, j];
+                                    matrix[i, j] = matrix[firstcoorblock[k], secondcoorblock[k]];
+                                    matrix[firstcoorblock[k], secondcoorblock[k]] = "*";
+                                    chax(kingplace1, kingplace2, color);
+                                    matrix[firstcoorblock[k], secondcoorblock[k]] = matrix[i, j];
                                     matrix[i, j] = "*";
-                                    if (greenchaxmat == false)
+                                    if (chaxmat == false)
                                     {
-                                        greenblocked = true;
+                                        blocked = true;
                                     }
                                 }
-                                redfirstcoorblock.Clear();
-                                redsecondcoorblock.Clear();
                             }
                         }
                     }
                 }
-                if (kinggreenplace1 != 2 && matrix[kinggreenplace1 - 1, kinggreenplace2] != "Tg" && matrix[kinggreenplace1 - 1, kinggreenplace2] != "Tg1" && matrix[kinggreenplace1 - 1, kinggreenplace2] != "Cg" && matrix[kinggreenplace1 - 1, kinggreenplace2] != "Hg" && matrix[kinggreenplace1 - 1, kinggreenplace2] != "Qg")
-                {
-                    matrix[kinggreenplace1, kinggreenplace2] = "*";
-                    chax(kinggreenplace1 - 1, kinggreenplace2, "green");
-                    matrix[kinggreenplace1, kinggreenplace2] = "Kg";
-                    if (greenchaxmat == false)
-                    {
-                        return false;
-                    }
-                }
-                if (kinggreenplace1 != 2 && kinggreenplace2 != 2 && matrix[kinggreenplace1 - 1, kinggreenplace2 - 1] != "Tg" && matrix[kinggreenplace1 - 1, kinggreenplace2 - 1] != "Tg1" && matrix[kinggreenplace1 - 1, kinggreenplace2 - 1] != "Cg" && matrix[kinggreenplace1 - 1, kinggreenplace2 - 1] != "Hg" && matrix[kinggreenplace1 - 1, kinggreenplace2 - 1] != "Qg")
-                {
-                    matrix[kinggreenplace1, kinggreenplace2] = "*";
-                    chax(kinggreenplace1 - 1, kinggreenplace2 - 1, "green");
-                    matrix[kinggreenplace1, kinggreenplace2] = "Kg";
-                    if (greenchaxmat == false)
-                    {
-                        return false;
-                    }
-                }
-                if (kinggreenplace2 != 9 && kinggreenplace1 != 2 && matrix[kinggreenplace1 - 1, kinggreenplace2 + 1] != "Tg" && matrix[kinggreenplace1 - 1, kinggreenplace2 + 1] != "Tg1" && matrix[kinggreenplace1 - 1, kinggreenplace2 + 1] != "Cg" && matrix[kinggreenplace1 - 1, kinggreenplace2 + 1] != "Hg" && matrix[kinggreenplace1 - 1, kinggreenplace2 + 1] != "Qg")
-                {
-                    matrix[kinggreenplace1, kinggreenplace2] = "*";
-                    chax(kinggreenplace1 - 1, kinggreenplace2 + 1, "green");
-                    matrix[kinggreenplace1, kinggreenplace2] = "Kg";
-                    if (greenchaxmat == false)
-                    {
-                        return false;
-                    }
-                }
-                if (kinggreenplace2 != 2 && matrix[kinggreenplace1, kinggreenplace2 - 1] != "Tg" && matrix[kinggreenplace1, kinggreenplace2 - 1] != "Tg1" && matrix[kinggreenplace1, kinggreenplace2 - 1] != "Cg" && matrix[kinggreenplace1, kinggreenplace2 - 1] != "Hg" && matrix[kinggreenplace1, kinggreenplace2 - 1] != "Qg")
-                {
-                    matrix[kinggreenplace1, kinggreenplace2] = "*";
-                    chax(kinggreenplace1, kinggreenplace2 - 1, "green");
-                    matrix[kinggreenplace1, kinggreenplace2] = "Kg";
-                    if (greenchaxmat == false)
-                    {
-                        return false;
-                    }
-                }
-                if (kinggreenplace2 != 9 && matrix[kinggreenplace1, kinggreenplace2 + 1] != "Tg" && matrix[kinggreenplace1, kinggreenplace2 + 1] != "Tg1" && matrix[kinggreenplace1, kinggreenplace2 + 1] != "Cg" && matrix[kinggreenplace1, kinggreenplace2 + 1] != "Hg" && matrix[kinggreenplace1, kinggreenplace2 + 1] != "Qg")
-                {
-                    matrix[kinggreenplace1, kinggreenplace2] = "*";
-                    chax(kinggreenplace1, kinggreenplace2 + 1, "green");
-                    matrix[kinggreenplace1, kinggreenplace2] = "Kg";
-                    if (greenchaxmat == false)
-                    {
-                        return false;
-                    }
-                }
-                if (kinggreenplace1 != 9 && matrix[kinggreenplace1 + 1, kinggreenplace2] != "Tg" && matrix[kinggreenplace1 + 1, kinggreenplace2] != "Tg1" && matrix[kinggreenplace1 + 1, kinggreenplace2] != "Cg" && matrix[kinggreenplace1 + 1, kinggreenplace2] != "Hg" && matrix[kinggreenplace1 + 1, kinggreenplace2] != "Qg")
-                {
-                    matrix[kinggreenplace1, kinggreenplace2] = "*";
-                    chax(kinggreenplace1 + 1, kinggreenplace2, "green");
-                    matrix[kinggreenplace1, kinggreenplace2] = "Kg";
-                    if (greenchaxmat == false)
-                    {
-                        return false;
-                    }
-                }
-                if (kinggreenplace1 != 9 && kinggreenplace2 != 9 && matrix[kinggreenplace1 + 1, kinggreenplace2 + 1] != "Tg" && matrix[kinggreenplace1 + 1, kinggreenplace2 + 1] != "Tg1" && matrix[kinggreenplace1 + 1, kinggreenplace2 + 1] != "Cg" && matrix[kinggreenplace1 + 1, kinggreenplace2 + 1] != "Hg" && matrix[kinggreenplace1 + 1, kinggreenplace2 + 1] != "Qg")
-                {
-                    matrix[kinggreenplace1, kinggreenplace2] = "*";
-                    chax(kinggreenplace1 + 1, kinggreenplace2 + 1, "green");
-                    matrix[kinggreenplace1, kinggreenplace2] = "Kg";
-                    if (greenchaxmat == false)
-                    {
-                        return false;
-                    }
-                }
-                if (kinggreenplace1 != 9 && kinggreenplace2 != 2 && matrix[kinggreenplace1 + 1, kinggreenplace2 - 1] != "Tg" && matrix[kinggreenplace1 + 1, kinggreenplace2 - 1] != "Tg1" && matrix[kinggreenplace1 + 1, kinggreenplace2 - 1] != "Cg" && matrix[kinggreenplace1 + 1, kinggreenplace2 - 1] != "Hg" && matrix[kinggreenplace1 + 1, kinggreenplace2 - 1] != "Qg")
-                {
-                    matrix[kinggreenplace1, kinggreenplace2] = "*";
-                    chax(kinggreenplace1 + 1, kinggreenplace2 - 1, "green");
-                    matrix[kinggreenplace1, kinggreenplace2] = "Kg";
-                    if (greenchaxmat == false)
-                    {
-                        return false;
-                    }
-                }
-                if (greenkilled || greenblocked)
+                free_area_around_king(2, 0, kinggreenplace1 - 1, kinggreenplace2);
+                free_area_around_king(2, 2, kinggreenplace1 - 1, kinggreenplace2 - 1);
+                free_area_around_king(2, 9, kinggreenplace1 - 1, kinggreenplace2 + 1);
+                free_area_around_king(0, 2, kinggreenplace1, kinggreenplace2 - 1);
+                free_area_around_king(0, 9, kinggreenplace1 - 1, kinggreenplace2 + 1);
+                free_area_around_king(9, 0, kinggreenplace1 + 1, kinggreenplace2);
+                free_area_around_king(9, 9, kinggreenplace1 + 1, kinggreenplace2 + 1);
+                free_area_around_king(9, 2, kinggreenplace1 + 1, kinggreenplace2 - 1);
+                
+                if (killed || blocked)
                 {
                     return false;
                 }
