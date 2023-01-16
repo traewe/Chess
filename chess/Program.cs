@@ -85,12 +85,12 @@ namespace program
             Console.WriteLine("Обозначения: Т - тура, Н - horse, С - слон, Q - queen, К - король, П - пешка");
             Console.WriteLine("Структура хода: сначала пишешь букву и цифру клетки, где стоит фигура, потом куда хочешь ею походить(пример G3 E3)");
             Console.WriteLine("Для рокировки - рокировка вправо/рокировка влево");
-            string[,] matrix = new string[12, 12] { { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " }, { " ", " ", "1", "2", "3", "4", "5", "6", "7", "8", " ", " " }, { " ", "A", "Tr", "Hr", "Cr", "Qr", "Kr", "Cr", "Hr", "Tr1", "A", " " }, { " ", "B", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "B", " " }, { " ", "C", "*", "*", "*", "*", "*", "*", "*", "*", "C", " " }, { " ", "D", "*", "*", "*", "*", "*", "*", "Tg", "*", "D", " " }, { " ", "E", "*", "*", "*", "*", "*", "*", "*", "*", "E", " " }, { " ", "F", "*", "*", "*", "*", "*", "*", "*", "*", "F", " " }, { " ", "G", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "G", " " }, { " ", "Н", "*", "Hg", "Cg", "Qg", "Kg", "Cg", "Hg", "Tg1", "Н", " " }, { " ", " ", "1", "2", "3", "4", "5", "6", "7", "8", " ", " " }, { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " } };
+            string[,] matrix = new string[12, 12] { { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " }, { " ", " ", "1", "2", "3", "4", "5", "6", "7", "8", " ", " " }, { " ", "A", "Tr", "Hr", "Cr", "*", "Kr", "Cr", "Hr", "Tr1", "A", " " }, { " ", "B", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "B", " " }, { " ", "C", "*", "*", "*", "*", "*", "*", "*", "*", "C", " " }, { " ", "D", "*", "*", "*", "*", "Tg", "*", "Qr", "*", "D", " " }, { " ", "E", "*", "*", "*", "*", "*", "*", "*", "*", "E", " " }, { " ", "F", "*", "*", "*", "*", "*", "*", "*", "*", "F", " " }, { " ", "G", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "G", " " }, { " ", "Н", "*", "Hg", "Cg", "Qg", "Kg", "Cg", "Hg", "Tg1", "Н", " " }, { " ", " ", "1", "2", "3", "4", "5", "6", "7", "8", " ", " " }, { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " } };
             matrixbuild();
             while (true)
             {
-                try
-                {
+                 try
+                 {
                     if (counterside == 0)
                     {
                         errorcell1 = false;
@@ -106,6 +106,7 @@ namespace program
                         }
                         else if (greenchax(kinggreenplace1, kinggreenplace2))
                         {
+                            Console.WriteLine("YES");
                             if (greenend())
                             {
                                 Console.WriteLine("VIKA! VIKA! VIKA! RED WON");
@@ -214,30 +215,7 @@ namespace program
                                     Console.WriteLine("Внеси данные правильно");
                                     continue;
                                 }
-                                matrix[dig1, dig2] = "*";
-                                greenchax(dig3, dig4);
-                                matrix[dig1, dig2] = "Kg";
-                                if (greenchaxmat)
-                                {
-                                    Console.WriteLine("Не надо, дядя. Убьют тебя");
-                                }
-                                else
-                                {
-                                    if (((Math.Abs(dig3 - dig1) == 1 && Math.Abs(dig4 - dig2) == 1) || (dig3 - dig1 == 0 && Math.Abs(dig4 - dig2) == 1) || (dig4 - dig2 == 0 && Math.Abs(dig3 - dig1) == 1)) && (matrix[dig3, dig4] != " " && matrix[dig3, dig4] != "Пg" && matrix[dig3, dig4] != "Tg" && matrix[dig3, dig4] != "Tg1" && matrix[dig3, dig4] != "Hg" && matrix[dig3, dig4] != "Cg" && matrix[dig3, dig4] != "Qg"))
-                                    {
-                                        matrix[dig3, dig4] = "Kg";
-                                        matrix[dig1, dig2] = "*";
-                                        counterkinggreen++;
-                                        counterside++;
-                                        counterhod++;
-                                        kinggreenplace1 = dig3;
-                                        kinggreenplace2 = dig4;
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Не-а, так нельзя ходить");
-                                    }
-                                }
+                                king("Kg");
                                 break;
                         }
                         if (cell1 == "рокировка вправо")
@@ -427,19 +405,11 @@ namespace program
                                     continue;
                                 }
                                 figura = "Qr";
-                                attempt("Qr");
-                                if (redchaxmat)
-                                {
-                                    Console.WriteLine("Король: Та за шо");
-                                }
-                                else
-                                {
-                                    slon();
-                                    tura();
-                                }
+                                tura();
+                                slon();
                                 break;
 
-                            case "Kr":
+                        case "Kr":
                                 Console.WriteLine("(король)");
                                 cell2 = Console.ReadLine();
                                 place2(cell2);
@@ -449,30 +419,7 @@ namespace program
                                     Console.WriteLine("Внеси данные правильно");
                                     continue;
                                 }
-                                matrix[dig1, dig2] = "*";
-                                redchax(dig3, dig4);
-                                matrix[dig1, dig2] = "Kr";
-                                if (redchaxmat)
-                                {
-                                    Console.WriteLine("Не надо, дядя. Убьют тебя");
-                                }
-                                else
-                                {
-                                    if (((Math.Abs(dig3 - dig1) == 1 && Math.Abs(dig4 - dig2) == 1) || (dig3 - dig1 == 0 && Math.Abs(dig4 - dig2) == 1) || (dig4 - dig2 == 0 && Math.Abs(dig3 - dig1) == 1)) && (matrix[dig3, dig4] != " " && matrix[dig3, dig4] != "Пr" && matrix[dig3, dig4] != "Tr" && matrix[dig3, dig4] != "Tr1" && matrix[dig3, dig4] != "Hr" && matrix[dig3, dig4] != "Cr" && matrix[dig3, dig4] != "Qr"))
-                                    {
-                                        matrix[dig3, dig4] = "Kr";
-                                        matrix[dig1, dig2] = "*";
-                                        counterkingred++;
-                                        counterside--;
-                                        counterhod++;
-                                        kingredplace1 = dig3;
-                                        kingredplace2 = dig4;
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Не-а, так нельзя ходить");
-                                    }
-                                }
+                                king("Kr");
                                 break;
                         }
                         if (cell1 == "рокировка влево")
@@ -544,12 +491,12 @@ namespace program
                         }
                         matrixbuild();
                     }
-                }
-                catch
-                {
-                    Console.WriteLine("Ай, код поплавило");
-                    matrixbuild();
-                }
+                 }
+                 catch
+                 {
+                     Console.WriteLine("Ай, код поплавило");
+                     matrixbuild();
+                 }
             }
             Console.WriteLine("Ось i казочцi кiнець, а хто слухав - молодець");
             void matrixbuild()
@@ -561,6 +508,16 @@ namespace program
                     {
                         for (int j = 1; j < 11; j++)
                         {
+                            if (matrix[i, j] == "Kg")
+                            {
+                                kinggreenplace1 = i;
+                                kinggreenplace2 = j;
+                            }
+                            if (matrix[i, j] == "Kr")
+                            {
+                                kingredplace1 = i;
+                                kingredplace2 = j;
+                            }
                             if ((i + j) % 2 == 0)
                             {
                                 Console.BackgroundColor = ConsoleColor.White;
@@ -1250,6 +1207,56 @@ namespace program
                     Console.WriteLine("Не-а, так нельзя ходить");
                 }
                 counterproh = 0;
+            }
+            void king(string hero)
+            {
+                Console.WriteLine("flag0");
+                enemyally(hero);
+                matrix[dig1, dig2] = "*";
+                if (hero == "Kg")
+                {
+                    Console.WriteLine("flag1");
+                    if (greenchax(dig3, dig4))
+                    {
+                        Console.WriteLine("flag2");
+                        Console.WriteLine("Не надо, дядя. Убьют тебя");
+                    }
+                    matrix[dig1, dig2] = hero;
+                }
+                else if (hero == "Kr")
+                {
+                    Console.WriteLine("flag3");
+                    if (redchax(dig3, dig4))
+                    {
+                        Console.WriteLine("flag4");
+                        Console.WriteLine("Не надо, дядя. Убьют тебя");
+                    }
+                    matrix[dig1, dig2] = hero;
+                }
+                else
+                {
+                    Console.WriteLine("flag5");
+                    if (((Math.Abs(dig3 - dig1) == 1 && Math.Abs(dig4 - dig2) == 1) || (dig3 - dig1 == 0 && Math.Abs(dig4 - dig2) == 1) || (dig4 - dig2 == 0 && Math.Abs(dig3 - dig1) == 1)) && (matrix[dig3, dig4] != " " && matrix[dig3, dig4] != ally1 && matrix[dig3, dig4] != ally2 && matrix[dig3, dig4] != ally3 && matrix[dig3, dig4] != ally4 && matrix[dig3, dig4] != ally5 && matrix[dig3, dig4] != ally6))
+                    {
+                        matrix[dig3, dig4] = hero;
+                        matrix[dig1, dig2] = "*";
+                        if (hero == "Kg")
+                        {
+                            counterkinggreen++;
+                            counterside++;
+                        }
+                        else
+                        {
+                            counterkingred++;
+                            counterside--;
+                        }
+                        counterhod++;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Не-а, так нельзя ходить");
+                    }
+                }
             }
             //DEATH
             bool greenchax(int n, int m)
