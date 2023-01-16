@@ -40,7 +40,7 @@ namespace program
             int counterkinggreen = 0;
             int counterkingred = 0;
             string figura = "";
-            int counterstor = 0;
+            int counterside = 0;
             int counterhod = 1;
             int kinggreenplace1 = 9;
             int kinggreenplace2 = 6;
@@ -91,7 +91,7 @@ namespace program
             {
                 try
                 {
-                    if (counterstor == 0)
+                    if (counterside == 0)
                     {
                         errorcell1 = false;
                         errorcell2 = false;
@@ -104,7 +104,7 @@ namespace program
                             Console.WriteLine("Шах и ПАТ! Зеленый рад");
                             break;
                         }
-                        if (greenchax(kinggreenplace1, kinggreenplace2))
+                        else if (greenchax(kinggreenplace1, kinggreenplace2))
                         {
                             if (greenend())
                             {
@@ -117,7 +117,7 @@ namespace program
                         cell1 = Console.ReadLine();
                         if (cell1 == "s")
                         {
-                            counterstor = 1;
+                            counterside = 1;
                         }
                         place1(cell1);
                         if (errorcell1)
@@ -151,22 +151,7 @@ namespace program
                                     Console.WriteLine("Внеси данные правильно");
                                     continue;
                                 }
-                                attempt("Hg");
-                                if (greenchaxmat)
-                                {
-                                    Console.WriteLine("Король: Та за шо");
-                                }
-                                else if (matrix[dig3, dig4] != " " && (Math.Pow((dig3 - dig1), 2) + Math.Pow((dig4 - dig2), 2)) == 5 && matrix[dig3, dig4] != "Пg" && matrix[dig3, dig4] != "Tg" && matrix[dig3, dig4] != "Tg1" && matrix[dig3, dig4] != "Hg" && matrix[dig3, dig4] != "Cg" && matrix[dig3, dig4] != "Kg" && matrix[dig3, dig4] != "Qg")
-                                {
-                                    matrix[dig3, dig4] = "Hg";
-                                    matrix[dig1, dig2] = "*";
-                                    counterstor++;
-                                    counterhod++;
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Не-а, так нельзя ходить");
-                                }
+                                horse("Hg");
                                 break;
 
                             case "Tg":
@@ -201,19 +186,7 @@ namespace program
                                     continue;
                                 }
                                 figura = "Cg";
-                                attempt(figura);
-                                if (greenchaxmat)
-                                {
-                                    Console.WriteLine("Король: Та за шо");
-                                }
-                                else
-                                {
-                                    slon();
-                                    if (Math.Abs(dig3 - dig1) != Math.Abs(dig4 - dig2))
-                                    {
-                                        Console.WriteLine("Не-а, так нельзя ходить");
-                                    }
-                                }
+                                slon();
                                 break;
 
                             case "Qg":
@@ -227,16 +200,8 @@ namespace program
                                     continue;
                                 }
                                 figura = "Qg";
-                                attempt(figura);
-                                if (greenchaxmat)
-                                {
-                                    Console.WriteLine("Король: Та за шо");
-                                }
-                                else
-                                {
-                                    slon();
-                                    tura();
-                                }
+                                tura();
+                                slon();
                                 break;
 
                             case "Kg":
@@ -263,7 +228,7 @@ namespace program
                                         matrix[dig3, dig4] = "Kg";
                                         matrix[dig1, dig2] = "*";
                                         counterkinggreen++;
-                                        counterstor++;
+                                        counterside++;
                                         counterhod++;
                                         kinggreenplace1 = dig3;
                                         kinggreenplace2 = dig4;
@@ -296,7 +261,7 @@ namespace program
                                         matrix[9, 7] = "Tg1";
                                         matrix[9, 8] = "Kg";
                                         matrix[9, 9] = "*";
-                                        counterstor++;
+                                        counterside++;
                                         counterhod++;
                                         kinggreenplace2 = 8;
                                     }
@@ -329,7 +294,7 @@ namespace program
                                         matrix[9, 4] = "Kg";
                                         matrix[9, 5] = "Tg";
                                         matrix[9, 6] = "*";
-                                        counterstor++;
+                                        counterside++;
                                         counterhod++;
                                         kinggreenplace2 = 4;
                                     }
@@ -340,15 +305,14 @@ namespace program
                                 }
                             }
                         }
-                        if (counterstor != 1)
+                        if (counterside != 1)
                         {
                             Console.WriteLine("Берешь свою фигуру и бьешь вражескую. Понял?");
                         }
                         matrixbuild();
                     }
-                    if (counterstor == 1)
+                    if (counterside == 1)
                     {
-                        counter();
                         errorcell1 = false;
                         errorcell2 = false;
                         redfirstcoordeath.Clear();
@@ -373,7 +337,7 @@ namespace program
                         cell1 = Console.ReadLine();
                         if (cell1 == "s")
                         {
-                            counterstor = 0;
+                            counterside = 0;
                         }
                         place1(cell1);
                         if (errorcell1)
@@ -406,22 +370,7 @@ namespace program
                                     Console.WriteLine("Внеси данные правильно");
                                     continue;
                                 }
-                                attempt("Hr");
-                                if (redchaxmat)
-                                {
-                                    Console.WriteLine("Король: Та за шо");
-                                }
-                                else if (matrix[dig3, dig4] != " " && (Math.Pow((dig3 - dig1), 2) + Math.Pow((dig4 - dig2), 2)) == 5 && matrix[dig3, dig4] != "Пr" && matrix[dig3, dig4] != "Tr" && matrix[dig3, dig4] != "Tr1" && matrix[dig3, dig4] != "Hr" && matrix[dig3, dig4] != "Cr" && matrix[dig3, dig4] != "Kr" && matrix[dig3, dig4] != "Qr")
-                                {
-                                    matrix[dig3, dig4] = "Hr";
-                                    matrix[dig1, dig2] = "*";
-                                    counterstor--;
-                                    counterhod++;
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Не-а, так нельзя ходить");
-                                }
+                                horse("Hr");
                                 break;
 
                             case "Tr":
@@ -514,7 +463,7 @@ namespace program
                                         matrix[dig3, dig4] = "Kr";
                                         matrix[dig1, dig2] = "*";
                                         counterkingred++;
-                                        counterstor--;
+                                        counterside--;
                                         counterhod++;
                                         kingredplace1 = dig3;
                                         kingredplace2 = dig4;
@@ -547,7 +496,7 @@ namespace program
                                         matrix[2, 7] = "Tr1";
                                         matrix[2, 8] = "Kr";
                                         matrix[2, 9] = "*";
-                                        counterstor--;
+                                        counterside--;
                                         counterhod++;
                                     }
                                 }
@@ -579,7 +528,7 @@ namespace program
                                         matrix[2, 4] = "Kr";
                                         matrix[2, 5] = "Tr";
                                         matrix[2, 6] = "*";
-                                        counterstor--;
+                                        counterside--;
                                         counterhod++;
                                     }
                                 }
@@ -589,7 +538,7 @@ namespace program
                                 }
                             }
                         }
-                        if (counterstor != 0)
+                        if (counterside != 0)
                         {
                             Console.WriteLine("Фигуру выбери! Желательно свою");
                         }
@@ -606,7 +555,7 @@ namespace program
             void matrixbuild()
             {
                 counter();
-                if (counterstor == 0)
+                if (counterside == 0)
                 {
                     for (int i = 1; i < 11; i++)
                     {
@@ -658,7 +607,7 @@ namespace program
                         Console.ForegroundColor = ConsoleColor.White;
                     }
                 }
-                else if (counterstor == 1)
+                else if (counterside == 1)
                 {
                     for (int i = 10; i > 0; i--)
                     {
@@ -959,11 +908,11 @@ namespace program
                     }
                     if (hero == "Пg")
                     {
-                        counterstor++;
+                        counterside++;
                     }
                     else
                     {
-                        counterstor--;
+                        counterside--;
                     }
                     counterhod++;
                     matrix[dig1, dig2] = "*";
@@ -1001,14 +950,45 @@ namespace program
                     }
                     if (hero == "Пg")
                     {
-                        counterstor++;
+                        counterside++;
                     }
                     else
                     {
-                        counterstor--;
+                        counterside--;
                     }
                     counterhod++;
                     matrix[dig1, dig2] = "*";
+                }
+                else
+                {
+                    Console.WriteLine("Не-а, так нельзя ходить");
+                }
+            }
+            void horse(string hero)
+            {
+                attempt(hero);
+                enemyally(hero);
+                if (hero == "Hg" && greenchaxmat)
+                {
+                    Console.WriteLine("Король: Та за шо");
+                }
+                else if (hero == "Hr" && redchaxmat)
+                {
+                    Console.WriteLine("Король: Та за шо");
+                }
+                else if (matrix[dig3, dig4] != " " && (Math.Pow((dig3 - dig1), 2) + Math.Pow((dig4 - dig2), 2)) == 5 && matrix[dig3, dig4] != ally1 && matrix[dig3, dig4] != ally2 && matrix[dig3, dig4] != ally3 && matrix[dig3, dig4] != ally4 && matrix[dig3, dig4] != ally5 && matrix[dig3, dig4] != ally6 && matrix[dig3, dig4] != ally7)
+                {
+                    matrix[dig3, dig4] = hero;
+                    matrix[dig1, dig2] = "*";
+                    if (hero == "Hg")
+                    {
+                        counterside++;
+                    }
+                    else
+                    {
+                        counterside--;
+                    }
+                    counterhod++;
                 }
                 else
                 {
@@ -1055,11 +1035,11 @@ namespace program
                         counterhod++;
                         if (figura == "Tg" || figura == "Tg1" || figura == "Qg")
                         {
-                            counterstor++;
+                            counterside++;
                         }
                         else if (figura == "Tr" || figura == "Tr1" || figura == "Qr")
                         {
-                            counterstor--;
+                            counterside--;
                         }
                         if (figura == "Tg")
                         {
@@ -1109,11 +1089,11 @@ namespace program
                         counterhod++;
                         if (figura == "Tg" || figura == "Tg1" || figura == "Qg")
                         {
-                            counterstor++;
+                            counterside++;
                         }
                         else if (figura == "Tr" || figura == "Tr1" || figura == "Qr")
                         {
-                            counterstor--;
+                            counterside--;
                         }
                         if (figura == "Tg")
                         {
@@ -1133,7 +1113,7 @@ namespace program
                         }
                     }
                 }
-                if (dig1 != dig3 && dig2 != dig4)
+                if (dig1 != dig3 && dig2 != dig4 && figura != "Qr" && figura != "Qg")
                 {
                     Console.WriteLine("Не-а, так нельзя ходить");
                 }
@@ -1141,8 +1121,17 @@ namespace program
             }
             void slon()
             {
+                attempt(figura);
                 enemyally(figura);
-                if (Math.Abs(dig3 - dig1) == Math.Abs(dig4 - dig2) && matrix[dig3, dig4] != ally1 && matrix[dig3, dig4] != ally2 && matrix[dig3, dig4] != ally3 && matrix[dig3, dig4] != ally4 && matrix[dig3, dig4] != ally5 && matrix[dig3, dig4] != ally6 && matrix[dig3, dig4] != ally7)
+                if ((figura == "Cg" || figura == "Qg") && greenchaxmat)
+                {
+                    Console.WriteLine("Король: Та за шо");
+                }
+                else if ((figura == "Cr" || figura == "Qr") && redchaxmat)
+                {
+                    Console.WriteLine("Король: Та за шо");
+                }
+                else if (Math.Abs(dig3 - dig1) == Math.Abs(dig4 - dig2) && matrix[dig3, dig4] != ally1 && matrix[dig3, dig4] != ally2 && matrix[dig3, dig4] != ally3 && matrix[dig3, dig4] != ally4 && matrix[dig3, dig4] != ally5 && matrix[dig3, dig4] != ally6 && matrix[dig3, dig4] != ally7)
                 {
                     if (dig1 > dig3 && dig2 > dig4)
                     {
@@ -1161,14 +1150,14 @@ namespace program
                         {
                             if (figura == "Cg" || figura == "Qg")
                             {
-                                counterstor++;
+                                counterside++;
                             }
                             else
                             {
-                                counterstor--;
+                                counterside--;
                             }
-                            matrix[dig3, dig4] = figura;
                             matrix[dig1, dig2] = "*";
+                            matrix[dig3, dig4] = figura;
                         }
                     }
                     else if (dig1 > dig3 && dig2 < dig4)
@@ -1188,15 +1177,15 @@ namespace program
                         {
                             if (figura == "Cg" || figura == "Qg")
                             {
-                                counterstor++;
+                                counterside++;
                             }
                             else
                             {
-                                counterstor--;
+                                counterside--;
                             }
                             counterhod++;
-                            matrix[dig3, dig4] = figura;
                             matrix[dig1, dig2] = "*";
+                            matrix[dig3, dig4] = figura;
                         }
                     }
                     else if (dig1 < dig3 && dig2 > dig4)
@@ -1216,15 +1205,15 @@ namespace program
                         {
                             if (figura == "Cg" || figura == "Qg")
                             {
-                                counterstor++;
+                                counterside++;
                             }
                             else
                             {
-                                counterstor--;
+                                counterside--;
                             }
                             counterhod++;
-                            matrix[dig3, dig4] = figura;
                             matrix[dig1, dig2] = "*";
+                            matrix[dig3, dig4] = figura;
                         }
                     }
                     else if (dig1 < dig3 && dig2 < dig4)
@@ -1244,15 +1233,15 @@ namespace program
                         {
                             if (figura == "Cg" || figura == "Qg")
                             {
-                                counterstor++;
+                                counterside++;
                             }
                             else
                             {
-                                counterstor--;
+                                counterside--;
                             }
                             counterhod++;
-                            matrix[dig3, dig4] = figura;
                             matrix[dig1, dig2] = "*";
+                            matrix[dig3, dig4] = figura;
                         }
                     }
                 }
@@ -1262,6 +1251,7 @@ namespace program
                 }
                 counterproh = 0;
             }
+            //DEATH
             bool greenchax(int n, int m)
             {
                 if (matrix[n - 1, m - 1] == "Пr")
