@@ -1,6 +1,7 @@
 using Microsoft.VisualBasic;
 using System;
 using System.Drawing;
+using System.Net.Security;
 using System.Runtime;
 using System.Text;
 
@@ -17,6 +18,20 @@ namespace program
             int dig2 = -1;
             int dig3 = -1;
             int dig4 = -1;
+            string enemy1 = "";
+            string enemy2 = "";
+            string enemy3 = "";
+            string enemy4 = "";
+            string enemy5 = "";
+            string enemy6 = "";
+            string enemy7 = "";
+            string ally1 = "";
+            string ally2 = "";
+            string ally3 = "";
+            string ally4 = "";
+            string ally5 = "";
+            string ally6 = "";
+            string ally7 = "";
             int counterproh = 0;
             int counterturagreenleft = 0;
             int counterturagreenright = 0;
@@ -58,13 +73,6 @@ namespace program
             int answer;
             string greenlosses = "";
             string redlosses = "";
-            string ally1 = "";
-            string ally2 = "";
-            string ally3 = "";
-            string ally4 = "";
-            string ally5 = "";
-            string ally6 = "";
-            string ally7 = "";
             List<int> greenfirstcoordeath = new();
             List<int> greensecondcoordeath = new();
             List<int> redfirstcoordeath = new();
@@ -129,85 +137,7 @@ namespace program
                                     Console.WriteLine("Внеси данные правильно");
                                     continue;
                                 }
-                                attempt("Пg");
-                                if (greenchaxmat)
-                                {
-                                    Console.WriteLine("Король: Та за шо");
-                                }
-                                else if (matrix[dig3, dig4] == "*" && dig2 == dig4 && ((dig2 == dig4 && dig3 - dig1 == -1) || (dig1 == 8 && dig3 - dig1 == -2)))
-                                {
-                                    if (dig3 == 2)
-                                    {
-                                        Console.WriteLine("тура(1)/слон(2)/ферзь(3)/конь(4)?");
-                                        answer = Convert.ToInt32(Console.ReadLine());
-                                        while (answer != 1 && answer != 2 && answer != 3 && answer != 4)
-                                        {
-                                            Console.WriteLine("Выбери что то из вышеперечисленного и напиши цифру");
-                                            answer = Convert.ToInt32(Console.ReadLine());
-                                        }
-                                        switch (answer)
-                                        {
-                                            case 1:
-                                                matrix[dig3, dig4] = "Tg";
-                                                break;
-                                            case 2:
-                                                matrix[dig3, dig4] = "Cg";
-                                                break;
-                                            case 3:
-                                                matrix[dig3, dig4] = "Qg";
-                                                break;
-                                            case 4:
-                                                matrix[dig3, dig4] = "Hg";
-                                                break;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        matrix[dig3, dig4] = "Пg";
-                                    }
-                                    counterstor++;
-                                    counterhod++;
-                                    matrix[dig1, dig2] = "*";
-                                }
-                                else if ((matrix[dig3, dig4] == "Пr" || matrix[dig3, dig4] == "Tr" || matrix[dig3, dig4] == "Hr" || matrix[dig3, dig4] == "Cr" || matrix[dig3, dig4] == "Qr" || matrix[dig3, dig4] == "Kr" || matrix[dig3, dig4] == "Tr1") && Math.Abs(dig4 - dig2) == 1 && dig3 - dig1 == -1)
-                                {
-                                    if (dig3 == 2)
-                                    {
-                                        Console.WriteLine("тура(1)/слон(2)/ферзь(3)/конь(4)?");
-                                        answer = Convert.ToInt32(Console.ReadLine());
-                                        while (answer != 1 && answer != 2 && answer != 3 && answer != 4)
-                                        {
-                                            Console.WriteLine("Выбери что то из вышеперечисленного и цифру");
-                                            answer = Convert.ToInt32(Console.ReadLine());
-                                        }
-                                        switch (answer)
-                                        {
-                                            case 1:
-                                                matrix[dig3, dig4] = "Tg";
-                                                break;
-                                            case 2:
-                                                matrix[dig3, dig4] = "Cg";
-                                                break;
-                                            case 3:
-                                                matrix[dig3, dig4] = "Qg";
-                                                break;
-                                            case 4:
-                                                matrix[dig3, dig4] = "Hg";
-                                                break;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        matrix[dig3, dig4] = "Пg";
-                                    }
-                                    counterstor++;
-                                    counterhod++;
-                                    matrix[dig1, dig2] = "*";
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Не-а, так нельзя ходить");
-                                }
+                                peshak();
                                 break;
 
                             case "Hg":
@@ -421,7 +351,7 @@ namespace program
                                 }
                             }
                         }
-                        else
+                        if (counterstor != 1)
                         {
                             Console.WriteLine("Берешь свою фигуру и бьешь вражескую. Понял?");
                         }
@@ -768,7 +698,7 @@ namespace program
                                 }
                             }
                         }
-                        else
+                        if (counterstor != 0)
                         {
                             Console.WriteLine("Фигуру выбери! Желательно свою");
                         }
@@ -960,33 +890,7 @@ namespace program
             {
                 if (cell1.Length == 2)
                 {
-                    switch (Convert.ToString(cell1[0]))
-                    {
-                        case "A":
-                            dig1 = 2;
-                            break;
-                        case "B":
-                            dig1 = 3;
-                            break;
-                        case "C":
-                            dig1 = 4;
-                            break;
-                        case "D":
-                            dig1 = 5;
-                            break;
-                        case "E":
-                            dig1 = 6;
-                            break;
-                        case "F":
-                            dig1 = 7;
-                            break;
-                        case "G":
-                            dig1 = 8;
-                            break;
-                        case "H":
-                            dig1 = 9;
-                            break;
-                    }
+                    letterconverter(cell1, ref dig1);
                     if (1 < Convert.ToInt32(cell1[1]) - 47 && Convert.ToInt32(cell1[1]) - 47 < 10)
                     {
                         dig2 = Convert.ToInt32(cell1[1]) - 47;
@@ -1005,33 +909,7 @@ namespace program
             {
                 if (cell2.Length == 2)
                 {
-                    switch (Convert.ToString(cell2[0]))
-                    {
-                        case "A":
-                            dig3 = 2;
-                            break;
-                        case "B":
-                            dig3 = 3;
-                            break;
-                        case "C":
-                            dig3 = 4;
-                            break;
-                        case "D":
-                            dig3 = 5;
-                            break;
-                        case "E":
-                            dig3 = 6;
-                            break;
-                        case "F":
-                            dig3 = 7;
-                            break;
-                        case "G":
-                            dig3 = 8;
-                            break;
-                        case "H":
-                            dig3 = 9;
-                            break;
-                    }
+                    letterconverter(cell2, ref dig3);
                     if (1 < Convert.ToInt32(cell2[1]) - 47 && Convert.ToInt32(cell2[1]) - 47 < 10)
                     {
                         dig4 = Convert.ToInt32(cell2[1]) - 47;
@@ -1044,6 +922,36 @@ namespace program
                 else if (cell1[0] == cell2[0] && cell1[1] == cell2[1])
                 {
                     errorcell2 = true;
+                }
+            }
+            void letterconverter(string cell, ref int dig)
+            {
+                switch (Convert.ToString(cell[0]))
+                {
+                    case "A":
+                        dig = 2;
+                        break;
+                    case "B":
+                        dig = 3;
+                        break;
+                    case "C":
+                        dig = 4;
+                        break;
+                    case "D":
+                        dig = 5;
+                        break;
+                    case "E":
+                        dig = 6;
+                        break;
+                    case "F":
+                        dig = 7;
+                        break;
+                    case "G":
+                        dig = 8;
+                        break;
+                    case "H":
+                        dig = 9;
+                        break;
                 }
             }
             void attempt(string attacker)
@@ -1062,52 +970,143 @@ namespace program
                 matrix[dig1, dig2] = attacker;
                 matrix[dig3, dig4] = temp;
             }
-            void tura()
+            void enemyally(string hero)
             {
-                string enemy1 = "";
-                string enemy2 = "";
-                string enemy3 = "";
-                string enemy4 = "";
-                string enemy5 = "";
-                string enemy6 = "";
-                string enemy7 = "";
-                string color = "";
-                if (figura == "Tg1" || figura == "Tg" || figura == "Qg")
+                if (hero == "Tg1" || hero == "Tg" || hero == "Cg" || hero == "Hg" || hero == "Qg" || hero == "Kg" || hero == "Пg")
                 {
                     enemy1 = "Пr";
-                    enemy2 = "Tr";
-                    enemy3 = "Tr1";
-                    enemy4 = "Cr";
-                    enemy5 = "Hr";
+                    enemy2 = "Cr";
+                    enemy3 = "Hr";
+                    enemy4 = "Tr";
+                    enemy5 = "Tr1";
                     enemy6 = "Qr";
                     enemy7 = "Kr";
                     ally1 = "Пg";
-                    ally2 = "Tg";
-                    ally3 = "Tg1";
-                    ally4 = "Cg";
-                    ally5 = "Hg";
+                    ally2 = "Cg";
+                    ally3 = "Hg";
+                    ally4 = "Tg";
+                    ally5 = "Tg1";
                     ally6 = "Qg";
                     ally7 = "Kg";
-                    color = "green";
                 }
                 else
                 {
                     enemy1 = "Пg";
-                    enemy2 = "Tg";
-                    enemy3 = "Tg1";
-                    enemy4 = "Cg";
-                    enemy5 = "Hg";
+                    enemy2 = "Cg";
+                    enemy3 = "Hg";
+                    enemy4 = "Tg";
+                    enemy5 = "Tg1";
                     enemy6 = "Qg";
                     enemy7 = "Kg";
                     ally1 = "Пr";
-                    ally2 = "Tr";
-                    ally3 = "Tr1";
-                    ally4 = "Cr";
-                    ally5 = "Hr";
+                    ally2 = "Cr";
+                    ally3 = "Hr";
+                    ally4 = "Tr";
+                    ally5 = "Tr1";
                     ally6 = "Qr";
                     ally7 = "Kr";
-                    color = "red";
                 }
+            }
+            void peshak(string hero)
+            {
+                int edge;
+                if (hero == "Пg")
+                {
+                    edge = 2;
+                }
+                else
+                {
+                    edge = 9;
+                }
+                enemyally(hero);
+                attempt(hero);
+                if (hero == "Пg" && greenchaxmat)
+                {
+                    Console.WriteLine("Король: Та за шо");
+                }
+                else if (hero == "Пr" && redchaxmat)
+                {
+                    Console.WriteLine("Король: Та за шо");
+                }
+                else if (matrix[dig3, dig4] == "*" && dig2 == dig4 && ((dig2 == dig4 && dig3 - dig1 == -1) || (dig1 == 8 && dig3 - dig1 == -2)))
+                {
+                    if (dig3 == edge)
+                    {
+                        Console.WriteLine("тура(1)/слон(2)/ферзь(3)/конь(4)?");
+                        answer = Convert.ToInt32(Console.ReadLine());
+                        while (answer != 1 && answer != 2 && answer != 3 && answer != 4)
+                        {
+                            Console.WriteLine("Выбери что то из вышеперечисленного и напиши цифру");
+                            answer = Convert.ToInt32(Console.ReadLine());
+                        }
+                        switch (answer)
+                        {
+                            case 1:
+                                matrix[dig3, dig4] = "Tg";
+                                break;
+                            case 2:
+                                matrix[dig3, dig4] = "Cg";
+                                break;
+                            case 3:
+                                matrix[dig3, dig4] = "Qg";
+                                break;
+                            case 4:
+                                matrix[dig3, dig4] = "Hg";
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        matrix[dig3, dig4] = "Пg";
+                    }
+                    counterstor++;
+                    counterhod++;
+                    matrix[dig1, dig2] = "*";
+                }
+                else if ((matrix[dig3, dig4] == "Пr" || matrix[dig3, dig4] == "Tr" || matrix[dig3, dig4] == "Hr" || matrix[dig3, dig4] == "Cr" || matrix[dig3, dig4] == "Qr" || matrix[dig3, dig4] == "Kr" || matrix[dig3, dig4] == "Tr1") && Math.Abs(dig4 - dig2) == 1 && dig3 - dig1 == -1)
+                {
+                    if (dig3 == edge)
+                    {
+                        Console.WriteLine("тура(1)/слон(2)/ферзь(3)/конь(4)?");
+                        answer = Convert.ToInt32(Console.ReadLine());
+                        while (answer != 1 && answer != 2 && answer != 3 && answer != 4)
+                        {
+                            Console.WriteLine("Выбери что то из вышеперечисленного и цифру");
+                            answer = Convert.ToInt32(Console.ReadLine());
+                        }
+                        switch (answer)
+                        {
+                            case 1:
+                                matrix[dig3, dig4] = "Tg";
+                                break;
+                            case 2:
+                                matrix[dig3, dig4] = "Cg";
+                                break;
+                            case 3:
+                                matrix[dig3, dig4] = "Qg";
+                                break;
+                            case 4:
+                                matrix[dig3, dig4] = "Hg";
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        matrix[dig3, dig4] = "Пg";
+                    }
+                    counterstor++;
+                    counterhod++;
+                    matrix[dig1, dig2] = "*";
+                }
+                else
+                {
+                    Console.WriteLine("Не-а, так нельзя ходить");
+                }
+            }
+            void tura()
+            {
+
+                enemyally(figura);
                 if (dig1 == dig3)
                 {
                     if (dig4 > dig2)
@@ -1135,27 +1134,27 @@ namespace program
                         matrix[dig3, dig4] = figura;
                         matrix[dig1, dig2] = "*";
                         counterhod++;
-                        if (color == "green")
+                        if (figura == "Tg" || figura == "Tg1" || figura == "Qg")
                         {
                             counterstor++;
                         }
-                        else if (color == "red")
+                        else if (figura == "Tr" || figura == "Tr1" || figura == "Qr")
                         {
                             counterstor--;
                         }
-                        if (figura == "Тg")
+                        if (figura == "Tg")
                         {
                             counterturagreenleft++;
                         }
-                        else if (figura == "Тg1")
+                        else if (figura == "Tg1")
                         {
                             counterturagreenright++;
                         }
-                        else if (figura == "Тr")
+                        else if (figura == "Tr")
                         {
                             counterturaredleft++;
                         }
-                        else if (figura == "Тr1")
+                        else if (figura == "Tr1")
                         {
                             counterturaredright++;
                         }
@@ -1189,27 +1188,27 @@ namespace program
                         matrix[dig3, dig4] = figura;
                         matrix[dig1, dig2] = "*";
                         counterhod++;
-                        if (color == "green")
+                        if (figura == "Tg" || figura == "Tg1" || figura == "Qg")
                         {
                             counterstor++;
                         }
-                        else if (color == "red")
+                        else if (figura == "Tr" || figura == "Tr1" || figura == "Qr")
                         {
                             counterstor--;
                         }
-                        if (figura == "Тg")
+                        if (figura == "Tg")
                         {
                             counterturagreenleft++;
                         }
-                        else if (figura == "Тg1")
+                        else if (figura == "Tg1")
                         {
                             counterturagreenright++;
                         }
-                        else if (figura == "Тr")
+                        else if (figura == "Tr")
                         {
                             counterturaredleft++;
                         }
-                        else if (figura == "Тr1")
+                        else if (figura == "Tr1")
                         {
                             counterturaredright++;
                         }
@@ -1223,26 +1222,7 @@ namespace program
             }
             void slon()
             {
-                if (figura == "Cg" || figura == "Qg")
-                {
-                    ally1 = "Пg";
-                    ally2 = "Tg";
-                    ally3 = "Tg1";
-                    ally4 = "Cg";
-                    ally5 = "Hg";
-                    ally6 = "Qg";
-                    ally7 = "Kg";
-                }
-                else
-                {
-                    ally1 = "Пr";
-                    ally2 = "Tr";
-                    ally3 = "Tr1";
-                    ally4 = "Cr";
-                    ally5 = "Hr";
-                    ally6 = "Qr";
-                    ally7 = "Kr";
-                }
+                enemyally(figura);
                 if (Math.Abs(dig3 - dig1) == Math.Abs(dig4 - dig2) && matrix[dig3, dig4] != ally1 && matrix[dig3, dig4] != ally2 && matrix[dig3, dig4] != ally3 && matrix[dig3, dig4] != ally4 && matrix[dig3, dig4] != ally5 && matrix[dig3, dig4] != ally6 && matrix[dig3, dig4] != ally7)
                 {
                     if (dig1 > dig3 && dig2 > dig4)
