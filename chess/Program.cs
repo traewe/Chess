@@ -68,8 +68,7 @@ namespace program
             bool greenblocked = false;
             bool redkilled = false;
             bool redblocked = false;
-            bool errorcell1 = false;
-            bool errorcell2 = false;
+            bool errorcell = false;
             int answer;
             int advantage;
             string greenlosses = "";
@@ -93,13 +92,15 @@ namespace program
                  {
                     if (counterside == 0)
                     {
-                        Console.WriteLine("flag12");
-                        errorcell1 = false;
-                        errorcell2 = false;
+                        errorcell = false;
                         greenfirstcoordeath.Clear();
                         greensecondcoordeath.Clear();
+                        redfirstcoordeath.Clear();
+                        redsecondcoordeath.Clear();
                         redfirstcoorblock.Clear();
                         redsecondcoorblock.Clear();
+                        greenfirstcoorblock.Clear();
+                        greensecondcoorblock.Clear();
                         if (greenstalemate())
                         {
                             Console.WriteLine("Шах и ПАТ! Зеленый рад");
@@ -114,14 +115,14 @@ namespace program
                             }
                             Console.WriteLine("ATTENTION! ШАХ!(зеленый! Алло)");
                         }
-                        Console.WriteLine($"Ход зеленых  {counterhod} ");
+                        Console.WriteLine($"Ход зеленых {counterhod} ");
                         cell1 = Console.ReadLine();
                         if (cell1 == "s")
                         {
                             counterside = 1;
                         }
                         place1(cell1);
-                        if (errorcell1)
+                        if (errorcell)
                         {
                             matrixbuild();
                             Console.WriteLine("Внеси данные правильно");
@@ -133,7 +134,7 @@ namespace program
                                 Console.WriteLine("(пешка)");
                                 cell2 = Console.ReadLine();
                                 place2(cell2);
-                                if (errorcell2)
+                                if (errorcell)
                                 {
                                     matrixbuild();
                                     Console.WriteLine("Внеси данные правильно");
@@ -146,7 +147,7 @@ namespace program
                                 Console.WriteLine("(конь)");
                                 cell2 = Console.ReadLine();
                                 place2(cell2);
-                                if (errorcell2)
+                                if (errorcell)
                                 {
                                     matrixbuild();
                                     Console.WriteLine("Внеси данные правильно");
@@ -167,7 +168,7 @@ namespace program
                                 Console.WriteLine("(тура)");
                                 cell2 = Console.ReadLine();
                                 place2(cell2);
-                                if (errorcell2)
+                                if (errorcell)
                                 {
                                     matrixbuild();
                                     Console.WriteLine("Внеси данные правильно");
@@ -180,7 +181,7 @@ namespace program
                                 Console.WriteLine("(слон)");
                                 cell2 = Console.ReadLine();
                                 place2(cell2);
-                                if (errorcell2)
+                                if (errorcell)
                                 {
                                     matrixbuild();
                                     Console.WriteLine("Внеси данные правильно");
@@ -194,7 +195,7 @@ namespace program
                                 Console.WriteLine("(королева)");
                                 cell2 = Console.ReadLine();
                                 place2(cell2);
-                                if (errorcell2)
+                                if (errorcell)
                                 {
                                     matrixbuild();
                                     Console.WriteLine("Внеси данные правильно");
@@ -202,14 +203,18 @@ namespace program
                                 }
                                 figura = "Qg";
                                 tura();
-                                slon();
+                                if (matrix[dig1, dig2] == "Qg")
+                                {
+                                    slon();
+                                }
+                                break;
                                 break;
 
                             case "Kg":
                                 Console.WriteLine("(король)");
                                 cell2 = Console.ReadLine();
                                 place2(cell2);
-                                if (errorcell2)
+                                if (errorcell)
                                 {
                                     matrixbuild();
                                     Console.WriteLine("Внеси данные правильно");
@@ -291,8 +296,7 @@ namespace program
                     }
                     if (counterside == 1)
                     {
-                        errorcell1 = false;
-                        errorcell2 = false;
+                        errorcell = false;
                         redfirstcoordeath.Clear();
                         redsecondcoordeath.Clear();
                         redfirstcoorblock.Clear();
@@ -302,7 +306,7 @@ namespace program
                             Console.WriteLine("Шах и ПАТ! Красный рад");
                             break;
                         }
-                        if (redchax(kingredplace1, kingredplace2))
+                        else if (redchax(kingredplace1, kingredplace2))
                         {
                             if (redend())
                             {
@@ -318,7 +322,7 @@ namespace program
                             counterside = 0;
                         }
                         place1(cell1);
-                        if (errorcell1)
+                        if (errorcell)
                         {
                             matrixbuild();
                             Console.WriteLine("Внеси данные правильно");
@@ -330,7 +334,7 @@ namespace program
                                 Console.WriteLine("(пешка)");
                                 cell2 = Console.ReadLine();
                                 place2(cell2);
-                                if (errorcell2)
+                                if (errorcell)
                                 {
                                     matrixbuild();
                                     Console.WriteLine("Внеси данные правильно");
@@ -342,7 +346,7 @@ namespace program
                                 Console.WriteLine("(конь)");
                                 cell2 = Console.ReadLine();
                                 place2(cell2);
-                                if (errorcell2)
+                                if (errorcell)
                                 {
                                     matrixbuild();
                                     Console.WriteLine("Внеси данные правильно");
@@ -363,7 +367,7 @@ namespace program
                                 Console.WriteLine("(тура)");
                                 cell2 = Console.ReadLine();
                                 place2(cell2);
-                                if (errorcell2)
+                                if (errorcell)
                                 {
                                     matrixbuild();
                                     Console.WriteLine("Внеси данные правильно");
@@ -376,29 +380,21 @@ namespace program
                                 Console.WriteLine("(слон)");
                                 cell2 = Console.ReadLine();
                                 place2(cell2);
-                                if (errorcell2)
+                                if (errorcell)
                                 {
                                     matrixbuild();
                                     Console.WriteLine("Внеси данные правильно");
                                     continue;
                                 }
                                 figura = "Cr";
-                                attempt("Cr");
-                                if (redchaxmat)
-                                {
-                                    Console.WriteLine("Король: Та за шо");
-                                }
-                                else
-                                {
-                                    slon();
-                                }
+                                slon();
                                 break;
 
                             case "Qr":
                                 Console.WriteLine("(королева)");
                                 cell2 = Console.ReadLine();
                                 place2(cell2);
-                                if (errorcell2)
+                                if (errorcell)
                                 {
                                     matrixbuild();
                                     Console.WriteLine("Внеси данные правильно");
@@ -406,14 +402,17 @@ namespace program
                                 }
                                 figura = "Qr";
                                 tura();
-                                slon();
+                                if (matrix[dig1, dig2] == "Qr")
+                                {
+                                    slon();
+                                }
                                 break;
 
                             case "Kr":
                                     Console.WriteLine("(король)");
                                     cell2 = Console.ReadLine();
                                     place2(cell2);
-                                    if (errorcell2)
+                                    if (errorcell)
                                     {
                                         matrixbuild();
                                         Console.WriteLine("Внеси данные правильно");
@@ -560,8 +559,6 @@ namespace program
                             }
                         }
                         Console.WriteLine();
-                        Console.BackgroundColor = ConsoleColor.Black;
-                        Console.ForegroundColor = ConsoleColor.White;
                     }
                 }
                 else if (counterside == 1)
@@ -696,11 +693,11 @@ namespace program
                 }
                 if (cell1 == "рокировка вправо" || cell1 == "рокировка влево")
                 {
-                    errorcell1 = false;
+                    errorcell = false;
                 }
                 else if (cell1.Length != 2 || (Convert.ToString(cell1[1]) != "1" && Convert.ToString(cell1[1]) != "2" && Convert.ToString(cell1[1]) != "3" && Convert.ToString(cell1[1]) != "4" && Convert.ToString(cell1[1]) != "5" && Convert.ToString(cell1[1]) != "6" && Convert.ToString(cell1[1]) != "7" && Convert.ToString(cell1[1]) != "8"))
                 {
-                    errorcell1 = true;
+                    errorcell = true;
                 }
             }
             void place2(string green)
@@ -715,11 +712,11 @@ namespace program
                 }
                 if (cell2.Length != 2 || (Convert.ToString(cell2[1]) != "1" && Convert.ToString(cell2[1]) != "2" && Convert.ToString(cell2[1]) != "3" && Convert.ToString(cell2[1]) != "4" && Convert.ToString(cell2[1]) != "5" && Convert.ToString(cell2[1]) != "6" && Convert.ToString(cell2[1]) != "7" && Convert.ToString(cell2[1]) != "8"))
                 {
-                    errorcell2 = true;
+                    errorcell = true;
                 }
                 else if (cell1[0] == cell2[0] && cell1[1] == cell2[1])
                 {
-                    errorcell2 = true;
+                    errorcell = true;
                 }
             }
             void letterconverter(string cell, ref int dig)
@@ -752,7 +749,7 @@ namespace program
                         break;
                 }
             }
-            void attempt(string attacker)
+            bool attempt(string attacker)
             {
                 matrix[dig1, dig2] = "*";
                 temp = matrix[dig3, dig4];
@@ -760,13 +757,17 @@ namespace program
                 if (attacker == "Пg" || attacker == "Tg" || attacker == "Tg1" || attacker == "Cg" || attacker == "Hg" || attacker == "Qg")
                 {
                     greenchax(kinggreenplace1, kinggreenplace2);
+                    matrix[dig1, dig2] = attacker;
+                    matrix[dig3, dig4] = temp;
+                    return greenchaxmat;
                 }
                 else
                 {
                     redchax(kingredplace1, kingredplace2);
+                    matrix[dig1, dig2] = attacker;
+                    matrix[dig3, dig4] = temp;
+                    return redchaxmat;
                 }
-                matrix[dig1, dig2] = attacker;
-                matrix[dig3, dig4] = temp;
             }
             void enemyally(string hero)
             {
@@ -823,12 +824,7 @@ namespace program
                     distance = 1;
                 }
                 enemyally(hero);
-                attempt(hero);
-                if (hero == "Пg" && greenchaxmat)
-                {
-                    Console.WriteLine("Король: Та за шо");
-                }
-                else if (hero == "Пr" && redchaxmat)
+                if (attempt(hero))
                 {
                     Console.WriteLine("Король: Та за шо");
                 }
@@ -923,13 +919,8 @@ namespace program
             }
             void horse(string hero)
             {
-                attempt(hero);
                 enemyally(hero);
-                if (hero == "Hg" && greenchaxmat)
-                {
-                    Console.WriteLine("Король: Та за шо");
-                }
-                else if (hero == "Hr" && redchaxmat)
+                if (attempt(hero))
                 {
                     Console.WriteLine("Король: Та за шо");
                 }
@@ -954,19 +945,13 @@ namespace program
             }
             void tura()
             {
-                attempt(figura);
                 enemyally(figura);
-                if ((figura == "Tg" || figura == "Tg1" || figura == "Qg") && greenchaxmat)
-                {
-                    Console.WriteLine("Король: Та за шо");
-                }
-                else if ((figura == "Tr" || figura == "Tr1" || figura == "Qr") && redchaxmat)
+                if (attempt(figura))
                 {
                     Console.WriteLine("Король: Та за шо");
                 }
                 else if (dig1 == dig3)
                 {
-                    Console.WriteLine("flag0");
                     if (dig4 > dig2)
                     {
                         counterproh--;
@@ -1077,18 +1062,11 @@ namespace program
                     Console.WriteLine("Не-а, так нельзя ходить");
                 }
                 counterproh = 0;
-                Console.WriteLine("flag10");
-                matrixbuild();
             }
             void slon()
             {
-                attempt(figura);
                 enemyally(figura);
-                if ((figura == "Cg" || figura == "Qg") && greenchaxmat)
-                {
-                    Console.WriteLine("Король: Та за шо");
-                }
-                else if ((figura == "Cr" || figura == "Qr") && redchaxmat)
+                if (attempt(figura))
                 {
                     Console.WriteLine("Король: Та за шо");
                 }
@@ -1259,6 +1237,15 @@ namespace program
             //DEATH
             bool greenchax(int n, int m)
             {
+                greenchaxmat = false;
+                greenchaxrighttopslon = true;
+                greenchaxlefttopslon = true;
+                greenchaxrightdownslon = true;
+                greenchaxleftdownslon = true;
+                greenchaxlefttura = true;
+                greenchaxrighttura = true;
+                greenchaxtoptura = true;
+                greenchaxdowntura = true;
                 if (matrix[n - 1, m - 1] == "Пr")
                 {
                     greenchaxmat = true;
