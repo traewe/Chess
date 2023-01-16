@@ -47,27 +47,20 @@ namespace program
             int kingredplace1 = 2;
             int kingredplace2 = 6;
             bool greenchaxmat = false;
-            bool greenchaxrighttopslon = true;
-            bool greenchaxlefttopslon = true;
-            bool greenchaxrightdownslon = true;
-            bool greenchaxleftdownslon = true;
-            bool greenchaxlefttura = true;
-            bool greenchaxrighttura = true;
-            bool greenchaxtoptura = true;
-            bool greenchaxdowntura = true;
             bool redchaxmat = false;
-            bool redchaxrighttopslon;
-            bool redchaxlefttopslon;
-            bool redchaxrightdownslon;
-            bool redchaxleftdownslon;
-            bool redchaxlefttura;
-            bool redchaxrighttura;
-            bool redchaxtoptura;
-            bool redchaxdowntura;
+            bool chaxmat = false;
+            bool chaxrighttopslon = true;
+            bool chaxlefttopslon = true;
+            bool chaxrightdownslon = true;
+            bool chaxleftdownslon = true;
+            bool chaxlefttura = true;
+            bool chaxrighttura = true;
+            bool chaxtoptura = true;
+            bool chaxdowntura = true;
             bool greenkilled = false;
             bool greenblocked = false;
             bool redkilled = false;
-            bool redblocked = false;
+            bool greenblocksreded = false;
             bool errorcell = false;
             int answer;
             int advantage;
@@ -83,6 +76,8 @@ namespace program
             List<int> greensecondcoorblock = new();
             List<int> firstcoordeath = new();
             List<int> secondcoordeath = new();
+            List<int> firstcoorblock = new();
+            List<int> secondcoorblock = new();
             Console.WriteLine("Обозначения: Т - тура, Н - horse, С - слон, Q - queen, К - король, П - пешка");
             Console.WriteLine("Структура хода: сначала пишешь букву и цифру клетки, где стоит фигура, потом куда хочешь ею походить(пример G3 E3)");
             Console.WriteLine("Для рокировки - рокировка вправо/рокировка влево");
@@ -1229,161 +1224,126 @@ namespace program
                     }
                 }
             }
-            void killerdetector(int x, int y, string hero, ref List<int> firstcoordeathlist, ref List<int> secondcoordeathlist)
+            void killerdetector(int x, int y, string hero, List<int> firstcoor, List<int> secondcoor)
             {
                 if (matrix[x, y] == hero)
                 {
-                    firstcoordeathlist.Add(x);
-                    secondcoordeathlist.Add(y);
+                    firstcoordeath.Add(x);
+                    secondcoordeath.Add(y);
                 }
             }
-            //DEATH
+            void slondetector(int x, int y, ref bool noobstacle, List<int> firstcoor, List<int> secondcoor)
+            {
+                if (matrix[x, y] != "*" && matrix[x, y] != enemyC && matrix[x, y] != enemyQ)
+                {
+                    noobstacle = false;
+                }
+                if (noobstacle == true && (matrix[x, y] == enemyC || matrix[x, y] == enemyQ))
+                {
+                    firstcoor.Add(x);
+                    secondcoor.Add(y);
+                }
+            }
+            void turadetector(int x, int y, ref bool noobstacle, List<int> firstcoor, List<int> secondcoor)
+            {
+                if (matrix[x, y] != "*" && matrix[x, y] != enemyQ && matrix[x, y] != enemyT && matrix[x, y] != enemyT1)
+                {
+                    noobstacle = false;
+                }
+                if (noobstacle == true && (matrix[x, y] == enemyQ || matrix[x, y] == enemyT || matrix[x, y] == enemyT1))
+                {
+                    firstcoor.Add(x);
+                    secondcoor.Add(y);
+                }
+            }
             bool chax(int n, int m, string color)
             {
                 firstcoordeath.Clear();
                 secondcoordeath.Clear();
-                bool chaxmat = false;
-                bool chaxrighttopslon = true;
-                bool chaxlefttopslon = true;
-                bool chaxrightdownslon = true;
-                bool chaxleftdownslon = true;
-                bool chaxlefttura = true;
-                bool chaxrighttura = true;
-                bool chaxtoptura = true;
-                bool chaxdowntura = true;
+                chaxmat = false;
+                chaxrighttopslon = true;
+                chaxlefttopslon = true;
+                chaxrightdownslon = true;
+                chaxleftdownslon = true;
+                chaxlefttura = true;
+                chaxrighttura = true;
+                chaxtoptura = true;
+                chaxdowntura = true; 
                 if (color == "green")
                 {
                     enemyally("Kg");
-                    killerdetector(n - 1, m + 1, enemyП, ref firstcoordeath, ref secondcoordeath);
-                    killerdetector(n - 1, m - 1, enemyП, ref firstcoordeath, ref secondcoordeath);
+                    killerdetector(n - 1, m + 1, enemyП, firstcoordeath, secondcoordeath);
+                    killerdetector(n - 1, m - 1, enemyП, firstcoordeath, secondcoordeath);
                 }
                 else if (color == "red")
                 {
-                    killerdetector(n + 1, m + 1, enemyП, ref firstcoordeath, ref secondcoordeath);
-                    killerdetector(n + 1, m - 1, enemyП, ref firstcoordeath, ref secondcoordeath);
+                    enemyally("Kr");
+                    killerdetector(n + 1, m + 1, enemyП, firstcoordeath, secondcoordeath);
+                    killerdetector(n + 1, m - 1, enemyП, firstcoordeath, secondcoordeath);
                 }
-                killerdetector(n - 1, m - 2, enemyH, ref firstcoordeath, ref secondcoordeath);
-                killerdetector(n - 1, m + 2, enemyH, ref firstcoordeath, ref secondcoordeath);
-                killerdetector(n + 1, m - 2, enemyH, ref firstcoordeath, ref secondcoordeath);
-                killerdetector(n + 1, m + 2, enemyH, ref firstcoordeath, ref secondcoordeath);
-                killerdetector(n - 2, m - 1, enemyH, ref firstcoordeath, ref secondcoordeath);
-                killerdetector(n - 2, m + 1, enemyH, ref firstcoordeath, ref secondcoordeath);
-                killerdetector(n + 2, m - 1, enemyH, ref firstcoordeath, ref secondcoordeath);
-                killerdetector(n + 2, m + 1, enemyH, ref firstcoordeath, ref secondcoordeath);
+                killerdetector(n - 1, m - 2, enemyH, firstcoordeath, secondcoordeath);
+                killerdetector(n - 1, m + 2, enemyH, firstcoordeath, secondcoordeath);
+                killerdetector(n + 1, m - 2, enemyH, firstcoordeath, secondcoordeath);
+                killerdetector(n + 1, m + 2, enemyH, firstcoordeath, secondcoordeath);
+                killerdetector(n - 2, m - 1, enemyH, firstcoordeath, secondcoordeath);
+                killerdetector(n - 2, m + 1, enemyH, firstcoordeath, secondcoordeath);
+                killerdetector(n + 2, m - 1, enemyH, firstcoordeath, secondcoordeath);
+                killerdetector(n + 2, m + 1, enemyH, firstcoordeath, secondcoordeath);
                 
                 for (int i = 1; i < 12; i++)
                 {
                     if (0 < n - i && 0 < m - i)
                     {
-                        if (matrix[n - i, m - i] != "*" && matrix[n - i, m - i] != enemyQ && matrix[n - i, m - i] != enemyC)
-                        {
-                            chaxlefttopslon = false;
-                        }
-                        if (chaxlefttopslon == true && (matrix[n - i, m - i] == enemyC || matrix[n - i, m - i] == enemyQ))
-                        {
-                            firstcoordeath.Add(n - i);
-                            secondcoordeath.Add(m - i);
-                        }
+                        slondetector(n - i, m - i, ref chaxrighttopslon, firstcoordeath, secondcoordeath);
                     }
                     if (0 < n - i && m + i < 11)
                     {
-                        if (matrix[n - i, m + i] != "*" && matrix[n - i, m + i] != enemyQ && matrix[n - i, m + i] != enemyC)
-                        {
-                            chaxrighttopslon = false;
-                        }
-                        if (chaxrighttopslon == true && (matrix[n - i, m + i] == enemyC || matrix[n - i, m + i] == enemyQ))
-                        {
-                            firstcoordeath.Add(n - i);
-                            secondcoordeath.Add(m + i);
-                        }
+                        slondetector(n - i, m + i, ref chaxlefttopslon, firstcoordeath, secondcoordeath);
                     }
                     if (n + i < 11 && 0 < m - i)
                     {
-                        if (matrix[n + i, m - i] != "*" && matrix[n + i, m - i] != enemyQ && matrix[n + i, m - i] != enemyC)
-                        {
-                            chaxleftdownslon = false;
-                        }
-                        if (chaxleftdownslon == true && (matrix[n + i, m - i] == enemyC || matrix[n + i, m - i] == enemyQ))
-                        {
-                            firstcoordeath.Add(n + i);
-                            secondcoordeath.Add(m - i);
-                        }
+                        slondetector(n + i, m - i, ref chaxrightdownslon, firstcoordeath, secondcoordeath);
                     }
                     if (n + i < 11 && m + i < 11)
                     {
-                        if (matrix[n + i, m + i] != "*" && matrix[n + i, m + i] != enemyQ && matrix[n + i, m + i] != enemyC)
-                        {
-                            chaxrightdownslon = false;
-                        }
-                        if (chaxrightdownslon == true && (matrix[n + i, m + i] == enemyC || matrix[n + i, m + i] == enemyQ))
-                        {
-                            firstcoordeath.Add(n + i);
-                            secondcoordeath.Add(m + i);
-                        }
+                        slondetector(n + i, m + i, ref chaxleftdownslon, firstcoordeath, secondcoordeath);
                     }
                     if (0 < n - i)
                     {
-                        if (matrix[n - i, m] != "*" && matrix[n - i, m] != enemyQ && matrix[n - i, m] != enemyT && matrix[n - i, m] != enemyT1)
-                        {
-                            chaxtoptura = false;
-                        }
-                        if (chaxtoptura == true && (matrix[n - i, m] == enemyT || matrix[n - i, m] == enemyT1 || matrix[n - i, m] == enemyQ))
-                        {
-                            firstcoordeath.Add(n - i);
-                            secondcoordeath.Add(m);
-                        }
+                        turadetector(n - i, m, ref chaxtoptura, firstcoordeath, secondcoordeath);
                     }
                     if (n + i < 11)
                     {
-                        if (matrix[n + i, m] != "*" && matrix[n + i, m] != enemyQ && matrix[n + i, m] != enemyT && matrix[n + i, m] != enemyT1)
-                        {
-                            chaxdowntura = false;
-                        }
-                        if (chaxdowntura == true && (matrix[n + i, m] == enemyT || matrix[n + i, m] == enemyT1 || matrix[n + i, m] == enemyQ))
-                        {
-                            firstcoordeath.Add(n + i);
-                            secondcoordeath.Add(m);
-                        }
-
+                        turadetector(n + i, m, ref chaxdowntura, firstcoordeath, secondcoordeath);
                     }
                     if (0 < m - i)
                     {
-                        if (matrix[n, m - i] != "*" && matrix[n, m - i] != enemyQ && matrix[n, m - i] != enemyT && matrix[n, m - i] != enemyT)
-                        {
-                            chaxlefttura = false;
-                        }
-                        if (chaxlefttura == true && (matrix[n, m - i] == enemyT || matrix[n, m - i] == enemyT1 || matrix[n, m - i] == enemyQ))
-                        {
-                            firstcoordeath.Add(n);
-                            secondcoordeath.Add(m - i);
-                        }
+                        turadetector(n, m - i, ref chaxlefttura, firstcoordeath, secondcoordeath);
                     }
                     if (m + i < 11)
                     {
-                        if (matrix[n, m + i] != "*" && matrix[n, m + i] != enemyQ && matrix[n, m + i] != enemyT && matrix[n, m + i] != enemyT1)
-                        {
-                            chaxrighttura = false;
-                        }
-                        if (chaxrighttura == true && (matrix[n, m + i] == enemyT || matrix[n, m + i] == enemyT1 || matrix[n, m + i] == enemyQ))
-                        {
-                            firstcoordeath.Add(n);
-                            secondcoordeath.Add(m + i);
-                        }
+                        turadetector(n, m + i, ref chaxrighttura, firstcoordeath, secondcoordeath);
                     }
 
-                    killerdetector(n - 1, m, enemyK, ref firstcoordeath, ref secondcoordeath);
-                    killerdetector(n + 1, m, enemyK, ref firstcoordeath, ref secondcoordeath);
-                    killerdetector(n - 1, m - 1, enemyK, ref firstcoordeath, ref secondcoordeath);
-                    killerdetector(n - 1, m + 1, enemyK, ref firstcoordeath, ref secondcoordeath);
-                    killerdetector(n, m - 1, enemyK, ref firstcoordeath, ref secondcoordeath);
-                    killerdetector(n, m + 1, enemyK, ref firstcoordeath, ref secondcoordeath);
-                    killerdetector(n + 1, m - 1, enemyK, ref firstcoordeath, ref secondcoordeath);
-                    killerdetector(n + 1, m + 1, enemyK, ref firstcoordeath, ref secondcoordeath);
+                    killerdetector(n - 1, m, enemyK, firstcoordeath, secondcoordeath);
+                    killerdetector(n + 1, m, enemyK, firstcoordeath, secondcoordeath);
+                    killerdetector(n - 1, m - 1, enemyK, firstcoordeath, secondcoordeath);
+                    killerdetector(n - 1, m + 1, enemyK, firstcoordeath, secondcoordeath);
+                    killerdetector(n, m - 1, enemyK, firstcoordeath, secondcoordeath);
+                    killerdetector(n, m + 1, enemyK, firstcoordeath, secondcoordeath);
+                    killerdetector(n + 1, m - 1, enemyK, firstcoordeath, secondcoordeath);
+                    killerdetector(n + 1, m + 1, enemyK, firstcoordeath, secondcoordeath);
                 }
                 if (firstcoordeath.Count > 0)
                 {
                     chaxmat = true;
                 }
+                /*for (int i = 0; i < firstcoordeath.Count; i++)
+                {
+                    Console.WriteLine("matrix[firstcoordeath[i], secondcoordeath[i] = " + matrix[firstcoordeath[i], secondcoordeath[i]]);
+                    Console.WriteLine("matrix[firstcoordeath[i] = " + firstcoordeath[i]);
+                    Console.WriteLine("secondcoordeath[i] = " + secondcoordeath[i]);
+                }*/
                 if (color == "green")
                 {
                     greenchaxmat = chaxmat;
@@ -1401,164 +1361,88 @@ namespace program
                 return false;
             }
             
-            void redblock(int n, int m)
+            void greenblocksred(int n, int m, string color)
             {
-                redchaxrighttopslon = true;
-                redchaxlefttopslon = true;
-                redchaxrightdownslon = true;
-                redchaxleftdownslon = true;
-                redchaxlefttura = true;
-                redchaxrighttura = true;
-                redchaxtoptura = true;
-                redchaxdowntura = true;
-                if (matrix[n + 1, m] == "Пg")
+                chaxrighttopslon = true;
+                chaxlefttopslon = true;
+                chaxrightdownslon = true;
+                chaxleftdownslon = true;
+                chaxlefttura = true;
+                chaxrighttura = true;
+                chaxtoptura = true;
+                chaxdowntura = true;
+                if (color == "green")
                 {
-                    redfirstcoorblock.Add(n + 1);
-                    redsecondcoorblock.Add(m);
+                    enemyally("Kr");
+                    killerdetector(n + 1, m + 1, enemyП, firstcoorblock, secondcoorblock);
+                    killerdetector(n + 1, m - 1, enemyП, firstcoorblock, secondcoorblock);
                 }
-                if (matrix[n + 2, m] == "Пg" && n == 6 && matrix[n + 1, m] == "*")
+                else if (color == "red")
                 {
-                    redfirstcoorblock.Add(n + 2);
-                    redsecondcoorblock.Add(m);
+                    enemyally("Kg");
+                    killerdetector(n - 1, m + 1, enemyП, firstcoorblock, secondcoorblock);
+                    killerdetector(n - 1, m - 1, enemyП, firstcoorblock, secondcoorblock);
                 }
-                if (matrix[n - 1, m - 2] == "Hg")
-                {
-                    redfirstcoorblock.Add(n - 1);
-                    redsecondcoorblock.Add(m - 2);
-                }
-                if (matrix[n - 1, m + 2] == "Hg")
-                {
-                    redfirstcoorblock.Add(n - 1);
-                    redsecondcoorblock.Add(m + 2);
-                }
-                if (matrix[n - 2, m - 1] == "Hg")
-                {
-                    redfirstcoorblock.Add(n - 2);
-                    redsecondcoorblock.Add(m - 1);
-                }
-                if (matrix[n - 2, m + 1] == "Hg")
-                {
-                    redfirstcoorblock.Add(n - 2);
-                    redsecondcoorblock.Add(m + 1);
-                }
-                if (matrix[n + 1, m - 2] == "Hg")
-                {
-                    redfirstcoorblock.Add(n + 1);
-                    redsecondcoorblock.Add(m - 2);
-                }
-                if (matrix[n + 1, m + 2] == "Hg")
-                {
-                    redfirstcoorblock.Add(n + 1);
-                    redsecondcoorblock.Add(m + 2);
-                }
-                if (matrix[n + 2, m - 1] == "Hg")
-                {
-                    redfirstcoorblock.Add(n + 2);
-                    redsecondcoorblock.Add(m - 1);
-                }
-                if (matrix[n + 2, m + 1] == "Hg")
-                {
-                    redfirstcoorblock.Add(n + 2);
-                    redsecondcoorblock.Add(m + 1);
-                }
+
+                killerdetector(n - 1, m - 2, enemyH, firstcoorblock, secondcoorblock);
+                killerdetector(n - 1, m + 2, enemyH, firstcoorblock, secondcoorblock);
+                killerdetector(n + 1, m - 2, enemyH, firstcoorblock, secondcoorblock);
+                killerdetector(n + 1, m + 2, enemyH, firstcoorblock, secondcoorblock);
+                killerdetector(n - 2, m - 1, enemyH, firstcoorblock, secondcoorblock);
+                killerdetector(n - 2, m + 1, enemyH, firstcoorblock, secondcoorblock);
+                killerdetector(n + 2, m - 1, enemyH, firstcoorblock, secondcoorblock);
+                killerdetector(n + 2, m + 1, enemyH, firstcoorblock, secondcoorblock);
+
                 for (int i = 1; i < 12; i++)
                 {
                     if (0 < n - i && 0 < m - i)
                     {
-                        if (matrix[n - i, m - i] != "*" && matrix[n - i, m - i] != "Qg" && matrix[n - i, m - i] != "Cg")
-                        {
-                            redchaxlefttopslon = false;
-                        }
-                        if (redchaxlefttopslon == true && (matrix[n - i, m - i] == "Cg" || matrix[n - i, m - i] == "Qg"))
-                        {
-                            redfirstcoorblock.Add(n - i);
-                            redsecondcoorblock.Add(m - i);
-                        }
+                        slondetector(n - i, m - i, ref chaxrighttopslon, firstcoorblock, secondcoorblock);
                     }
                     if (0 < n - i && m + i < 11)
                     {
-                        if (matrix[n - i, m + i] != "*" && matrix[n - i, m + i] != "Qg" && matrix[n - i, m + i] != "Cg")
-                        {
-                            redchaxrighttopslon = false;
-                        }
-                        if (redchaxrighttopslon == true && (matrix[n - i, m + i] == "Cg" || matrix[n - i, m + i] == "Qg"))
-                        {
-                            redfirstcoorblock.Add(n - i);
-                            redsecondcoorblock.Add(m + i);
-                        }
+                        slondetector(n - i, m + i, ref chaxlefttopslon, firstcoorblock, secondcoorblock);
                     }
                     if (n + i < 11 && 0 < m - i)
                     {
-                        if (matrix[n + i, m - i] != "*" && matrix[n + i, m - i] != "Qg" && matrix[n + i, m - i] != "Cg")
-                        {
-                            redchaxleftdownslon = false;
-                        }
-                        if (redchaxleftdownslon == true && (matrix[n + i, m - i] == "Cg" || matrix[n + i, m - i] == "Qg"))
-                        {
-                            redfirstcoorblock.Add(n + i);
-                            redsecondcoorblock.Add(m - i);
-                        }
+                        slondetector(n + i, m - i, ref chaxleftdownslon, firstcoorblock, secondcoorblock);
                     }
                     if (n + i < 11 && m + i < 11)
                     {
-                        if (matrix[n + i, m + i] != "*" && matrix[n + i, m + i] != "Qg" && matrix[n + i, m + i] != "Cg")
-                        {
-                            redchaxrightdownslon = false;
-                        }
-                        if (redchaxrightdownslon == true && (matrix[n + i, m + i] == "Cg" || matrix[n + i, m + i] == "Qg"))
-                        {
-                            redfirstcoorblock.Add(n + i);
-                            redsecondcoorblock.Add(m + i);
-                        }
+                        slondetector(n + i, m + i, ref chaxleftdownslon, firstcoorblock, secondcoorblock);
                     }
                     if (0 < n - i)
                     {
-                        if (matrix[n - i, m] != "*" && matrix[n - i, m] != "Qg" && matrix[n - i, m] != "Tg" && matrix[n - i, m] != "Tg1")
-                        {
-                            redchaxtoptura = false;
-                        }
-                        if (redchaxtoptura == true && (matrix[n - i, m] == "Tg" || matrix[n - i, m] == "Tg1" || matrix[n - i, m] == "Qg"))
-                        {
-                            redfirstcoorblock.Add(n - i);
-                            redsecondcoorblock.Add(m);
-                        }
+                        turadetector(n - i, m, ref chaxtoptura, firstcoorblock, secondcoorblock);
                     }
                     if (n + i < 11)
                     {
-                        if (matrix[n + i, m] != "*" && matrix[n + i, m] != "Qg" && matrix[n + i, m] != "Tg" && matrix[n + i, m] != "Tg1")
-                        {
-                            redchaxdowntura = false;
-                        }
-                        if (redchaxdowntura == true && (matrix[n + i, m] == "Tg" || matrix[n + i, m] == "Tg1" || matrix[n + i, m] == "Qg"))
-                        {
-                            redfirstcoorblock.Add(n + i);
-                            redsecondcoorblock.Add(m);
-                        }
+                        turadetector(n + i, m, ref chaxdowntura, firstcoorblock, secondcoorblock);
                     }
                     if (0 < m - i)
                     {
-                        if (matrix[n, m - i] != "*" && matrix[n, m - i] != "Qg" && matrix[n, m - i] != "Tg" && matrix[n, m - i] != "Tg1")
-                        {
-                            redchaxlefttura = false;
-                        }
-                        if (redchaxlefttura == true && (matrix[n, m - i] == "Tg" || matrix[n, m - i] == "Tg1" || matrix[n, m - i] == "Qg"))
-                        {
-                            redfirstcoorblock.Add(n);
-                            redsecondcoorblock.Add(m - i);
-                        }
+                        turadetector(n, m - i, ref chaxlefttura, firstcoorblock, secondcoorblock);
                     }
                     if (m + i < 11)
                     {
-                        if (matrix[n, m + i] != "*" && matrix[n, m + i] != "Qg" && matrix[n, m + i] != "Tg" && matrix[n, m + i] != "Tg1")
-                        {
-                            redchaxrighttura = false;
-                        }
-                        if (redchaxrighttura == true && (matrix[n, m + i] == "Tg" || matrix[n, m + i] == "Tg1" || matrix[n, m + i] == "Qg"))
-                        {
-                            redfirstcoorblock.Add(n);
-                            redsecondcoorblock.Add(m + i);
-                        }
+                        turadetector(n, m + i, ref chaxrighttura, firstcoorblock, secondcoorblock);
                     }
+                }
+                if (firstcoordeath.Count > 0)
+                {
+                    chaxmat = true;
+                }
+                if (color == "green")
+                {
+                    greenchaxmat = chaxmat;
+                    greenfirstcoordeath = firstcoordeath;
+                    greensecondcoordeath = secondcoordeath;
+                }
+                else if (color == "red")
+                {
+                    redchaxmat = chaxmat;
+                    redfirstcoordeath = firstcoordeath;
+                    redsecondcoordeath = secondcoordeath;
                 }
             }
             void greenblock(int n, int m)
@@ -1773,7 +1657,7 @@ namespace program
                         {
                             if (matrix[i, j] == "*")
                             {
-                                redblock(i, j);
+                                greenblocksred(i, j);
                                 for (int k = 0; k < redfirstcoorblock.Count; k++)
                                 {
                                     matrix[i, j] = matrix[redfirstcoorblock[k], redsecondcoorblock[k]];
@@ -1884,7 +1768,7 @@ namespace program
             bool redend()
             {
                 redkilled = false;
-                redblocked = false;
+                greenblocksreded = false;
                 string temp;
                 int range;
                 chax(kingredplace1, kingredplace2, "red");
@@ -1939,7 +1823,7 @@ namespace program
                                     matrix[i, j] = "*";
                                     if (redchaxmat == false)
                                     {
-                                        redblocked = true;
+                                        greenblocksreded = true;
                                     }
                                 }
                                 greenfirstcoorblock.Clear();
@@ -2028,7 +1912,7 @@ namespace program
                         return false;
                     }
                 }
-                if (redkilled || redblocked)
+                if (redkilled || greenblocksreded)
                 {
                     return false;
                 }
