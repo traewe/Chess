@@ -1228,8 +1228,8 @@ namespace program
             {
                 if (matrix[x, y] == hero)
                 {
-                    firstcoordeath.Add(x);
-                    secondcoordeath.Add(y);
+                    firstcoor.Add(x);
+                    secondcoor.Add(y);
                 }
             }
             void slondetector(int x, int y, ref bool noobstacle, List<int> firstcoor, List<int> secondcoor)
@@ -1361,7 +1361,7 @@ namespace program
                 return false;
             }
             
-            void greenblocksred(int n, int m, string color)
+            void block(int n, int m, string color) // указывать цвет который блокирует атаку оппонента
             {
                 chaxrighttopslon = true;
                 chaxlefttopslon = true;
@@ -1374,14 +1374,20 @@ namespace program
                 if (color == "green")
                 {
                     enemyally("Kr");
-                    killerdetector(n + 1, m + 1, enemyП, firstcoorblock, secondcoorblock);
-                    killerdetector(n + 1, m - 1, enemyП, firstcoorblock, secondcoorblock);
+                    killerdetector(n + 1, m, enemyП, firstcoorblock, secondcoorblock);
+                    if (matrix[n + 2, m] == enemyП && n == 6 && matrix[n + 1, m] == "*")
+                    {
+                        killerdetector(n + 2, m, enemyП, firstcoorblock, secondcoorblock);
+                    }
                 }
                 else if (color == "red")
                 {
                     enemyally("Kg");
-                    killerdetector(n - 1, m + 1, enemyП, firstcoorblock, secondcoorblock);
-                    killerdetector(n - 1, m - 1, enemyП, firstcoorblock, secondcoorblock);
+                    killerdetector(n - 1, m, enemyП, firstcoorblock, secondcoorblock);
+                    if (matrix[n - 2, m] == enemyП && n == 6 && matrix[n - 1, m] == "*")
+                    {
+                        killerdetector(n + 2, m, enemyП, firstcoorblock, secondcoorblock);
+                    }
                 }
 
                 killerdetector(n - 1, m - 2, enemyH, firstcoorblock, secondcoorblock);
@@ -1428,181 +1434,187 @@ namespace program
                         turadetector(n, m + i, ref chaxrighttura, firstcoorblock, secondcoorblock);
                     }
                 }
-                if (firstcoordeath.Count > 0)
-                {
-                    chaxmat = true;
-                }
                 if (color == "green")
                 {
-                    greenchaxmat = chaxmat;
-                    greenfirstcoordeath = firstcoordeath;
-                    greensecondcoordeath = secondcoordeath;
+                    greenfirstcoorblock = firstcoorblock;
+                    greensecondcoorblock = secondcoorblock;
                 }
                 else if (color == "red")
                 {
-                    redchaxmat = chaxmat;
-                    redfirstcoordeath = firstcoordeath;
-                    redsecondcoordeath = secondcoordeath;
+                    redfirstcoorblock = firstcoorblock;
+                    redsecondcoorblock = secondcoorblock;
                 }
             }
-            void greenblock(int n, int m)
+            bool end(string color)
             {
-                greenchaxrighttopslon = true;
-                greenchaxlefttopslon = true;
-                greenchaxrightdownslon = true;
-                greenchaxleftdownslon = true;
-                greenchaxlefttura = true;
-                greenchaxrighttura = true;
-                greenchaxtoptura = true;
-                greenchaxdowntura = true;
-                if (matrix[n - 1, m] == "Пr")
+                bool killed = false;
+                bool blocked = false;
+                string temp;
+                int tempdigit1;
+                int tempdigit2;
+                int range;
+                int kingplace1 = -1;
+                int kingplace2 = -1;
+                if (color == "green")
                 {
-                    greenfirstcoorblock.Add(n - 1);
-                    greensecondcoorblock.Add(m);
+                    kingplace1 = kinggreenplace1;
+                    kingplace2 = kinggreenplace2;
                 }
-                if (matrix[n - 2, m] == "Пr" && n == 6 && matrix[n - 1, m] == "*")
+                else if (color == "red")
                 {
-                    greenfirstcoorblock.Add(n - 2);
-                    greensecondcoorblock.Add(m);
+                    kingplace1 = kingredplace1;
+                    kingplace2 = kingredplace2;
                 }
-                if (matrix[n - 1, m - 2] == "Hr")
+                chax(kingplace1, kingplace2, color);
+                if (greenchaxmat)
                 {
-                    greenfirstcoorblock.Add(n - 1);
-                    greensecondcoorblock.Add(m - 2);
-                }
-                if (matrix[n - 1, m + 2] == "Hr")
-                {
-                    greenfirstcoorblock.Add(n - 1);
-                    greensecondcoorblock.Add(m + 2);
-                }
-                if (matrix[n - 2, m - 1] == "Hr")
-                {
-                    greenfirstcoorblock.Add(n - 2);
-                    greensecondcoorblock.Add(m - 1);
-                }
-                if (matrix[n - 2, m + 1] == "Hr")
-                {
-                    greenfirstcoorblock.Add(n - 2);
-                    greensecondcoorblock.Add(m + 1);
-                }
-                if (matrix[n + 1, m - 2] == "Hr")
-                {
-                    greenfirstcoorblock.Add(n + 1);
-                    greensecondcoorblock.Add(m - 2);
-                }
-                if (matrix[n + 1, m + 2] == "Hr")
-                {
-                    greenfirstcoorblock.Add(n + 1);
-                    greensecondcoorblock.Add(m + 2);
-                }
-                if (matrix[n + 2, m - 1] == "Hr")
-                {
-                    greenfirstcoorblock.Add(n + 2);
-                    greensecondcoorblock.Add(m - 1);
-                }
-                if (matrix[n + 2, m + 1] == "Hr")
-                {
-                    greenfirstcoorblock.Add(n + 2);
-                    greensecondcoorblock.Add(m + 1);
-                }
-                for (int i = 1; i < 12; i++)
-                {
-                    if (0 < n - i && 0 < m - i)
+                    range = greenfirstcoordeath.Count;
+                    for (int i = 0; i < range; i++)
                     {
-                        if (matrix[n - i, m - i] != "*" && matrix[n - i, m - i] != "Qr" && matrix[n - i, m - i] != "Cr")
+                        chax(greenfirstcoordeath[i], greensecondcoordeath[i], "red");
+                        if (redchaxmat)
                         {
-                            greenchaxlefttopslon = false;
+                            for (int j = 0; j < redfirstcoordeath.Count; j++)
+                            {
+                                if (matrix[redfirstcoordeath[j], redsecondcoordeath[j]] == "Kg")
+                                {
+                                    chax(greenfirstcoordeath[i], greensecondcoordeath[i], "green");
+                                    if (greenchaxmat)
+                                    {
+                                        continue;
+                                    }
+                                }
+                                temp = matrix[greenfirstcoordeath[i], greensecondcoordeath[i]];
+                                tempdigit1 = greenfirstcoordeath[i];
+                                tempdigit2 = greensecondcoordeath[i];
+                                matrix[greenfirstcoordeath[i], greensecondcoordeath[i]] = matrix[redfirstcoordeath[j], redsecondcoordeath[j]];
+                                matrix[redfirstcoordeath[j], redsecondcoordeath[j]] = "*";
+                                chax(kinggreenplace1, kinggreenplace2, "green");
+                                matrix[redfirstcoordeath[j], redsecondcoordeath[j]] = matrix[tempdigit1, tempdigit2];
+                                matrix[tempdigit1, tempdigit2] = temp;
+                                if (greenchaxmat == false)
+                                {
+                                    greenkilled = true;
+                                    break;
+                                }
+                            }
+                            redchaxmat = false;
                         }
-                        if (greenchaxlefttopslon == true && (matrix[n - i, m - i] == "Cr" || matrix[n - i, m - i] == "Qr"))
+                        redfirstcoorblock.Clear();
+                        redsecondcoorblock.Clear();
+                    }
+                    for (int i = 2; i < 10; i++)
+                    {
+                        for (int j = 2; j < 10; j++)
                         {
-                            greenfirstcoorblock.Add(n - i);
-                            greensecondcoorblock.Add(m - i);
+                            if (matrix[i, j] == "*")
+                            {
+                                block(i, j, "green");
+                                for (int k = 0; k < redfirstcoorblock.Count; k++)
+                                {
+                                    matrix[i, j] = matrix[redfirstcoorblock[k], redsecondcoorblock[k]];
+                                    matrix[redfirstcoorblock[k], redsecondcoorblock[k]] = "*";
+                                    chax(kinggreenplace1, kinggreenplace2, "green");
+                                    matrix[redfirstcoorblock[k], redsecondcoorblock[k]] = matrix[i, j];
+                                    matrix[i, j] = "*";
+                                    if (greenchaxmat == false)
+                                    {
+                                        greenblocked = true;
+                                    }
+                                }
+                                redfirstcoorblock.Clear();
+                                redsecondcoorblock.Clear();
+                            }
                         }
                     }
-                    if (0 < n - i && m + i < 11)
+                }
+                if (kinggreenplace1 != 2 && matrix[kinggreenplace1 - 1, kinggreenplace2] != "Tg" && matrix[kinggreenplace1 - 1, kinggreenplace2] != "Tg1" && matrix[kinggreenplace1 - 1, kinggreenplace2] != "Cg" && matrix[kinggreenplace1 - 1, kinggreenplace2] != "Hg" && matrix[kinggreenplace1 - 1, kinggreenplace2] != "Qg")
+                {
+                    matrix[kinggreenplace1, kinggreenplace2] = "*";
+                    chax(kinggreenplace1 - 1, kinggreenplace2, "green");
+                    matrix[kinggreenplace1, kinggreenplace2] = "Kg";
+                    if (greenchaxmat == false)
                     {
-                        if (matrix[n - i, m + i] != "*" && matrix[n - i, m + i] != "Qr" && matrix[n - i, m + i] != "Cr")
-                        {
-                            greenchaxrighttopslon = false;
-                        }
-                        if (greenchaxrighttopslon == true && (matrix[n - i, m + i] == "Cr" || matrix[n - i, m + i] == "Qr"))
-                        {
-                            greenfirstcoorblock.Add(n - i);
-                            greensecondcoorblock.Add(m + i);
-                        }
+                        return false;
                     }
-                    if (n + i < 11 && 0 < m - i)
+                }
+                if (kinggreenplace1 != 2 && kinggreenplace2 != 2 && matrix[kinggreenplace1 - 1, kinggreenplace2 - 1] != "Tg" && matrix[kinggreenplace1 - 1, kinggreenplace2 - 1] != "Tg1" && matrix[kinggreenplace1 - 1, kinggreenplace2 - 1] != "Cg" && matrix[kinggreenplace1 - 1, kinggreenplace2 - 1] != "Hg" && matrix[kinggreenplace1 - 1, kinggreenplace2 - 1] != "Qg")
+                {
+                    matrix[kinggreenplace1, kinggreenplace2] = "*";
+                    chax(kinggreenplace1 - 1, kinggreenplace2 - 1, "green");
+                    matrix[kinggreenplace1, kinggreenplace2] = "Kg";
+                    if (greenchaxmat == false)
                     {
-                        if (matrix[n + i, m - i] != "*" && matrix[n + i, m - i] != "Qr" && matrix[n + i, m - i] != "Cr")
-                        {
-                            greenchaxleftdownslon = false;
-                        }
-                        if (greenchaxleftdownslon == true && (matrix[n + i, m - i] == "Cr" || matrix[n + i, m - i] == "Qr"))
-                        {
-                            greenfirstcoorblock.Add(n + i);
-                            greensecondcoorblock.Add(m - i);
-                        }
+                        return false;
                     }
-                    if (n + i < 11 && m + i < 11)
+                }
+                if (kinggreenplace2 != 9 && kinggreenplace1 != 2 && matrix[kinggreenplace1 - 1, kinggreenplace2 + 1] != "Tg" && matrix[kinggreenplace1 - 1, kinggreenplace2 + 1] != "Tg1" && matrix[kinggreenplace1 - 1, kinggreenplace2 + 1] != "Cg" && matrix[kinggreenplace1 - 1, kinggreenplace2 + 1] != "Hg" && matrix[kinggreenplace1 - 1, kinggreenplace2 + 1] != "Qg")
+                {
+                    matrix[kinggreenplace1, kinggreenplace2] = "*";
+                    chax(kinggreenplace1 - 1, kinggreenplace2 + 1, "green");
+                    matrix[kinggreenplace1, kinggreenplace2] = "Kg";
+                    if (greenchaxmat == false)
                     {
-                        if (matrix[n + i, m + i] != "*" && matrix[n + i, m + i] != "Qr" && matrix[n + i, m + i] != "Cr")
-                        {
-                            greenchaxrightdownslon = false;
-                        }
-                        if (greenchaxrightdownslon == true && (matrix[n + i, m + i] == "Cr" || matrix[n + i, m + i] == "Qr"))
-                        {
-                            greenfirstcoorblock.Add(n + i);
-                            greensecondcoorblock.Add(m + i);
-                        }
+                        return false;
                     }
-                    if (0 < n - i)
+                }
+                if (kinggreenplace2 != 2 && matrix[kinggreenplace1, kinggreenplace2 - 1] != "Tg" && matrix[kinggreenplace1, kinggreenplace2 - 1] != "Tg1" && matrix[kinggreenplace1, kinggreenplace2 - 1] != "Cg" && matrix[kinggreenplace1, kinggreenplace2 - 1] != "Hg" && matrix[kinggreenplace1, kinggreenplace2 - 1] != "Qg")
+                {
+                    matrix[kinggreenplace1, kinggreenplace2] = "*";
+                    chax(kinggreenplace1, kinggreenplace2 - 1, "green");
+                    matrix[kinggreenplace1, kinggreenplace2] = "Kg";
+                    if (greenchaxmat == false)
                     {
-                        if (matrix[n - i, m] != "*" && matrix[n - i, m] != "Qr" && matrix[n - i, m] != "Tr" && matrix[n - i, m] != "Tr1")
-                        {
-                            greenchaxtoptura = false;
-                        }
-                        if (greenchaxtoptura == true && (matrix[n - i, m] == "Tr" || matrix[n - i, m] == "Tr1" || matrix[n - i, m] == "Qr"))
-                        {
-                            greenfirstcoorblock.Add(n - i);
-                            greensecondcoorblock.Add(m);
-                        }
+                        return false;
                     }
-                    if (n + i < 11)
+                }
+                if (kinggreenplace2 != 9 && matrix[kinggreenplace1, kinggreenplace2 + 1] != "Tg" && matrix[kinggreenplace1, kinggreenplace2 + 1] != "Tg1" && matrix[kinggreenplace1, kinggreenplace2 + 1] != "Cg" && matrix[kinggreenplace1, kinggreenplace2 + 1] != "Hg" && matrix[kinggreenplace1, kinggreenplace2 + 1] != "Qg")
+                {
+                    matrix[kinggreenplace1, kinggreenplace2] = "*";
+                    chax(kinggreenplace1, kinggreenplace2 + 1, "green");
+                    matrix[kinggreenplace1, kinggreenplace2] = "Kg";
+                    if (greenchaxmat == false)
                     {
-                        if (matrix[n + i, m] != "*" && matrix[n + i, m] != "Qr" && matrix[n + i, m] != "Tr" && matrix[n + i, m] != "Tr1")
-                        {
-                            greenchaxdowntura = false;
-                        }
-                        if (greenchaxdowntura == true && (matrix[n + i, m] == "Tr" || matrix[n + i, m] == "Tr1" || matrix[n + i, m] == "Qr"))
-                        {
-                            greenfirstcoorblock.Add(n + i);
-                            greensecondcoorblock.Add(m);
-                        }
+                        return false;
                     }
-                    if (0 < m - i)
+                }
+                if (kinggreenplace1 != 9 && matrix[kinggreenplace1 + 1, kinggreenplace2] != "Tg" && matrix[kinggreenplace1 + 1, kinggreenplace2] != "Tg1" && matrix[kinggreenplace1 + 1, kinggreenplace2] != "Cg" && matrix[kinggreenplace1 + 1, kinggreenplace2] != "Hg" && matrix[kinggreenplace1 + 1, kinggreenplace2] != "Qg")
+                {
+                    matrix[kinggreenplace1, kinggreenplace2] = "*";
+                    chax(kinggreenplace1 + 1, kinggreenplace2, "green");
+                    matrix[kinggreenplace1, kinggreenplace2] = "Kg";
+                    if (greenchaxmat == false)
                     {
-                        if (matrix[n, m - i] != "*" && matrix[n, m - i] != "Qr" && matrix[n, m - i] != "Tr" && matrix[n, m - i] != "Tr1")
-                        {
-                            greenchaxlefttura = false;
-                        }
-                        if (greenchaxlefttura == true && (matrix[n, m - i] == "Tr" || matrix[n, m - i] == "Tr1" || matrix[n, m - i] == "Qr"))
-                        {
-                            greenfirstcoorblock.Add(n);
-                            greensecondcoorblock.Add(m - i);
-                        }
+                        return false;
                     }
-                    if (m + i < 11)
+                }
+                if (kinggreenplace1 != 9 && kinggreenplace2 != 9 && matrix[kinggreenplace1 + 1, kinggreenplace2 + 1] != "Tg" && matrix[kinggreenplace1 + 1, kinggreenplace2 + 1] != "Tg1" && matrix[kinggreenplace1 + 1, kinggreenplace2 + 1] != "Cg" && matrix[kinggreenplace1 + 1, kinggreenplace2 + 1] != "Hg" && matrix[kinggreenplace1 + 1, kinggreenplace2 + 1] != "Qg")
+                {
+                    matrix[kinggreenplace1, kinggreenplace2] = "*";
+                    chax(kinggreenplace1 + 1, kinggreenplace2 + 1, "green");
+                    matrix[kinggreenplace1, kinggreenplace2] = "Kg";
+                    if (greenchaxmat == false)
                     {
-                        if (matrix[n, m + i] != "*" && matrix[n, m + i] != "Qr" && matrix[n, m + i] != "Tr" && matrix[n, m + i] != "Tr1")
-                        {
-                            greenchaxrighttura = false;
-                        }
-                        if (greenchaxrighttura == true && (matrix[n, m + i] == "Tr" || matrix[n, m + i] == "Tr1" || matrix[n, m + i] == "Qr"))
-                        {
-                            greenfirstcoorblock.Add(n);
-                            greensecondcoorblock.Add(m + i);
-                        }
+                        return false;
                     }
+                }
+                if (kinggreenplace1 != 9 && kinggreenplace2 != 2 && matrix[kinggreenplace1 + 1, kinggreenplace2 - 1] != "Tg" && matrix[kinggreenplace1 + 1, kinggreenplace2 - 1] != "Tg1" && matrix[kinggreenplace1 + 1, kinggreenplace2 - 1] != "Cg" && matrix[kinggreenplace1 + 1, kinggreenplace2 - 1] != "Hg" && matrix[kinggreenplace1 + 1, kinggreenplace2 - 1] != "Qg")
+                {
+                    matrix[kinggreenplace1, kinggreenplace2] = "*";
+                    chax(kinggreenplace1 + 1, kinggreenplace2 - 1, "green");
+                    matrix[kinggreenplace1, kinggreenplace2] = "Kg";
+                    if (greenchaxmat == false)
+                    {
+                        return false;
+                    }
+                }
+                if (greenkilled || greenblocked)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
                 }
             }
             bool greenend()
@@ -1657,7 +1669,7 @@ namespace program
                         {
                             if (matrix[i, j] == "*")
                             {
-                                greenblocksred(i, j);
+                                block(i, j, "green");
                                 for (int k = 0; k < redfirstcoorblock.Count; k++)
                                 {
                                     matrix[i, j] = matrix[redfirstcoorblock[k], redsecondcoorblock[k]];
@@ -1813,7 +1825,7 @@ namespace program
                         {
                             if (matrix[i, j] == "*")
                             {
-                                greenblock(i, j);
+                                block(i, j, "red");
                                 for (int k = 0; k < greenfirstcoorblock.Count; k++)
                                 {
                                     matrix[i, j] = matrix[greenfirstcoorblock[k], greensecondcoorblock[k]];
