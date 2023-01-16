@@ -86,7 +86,7 @@ namespace program
             Console.WriteLine("Обозначения: Т - тура, Н - horse, С - слон, Q - queen, К - король, П - пешка");
             Console.WriteLine("Структура хода: сначала пишешь букву и цифру клетки, где стоит фигура, потом куда хочешь ею походить(пример G3 E3)");
             Console.WriteLine("Для рокировки - рокировка вправо/рокировка влево");
-            string[,] matrix = new string[12, 12] { { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " }, { " ", " ", "1", "2", "3", "4", "5", "6", "7", "8", " ", " " }, { " ", "A", "*", "Hr", "Cr", "*", "Kr", "*", "*", "Tr1", "A", " " }, { " ", "B", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "B", " " }, { " ", "C", "Tr", "Qr", "Hr", "Cr", "*", "*", "*", "*", "C", " " }, { " ", "D", "*", "*", "*", "*", "*", "*", "*", "*", "D", " " }, { " ", "E", "*", "*", "*", "*", "Kg", "*", "*", "*", "E", " " }, { " ", "F", "*", "*", "*", "*", "*", "*", "*", "*", "F", " " }, { " ", "G", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "G", " " }, { " ", "Н", "Tg", "Hg", "Cg", "Qg", "*", "Cg", "Hg", "Tg1", "Н", " " }, { " ", " ", "1", "2", "3", "4", "5", "6", "7", "8", " ", " " }, { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " } };
+            string[,] matrix = new string[12, 12] { { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " }, { " ", " ", "1", "2", "3", "4", "5", "6", "7", "8", " ", " " }, { " ", "A", "*", "Hr", "Cr", "*", "Kr", "*", "*", "Tr1", "A", " " }, { " ", "B", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "B", " " }, { " ", "C", "*", "*", "*", "Kr", "*", "*", "*", "*", "C", " " }, { " ", "D", "*", "*", "*", "*", "*", "*", "*", "*", "D", " " }, { " ", "E", "*", "*", "*", "*", "Kg", "*", "*", "*", "E", " " }, { " ", "F", "*", "*", "*", "*", "*", "*", "*", "*", "F", " " }, { " ", "G", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "G", " " }, { " ", "Н", "Tg", "Hg", "Cg", "Qg", "*", "Cg", "Hg", "Tg1", "Н", " " }, { " ", " ", "1", "2", "3", "4", "5", "6", "7", "8", " ", " " }, { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " } };
             matrixbuild();
             while (true)
             {
@@ -110,7 +110,7 @@ namespace program
                             Console.WriteLine("Шах и ПАТ! Зеленый рад");
                             break;
                         }
-                        else if (greenchax(kinggreenplace1, kinggreenplace2, "green"))
+                        else if (chax(kinggreenplace1, kinggreenplace2, "green"))
                         {
                             if (greenend())
                             {
@@ -231,7 +231,7 @@ namespace program
                         {
                             for (int i = 0; i < 3; i++)
                             {
-                                greenchax(9, 6 + i, "green");
+                                chax(9, 6 + i, "green");
                                 if (greenchaxmat)
                                 {
                                     Console.WriteLine("Mission(рокировка) impossible");
@@ -263,7 +263,7 @@ namespace program
                         {
                             for (int i = 0; i < 3; i++)
                             {
-                                greenchax(9, 6 - i, "green");
+                                chax(9, 6 - i, "green");
                                 if (greenchaxmat)
                                 {
                                     Console.WriteLine("Mission(рокировка) impossible");
@@ -310,7 +310,7 @@ namespace program
                             Console.WriteLine("Шах и ПАТ! Красный рад");
                             break;
                         }
-                        else if (redchax(kingredplace1, kingredplace2))
+                        else if (chax(kingredplace1, kingredplace2, "red"))
                         {
                             if (redend())
                             {
@@ -429,7 +429,7 @@ namespace program
                         {
                             for (int i = 0; i < 3; i++)
                             {
-                                redchax(2, 6 + i);
+                                chax(2, 6 + i, "red");
                                 if (redchaxmat)
                                 {
                                     Console.WriteLine("Mission(рокировка) impossible");
@@ -460,7 +460,7 @@ namespace program
                         {
                             for (int i = 0; i < 3; i++)
                             {
-                                redchax(2, 6 - i);
+                                chax(2, 6 - i, "red");
                                 if (redchaxmat)
                                 {
                                     Console.WriteLine("Mission(рокировка) impossible");
@@ -760,14 +760,14 @@ namespace program
                 matrix[dig3, dig4] = attacker;
                 if (attacker == "Пg" || attacker == "Tg" || attacker == "Tg1" || attacker == "Cg" || attacker == "Hg" || attacker == "Qg")
                 {
-                    greenchax(kinggreenplace1, kinggreenplace2, "green");
+                    chax(kinggreenplace1, kinggreenplace2, "green");
                     matrix[dig1, dig2] = attacker;
                     matrix[dig3, dig4] = temp;
                     return greenchaxmat;
                 }
                 else
                 {
-                    redchax(kingredplace1, kingredplace2);
+                    chax(kingredplace1, kingredplace2, "red");
                     matrix[dig1, dig2] = attacker;
                     matrix[dig3, dig4] = temp;
                     return redchaxmat;
@@ -1191,7 +1191,7 @@ namespace program
                 matrix[dig1, dig2] = "*";
                 if (hero == "Kg")
                 {
-                    if (greenchax(dig3, dig4, "green"))
+                    if (chax(dig3, dig4, "green"))
                     {
                         Console.WriteLine("Не надо, дядя. Убьют тебя");
                     }
@@ -1199,7 +1199,7 @@ namespace program
                 }
                 else if (hero == "Kr")
                 {
-                    if (redchax(dig3, dig4))
+                    if (chax(dig3, dig4, "red"))
                     {
                         Console.WriteLine("Не надо, дядя. Убьют тебя");
                     }
@@ -1229,21 +1229,20 @@ namespace program
                     }
                 }
             }
-            void killerdetector(int x, int y, string hero, ref bool chax, ref List<int> firstcoordeathlist, ref List<int> secondcoordeathlist)
+            void killerdetector(int x, int y, string hero, ref List<int> firstcoordeathlist, ref List<int> secondcoordeathlist)
             {
                 if (matrix[x, y] == hero)
                 {
-                    chax = true;
                     firstcoordeathlist.Add(x);
                     secondcoordeathlist.Add(y);
                 }
             }
             //DEATH
-            bool greenchax(int n, int m, string color)
+            bool chax(int n, int m, string color)
             {
-                bool chaxmat = false;
                 firstcoordeath.Clear();
                 secondcoordeath.Clear();
+                bool chaxmat = false;
                 bool chaxrighttopslon = true;
                 bool chaxlefttopslon = true;
                 bool chaxrightdownslon = true;
@@ -1255,22 +1254,22 @@ namespace program
                 if (color == "green")
                 {
                     enemyally("Kg");
-                    killerdetector(n - 1, m + 1, enemyП, ref chaxmat, ref firstcoordeath, ref secondcoordeath);
-                    killerdetector(n - 1, m - 1, enemyП, ref chaxmat, ref firstcoordeath, ref secondcoordeath);
+                    killerdetector(n - 1, m + 1, enemyП, ref firstcoordeath, ref secondcoordeath);
+                    killerdetector(n - 1, m - 1, enemyП, ref firstcoordeath, ref secondcoordeath);
                 }
-                else
+                else if (color == "red")
                 {
-                    killerdetector(n + 1, m + 1, enemyП, ref chaxmat, ref firstcoordeath, ref secondcoordeath);
-                    killerdetector(n + 1, m - 1, enemyП, ref chaxmat, ref firstcoordeath, ref secondcoordeath);
+                    killerdetector(n + 1, m + 1, enemyП, ref firstcoordeath, ref secondcoordeath);
+                    killerdetector(n + 1, m - 1, enemyП, ref firstcoordeath, ref secondcoordeath);
                 }
-                killerdetector(n - 1, m - 2, enemyH, ref chaxmat, ref firstcoordeath, ref secondcoordeath);
-                killerdetector(n - 1, m + 2, enemyH, ref chaxmat, ref firstcoordeath, ref secondcoordeath);
-                killerdetector(n + 1, m - 2, enemyH, ref chaxmat, ref firstcoordeath, ref secondcoordeath);
-                killerdetector(n + 1, m + 2, enemyH, ref chaxmat, ref firstcoordeath, ref secondcoordeath);
-                killerdetector(n - 2, m - 1, enemyH, ref chaxmat, ref firstcoordeath, ref secondcoordeath);
-                killerdetector(n - 2, m + 1, enemyH, ref chaxmat, ref firstcoordeath, ref secondcoordeath);
-                killerdetector(n + 2, m - 1, enemyH, ref chaxmat, ref firstcoordeath, ref secondcoordeath);
-                killerdetector(n + 2, m + 1, enemyH, ref chaxmat, ref firstcoordeath, ref secondcoordeath);
+                killerdetector(n - 1, m - 2, enemyH, ref firstcoordeath, ref secondcoordeath);
+                killerdetector(n - 1, m + 2, enemyH, ref firstcoordeath, ref secondcoordeath);
+                killerdetector(n + 1, m - 2, enemyH, ref firstcoordeath, ref secondcoordeath);
+                killerdetector(n + 1, m + 2, enemyH, ref firstcoordeath, ref secondcoordeath);
+                killerdetector(n - 2, m - 1, enemyH, ref firstcoordeath, ref secondcoordeath);
+                killerdetector(n - 2, m + 1, enemyH, ref firstcoordeath, ref secondcoordeath);
+                killerdetector(n + 2, m - 1, enemyH, ref firstcoordeath, ref secondcoordeath);
+                killerdetector(n + 2, m + 1, enemyH, ref firstcoordeath, ref secondcoordeath);
                 
                 for (int i = 1; i < 12; i++)
                 {
@@ -1282,7 +1281,6 @@ namespace program
                         }
                         if (chaxlefttopslon == true && (matrix[n - i, m - i] == enemyC || matrix[n - i, m - i] == enemyQ))
                         {
-                            chaxmat = true;
                             firstcoordeath.Add(n - i);
                             secondcoordeath.Add(m - i);
                         }
@@ -1295,7 +1293,6 @@ namespace program
                         }
                         if (chaxrighttopslon == true && (matrix[n - i, m + i] == enemyC || matrix[n - i, m + i] == enemyQ))
                         {
-                            chaxmat = true;
                             firstcoordeath.Add(n - i);
                             secondcoordeath.Add(m + i);
                         }
@@ -1308,7 +1305,6 @@ namespace program
                         }
                         if (chaxleftdownslon == true && (matrix[n + i, m - i] == enemyC || matrix[n + i, m - i] == enemyQ))
                         {
-                            chaxmat = true;
                             firstcoordeath.Add(n + i);
                             secondcoordeath.Add(m - i);
                         }
@@ -1321,7 +1317,6 @@ namespace program
                         }
                         if (chaxrightdownslon == true && (matrix[n + i, m + i] == enemyC || matrix[n + i, m + i] == enemyQ))
                         {
-                            chaxmat = true;
                             firstcoordeath.Add(n + i);
                             secondcoordeath.Add(m + i);
                         }
@@ -1334,7 +1329,6 @@ namespace program
                         }
                         if (chaxtoptura == true && (matrix[n - i, m] == enemyT || matrix[n - i, m] == enemyT1 || matrix[n - i, m] == enemyQ))
                         {
-                            chaxmat = true;
                             firstcoordeath.Add(n - i);
                             secondcoordeath.Add(m);
                         }
@@ -1347,7 +1341,6 @@ namespace program
                         }
                         if (chaxdowntura == true && (matrix[n + i, m] == enemyT || matrix[n + i, m] == enemyT1 || matrix[n + i, m] == enemyQ))
                         {
-                            chaxmat = true;
                             firstcoordeath.Add(n + i);
                             secondcoordeath.Add(m);
                         }
@@ -1361,7 +1354,6 @@ namespace program
                         }
                         if (chaxlefttura == true && (matrix[n, m - i] == enemyT || matrix[n, m - i] == enemyT1 || matrix[n, m - i] == enemyQ))
                         {
-                            chaxmat = true;
                             firstcoordeath.Add(n);
                             secondcoordeath.Add(m - i);
                         }
@@ -1374,304 +1366,41 @@ namespace program
                         }
                         if (chaxrighttura == true && (matrix[n, m + i] == enemyT || matrix[n, m + i] == enemyT1 || matrix[n, m + i] == enemyQ))
                         {
-                            chaxmat = true;
                             firstcoordeath.Add(n);
                             secondcoordeath.Add(m + i);
                         }
                     }
-                    if (matrix[n - 1, m] == "Kr")
-                    {
-                        chaxmat = true;
-                        firstcoordeath.Add(n - 1);
-                        secondcoordeath.Add(m);
-                    }
-                    if (matrix[n - 1, m + 1] == "Kr")
-                    {
-                        chaxmat = true;
-                        firstcoordeath.Add(n - 1);
-                        secondcoordeath.Add(m + 1);
-                    }
-                    if (matrix[n - 1, m - 1] == "Kr")
-                    {
-                        chaxmat = true;
-                        firstcoordeath.Add(n - 1);
-                        secondcoordeath.Add(m - 1);
-                    }
-                    if (matrix[n, m - 1] == "Kr")
-                    {
-                        chaxmat = true;
-                        firstcoordeath.Add(n);
-                        secondcoordeath.Add(m - 1);
-                    }
-                    if (matrix[n, m - 1] == "Kr")
-                    {
-                        chaxmat = true;
-                        firstcoordeath.Add(n);
-                        secondcoordeath.Add(m - 1);
-                    }
-                    if (matrix[n + 1, m] == "Kr")
-                    {
-                        chaxmat = true;
-                        firstcoordeath.Add(n + 1);
-                        secondcoordeath.Add(m);
-                    }
-                    if (matrix[n + 1, m - 1] == "Kr")
-                    {
-                        chaxmat = true;
-                        firstcoordeath.Add(n + 1);
-                        secondcoordeath.Add(m - 1);
-                    }
-                    if (matrix[n + 1, m + 1] == "Kr")
-                    {
-                        chaxmat = true;
-                        firstcoordeath.Add(n + 1);
-                        secondcoordeath.Add(m + 1);
-                    }
+
+                    killerdetector(n - 1, m, enemyK, ref firstcoordeath, ref secondcoordeath);
+                    killerdetector(n + 1, m, enemyK, ref firstcoordeath, ref secondcoordeath);
+                    killerdetector(n - 1, m - 1, enemyK, ref firstcoordeath, ref secondcoordeath);
+                    killerdetector(n - 1, m + 1, enemyK, ref firstcoordeath, ref secondcoordeath);
+                    killerdetector(n, m - 1, enemyK, ref firstcoordeath, ref secondcoordeath);
+                    killerdetector(n, m + 1, enemyK, ref firstcoordeath, ref secondcoordeath);
+                    killerdetector(n + 1, m - 1, enemyK, ref firstcoordeath, ref secondcoordeath);
+                    killerdetector(n + 1, m + 1, enemyK, ref firstcoordeath, ref secondcoordeath);
+                }
+                if (firstcoordeath.Count > 0)
+                {
+                    chaxmat = true;
                 }
                 if (color == "green")
                 {
                     greenchaxmat = chaxmat;
                     greenfirstcoordeath = firstcoordeath;
                     greensecondcoordeath = secondcoordeath;
+                    return greenchaxmat;
                 }
-                Console.WriteLine(greenchaxmat);
-                for (int i = 0; i < firstcoordeath.Count; i++)
+                else if (color == "red")
                 {
-                    for (int j = 0; j < firstcoordeath.Count; j++)
-                    {
-                        Console.WriteLine(matrix[firstcoordeath[i], secondcoordeath[i]]);
-                    }
+                    redchaxmat = chaxmat;
+                    redfirstcoordeath = firstcoordeath;
+                    redsecondcoordeath = secondcoordeath;
+                    return redchaxmat;
                 }
-                return greenchaxmat;
+                return false;
             }
-            bool redchax(int n, int m)
-            {
-                redchaxmat = false;
-                redchaxrighttopslon = true;
-                redchaxlefttopslon = true;
-                redchaxrightdownslon = true;
-                redchaxleftdownslon = true;
-                redchaxlefttura = true;
-                redchaxrighttura = true;
-                redchaxtoptura = true;
-                redchaxdowntura = true;
-                if (matrix[n + 1, m + 1] == "Пg")
-                {
-                    redchaxmat = true;
-                    redfirstcoordeath.Add(n + 1);
-                    redsecondcoordeath.Add(m + 1);
-                }
-                if (matrix[n + 1, m - 1] == "Пg")
-                {
-                    redchaxmat = true;
-                    redfirstcoordeath.Add(n + 1);
-                    redsecondcoordeath.Add(m - 1);
-                }
-                if (matrix[n - 1, m - 2] == "Hg")
-                {
-                    redchaxmat = true;
-                    redfirstcoordeath.Add(n - 1);
-                    redsecondcoordeath.Add(m - 2);
-                }
-                if (matrix[n - 1, m + 2] == "Hg")
-                {
-                    redchaxmat = true;
-                    redfirstcoordeath.Add(n - 1);
-                    redsecondcoordeath.Add(m + 2);
-                }
-                if (matrix[n - 2, m - 1] == "Hg")
-                {
-                    redchaxmat = true;
-                    redfirstcoordeath.Add(n - 2);
-                    redsecondcoordeath.Add(m - 1);
-                }
-                if (matrix[n - 2, m + 1] == "Hg")
-                {
-                    redchaxmat = true;
-                    redfirstcoordeath.Add(n - 2);
-                    redsecondcoordeath.Add(m + 1);
-                }
-                if (matrix[n + 1, m - 2] == "Hg")
-                {
-                    redchaxmat = true;
-                    redfirstcoordeath.Add(n + 1);
-                    redsecondcoordeath.Add(m - 2);
-                }
-                if (matrix[n + 1, m + 2] == "Hg")
-                {
-                    redchaxmat = true;
-                    redfirstcoordeath.Add(n + 1);
-                    redsecondcoordeath.Add(m + 2);
-                }
-                if (matrix[n + 2, m - 1] == "Hg")
-                {
-                    redchaxmat = true;
-                    redfirstcoordeath.Add(n + 2);
-                    redsecondcoordeath.Add(m - 1);
-                }
-                if (matrix[n + 2, m + 1] == "Hg")
-                {
-                    redchaxmat = true;
-                    redfirstcoordeath.Add(n + 2);
-                    redsecondcoordeath.Add(m + 1);
-                }
-                for (int i = 1; i < 12; i++)
-                {
-                    if (0 < n - i && 0 < m - i)
-                    {
-                        if (matrix[n - i, m - i] != "*" && matrix[n - i, m - i] != "Qg" && matrix[n - i, m - i] != "Cg")
-                        {
-                            redchaxlefttopslon = false;
-                        }
-                        if (redchaxlefttopslon == true && (matrix[n - i, m - i] == "Cg" || matrix[n - i, m - i] == "Qg"))
-                        {
-                            redchaxmat = true;
-                            redfirstcoordeath.Add(n - i);
-                            redsecondcoordeath.Add(m - i);
-                        }
-                    }
-                    if (0 < n - i && m + i < 11)
-                    {
-                        if (matrix[n - i, m + i] != "*" && matrix[n - i, m + i] != "Qg" && matrix[n - i, m + i] != "Cg")
-                        {
-                            redchaxrighttopslon = false;
-                        }
-                        if (redchaxrighttopslon == true && (matrix[n - i, m + i] == "Cg" || matrix[n - i, m + i] == "Qg"))
-                        {
-                            redchaxmat = true;
-                            redfirstcoordeath.Add(n - i);
-                            redsecondcoordeath.Add(m + i);
-                        }
-                    }
-                    if (n + i < 11 && 0 < m - i)
-                    {
-                        if (matrix[n + i, m - i] != "*" && matrix[n + i, m - i] != "Qg" && matrix[n + i, m - i] != "Cg")
-                        {
-                            redchaxleftdownslon = false;
-                        }
-                        if (redchaxleftdownslon == true && (matrix[n + i, m - i] == "Cg" || matrix[n + i, m - i] == "Qg"))
-                        {
-                            redchaxmat = true;
-                            redfirstcoordeath.Add(n + i);
-                            redsecondcoordeath.Add(m - i);
-                        }
-                    }
-                    if (n + i < 11 && m + i < 11)
-                    {
-                        if (matrix[n + i, m + i] != "*" && matrix[n + i, m + i] != "Qg" && matrix[n + i, m + i] != "Cg")
-                        {
-                            redchaxrightdownslon = false;
-                        }
-                        if (redchaxrightdownslon == true && (matrix[n + i, m + i] == "Cg" || matrix[n + i, m + i] == "Qg"))
-                        {
-                            redchaxmat = true;
-                            redfirstcoordeath.Add(n + i);
-                            redsecondcoordeath.Add(m + i);
-                        }
-                    }
-                    if (0 < n - i)
-                    {
-                        if (matrix[n - i, m] != "*" && matrix[n - i, m] != "Qg" && matrix[n - i, m] != "Tg" && matrix[n - i, m] != "Tg1")
-                        {
-                            redchaxtoptura = false;
-                        }
-                        if (redchaxtoptura == true && (matrix[n - i, m] == "Tg" || matrix[n - i, m] == "Tg1" || matrix[n - i, m] == "Qg"))
-                        {
-                            redchaxmat = true;
-                            redfirstcoordeath.Add(n - i);
-                            redsecondcoordeath.Add(m);
-                        }
-                    }
-                    if (n + i < 11)
-                    {
-                        if (matrix[n + i, m] != "*" && matrix[n + i, m] != "Qg" && matrix[n + i, m] != "Tg" && matrix[n + i, m] != "Tg1")
-                        {
-                            redchaxdowntura = false;
-                        }
-                        if (redchaxdowntura == true && (matrix[n + i, m] == "Tg" || matrix[n + i, m] == "Tg1" || matrix[n + i, m] == "Qg"))
-                        {
-                            redchaxmat = true;
-                            redfirstcoordeath.Add(n + i);
-                            redsecondcoordeath.Add(m);
-                        }
-                    }
-                    if (0 < m - i)
-                    {
-                        if (matrix[n, m - i] != "*" && matrix[n, m - i] != "Qg" && matrix[n, m - i] != "Tg" && matrix[n, m - i] != "Tg1")
-                        {
-                            redchaxlefttura = false;
-                        }
-                        if (redchaxlefttura == true && (matrix[n, m - i] == "Tg" || matrix[n, m - i] == "Tg1" || matrix[n, m - i] == "Qg"))
-                        {
-                            redchaxmat = true;
-                            redfirstcoordeath.Add(n);
-                            redsecondcoordeath.Add(m - i);
-                        }
-                    }
-                    if (m + i < 11)
-                    {
-                        if (matrix[n, m + i] != "*" && matrix[n, m + i] != "Qg" && matrix[n, m + i] != "Tg" && matrix[n, m + i] != "Tg1")
-                        {
-                            redchaxrighttura = false;
-                        }
-                        if (redchaxrighttura == true && (matrix[n, m + i] == "Tg" || matrix[n, m + i] == "Tg1" || matrix[n, m + i] == "Qg"))
-                        {
-                            redchaxmat = true;
-                            redfirstcoordeath.Add(n);
-                            redsecondcoordeath.Add(m + i);
-                        }
-                    }
-                    if (matrix[n - 1, m] == "Kg")
-                    {
-                        redchaxmat = true;
-                        redfirstcoordeath.Add(n - 1);
-                        redsecondcoordeath.Add(m);
-                    }
-                    if (matrix[n - 1, m + 1] == "Kg")
-                    {
-                        redchaxmat = true;
-                        redfirstcoordeath.Add(n - 1);
-                        redsecondcoordeath.Add(m + 1);
-                    }
-                    if (matrix[n - 1, m - 1] == "Kg")
-                    {
-                        redchaxmat = true;
-                        redfirstcoordeath.Add(n - 1);
-                        redsecondcoordeath.Add(m - 1);
-                    }
-                    if (matrix[n, m - 1] == "Kg")
-                    {
-                        redchaxmat = true;
-                        redfirstcoordeath.Add(n);
-                        redsecondcoordeath.Add(m - 1);
-                    }
-                    if (matrix[n, m - 1] == "Kg")
-                    {
-                        redchaxmat = true;
-                        redfirstcoordeath.Add(n);
-                        redsecondcoordeath.Add(m - 1);
-                    }
-                    if (matrix[n + 1, m] == "Kg")
-                    {
-                        redchaxmat = true;
-                        redfirstcoordeath.Add(n + 1);
-                        redsecondcoordeath.Add(m);
-                    }
-                    if (matrix[n + 1, m - 1] == "Kg")
-                    {
-                        redchaxmat = true;
-                        redfirstcoordeath.Add(n + 1);
-                        redsecondcoordeath.Add(m - 1);
-                    }
-                    if (matrix[n + 1, m + 1] == "Kg")
-                    {
-                        redchaxmat = true;
-                        redfirstcoordeath.Add(n + 1);
-                        redsecondcoordeath.Add(m + 1);
-                    }
-                }
-                return redchaxmat;
-            }
+            
             void redblock(int n, int m)
             {
                 redchaxrighttopslon = true;
@@ -1997,32 +1726,36 @@ namespace program
                 greenkilled = false;
                 greenblocked = false;
                 string temp;
+                int tempdigit1;
+                int tempdigit2;
                 int range;
-                greenchax(kinggreenplace1, kinggreenplace2, "green");
+                chax(kinggreenplace1, kinggreenplace2, "green");
                 if (greenchaxmat)
                 {
                     range = greenfirstcoordeath.Count;
                     for (int i = 0; i < range; i++)
                     {
-                        redchax(greenfirstcoordeath[i], greensecondcoordeath[i]);
+                        chax(greenfirstcoordeath[i], greensecondcoordeath[i], "red");
                         if (redchaxmat)
                         {
                             for (int j = 0; j < redfirstcoordeath.Count; j++)
                             {
                                 if (matrix[redfirstcoordeath[j], redsecondcoordeath[j]] == "Kg")
                                 {
-                                    greenchax(greenfirstcoordeath[i], greensecondcoordeath[i], "green");
+                                    chax(greenfirstcoordeath[i], greensecondcoordeath[i], "green");
                                     if (greenchaxmat)
                                     {
                                         continue;
                                     }
                                 }
                                 temp = matrix[greenfirstcoordeath[i], greensecondcoordeath[i]];
+                                tempdigit1 = greenfirstcoordeath[i];
+                                tempdigit2 = greensecondcoordeath[i];
                                 matrix[greenfirstcoordeath[i], greensecondcoordeath[i]] = matrix[redfirstcoordeath[j], redsecondcoordeath[j]];
                                 matrix[redfirstcoordeath[j], redsecondcoordeath[j]] = "*";
-                                greenchax(kinggreenplace1, kinggreenplace2, "green");
-                                matrix[redfirstcoordeath[j], redsecondcoordeath[j]] = matrix[greenfirstcoordeath[i], greensecondcoordeath[i]];
-                                matrix[greenfirstcoordeath[i], greensecondcoordeath[i]] = temp;
+                                chax(kinggreenplace1, kinggreenplace2, "green");
+                                matrix[redfirstcoordeath[j], redsecondcoordeath[j]] = matrix[tempdigit1, tempdigit2];
+                                matrix[tempdigit1, tempdigit2] = temp;
                                 if (greenchaxmat == false)
                                 {
                                     greenkilled = true;
@@ -2045,7 +1778,7 @@ namespace program
                                 {
                                     matrix[i, j] = matrix[redfirstcoorblock[k], redsecondcoorblock[k]];
                                     matrix[redfirstcoorblock[k], redsecondcoorblock[k]] = "*";
-                                    greenchax(kinggreenplace1, kinggreenplace2, "green");
+                                    chax(kinggreenplace1, kinggreenplace2, "green");
                                     matrix[redfirstcoorblock[k], redsecondcoorblock[k]] = matrix[i, j];
                                     matrix[i, j] = "*";
                                     if (greenchaxmat == false)
@@ -2062,7 +1795,7 @@ namespace program
                 if (kinggreenplace1 != 2 && matrix[kinggreenplace1 - 1, kinggreenplace2] != "Tg" && matrix[kinggreenplace1 - 1, kinggreenplace2] != "Tg1" && matrix[kinggreenplace1 - 1, kinggreenplace2] != "Cg" && matrix[kinggreenplace1 - 1, kinggreenplace2] != "Hg" && matrix[kinggreenplace1 - 1, kinggreenplace2] != "Qg")
                 {
                     matrix[kinggreenplace1, kinggreenplace2] = "*";
-                    greenchax(kinggreenplace1 - 1, kinggreenplace2, "green");
+                    chax(kinggreenplace1 - 1, kinggreenplace2, "green");
                     matrix[kinggreenplace1, kinggreenplace2] = "Kg";
                     if (greenchaxmat == false)
                     {
@@ -2072,7 +1805,7 @@ namespace program
                 if (kinggreenplace1 != 2 && kinggreenplace2 != 2 && matrix[kinggreenplace1 - 1, kinggreenplace2 - 1] != "Tg" && matrix[kinggreenplace1 - 1, kinggreenplace2 - 1] != "Tg1" && matrix[kinggreenplace1 - 1, kinggreenplace2 - 1] != "Cg" && matrix[kinggreenplace1 - 1, kinggreenplace2 - 1] != "Hg" && matrix[kinggreenplace1 - 1, kinggreenplace2 - 1] != "Qg")
                 {
                     matrix[kinggreenplace1, kinggreenplace2] = "*";
-                    greenchax(kinggreenplace1 - 1, kinggreenplace2 - 1, "green");
+                    chax(kinggreenplace1 - 1, kinggreenplace2 - 1, "green");
                     matrix[kinggreenplace1, kinggreenplace2] = "Kg";
                     if (greenchaxmat == false)
                     {
@@ -2082,7 +1815,7 @@ namespace program
                 if (kinggreenplace2 != 9 && kinggreenplace1 != 2 && matrix[kinggreenplace1 - 1, kinggreenplace2 + 1] != "Tg" && matrix[kinggreenplace1 - 1, kinggreenplace2 + 1] != "Tg1" && matrix[kinggreenplace1 - 1, kinggreenplace2 + 1] != "Cg" && matrix[kinggreenplace1 - 1, kinggreenplace2 + 1] != "Hg" && matrix[kinggreenplace1 - 1, kinggreenplace2 + 1] != "Qg")
                 {
                     matrix[kinggreenplace1, kinggreenplace2] = "*";
-                    greenchax(kinggreenplace1 - 1, kinggreenplace2 + 1, "green");
+                    chax(kinggreenplace1 - 1, kinggreenplace2 + 1, "green");
                     matrix[kinggreenplace1, kinggreenplace2] = "Kg";
                     if (greenchaxmat == false)
                     {
@@ -2092,7 +1825,7 @@ namespace program
                 if (kinggreenplace2 != 2 && matrix[kinggreenplace1, kinggreenplace2 - 1] != "Tg" && matrix[kinggreenplace1, kinggreenplace2 - 1] != "Tg1" && matrix[kinggreenplace1, kinggreenplace2 - 1] != "Cg" && matrix[kinggreenplace1, kinggreenplace2 - 1] != "Hg" && matrix[kinggreenplace1, kinggreenplace2 - 1] != "Qg")
                 {
                     matrix[kinggreenplace1, kinggreenplace2] = "*";
-                    greenchax(kinggreenplace1, kinggreenplace2 - 1, "green");
+                    chax(kinggreenplace1, kinggreenplace2 - 1, "green");
                     matrix[kinggreenplace1, kinggreenplace2] = "Kg";
                     if (greenchaxmat == false)
                     {
@@ -2102,7 +1835,7 @@ namespace program
                 if (kinggreenplace2 != 9 && matrix[kinggreenplace1, kinggreenplace2 + 1] != "Tg" && matrix[kinggreenplace1, kinggreenplace2 + 1] != "Tg1" && matrix[kinggreenplace1, kinggreenplace2 + 1] != "Cg" && matrix[kinggreenplace1, kinggreenplace2 + 1] != "Hg" && matrix[kinggreenplace1, kinggreenplace2 + 1] != "Qg")
                 {
                     matrix[kinggreenplace1, kinggreenplace2] = "*";
-                    greenchax(kinggreenplace1, kinggreenplace2 + 1, "green");
+                    chax(kinggreenplace1, kinggreenplace2 + 1, "green");
                     matrix[kinggreenplace1, kinggreenplace2] = "Kg";
                     if (greenchaxmat == false)
                     {
@@ -2112,7 +1845,7 @@ namespace program
                 if (kinggreenplace1 != 9 && matrix[kinggreenplace1 + 1, kinggreenplace2] != "Tg" && matrix[kinggreenplace1 + 1, kinggreenplace2] != "Tg1" && matrix[kinggreenplace1 + 1, kinggreenplace2] != "Cg" && matrix[kinggreenplace1 + 1, kinggreenplace2] != "Hg" && matrix[kinggreenplace1 + 1, kinggreenplace2] != "Qg")
                 {
                     matrix[kinggreenplace1, kinggreenplace2] = "*";
-                    greenchax(kinggreenplace1 + 1, kinggreenplace2, "green");
+                    chax(kinggreenplace1 + 1, kinggreenplace2, "green");
                     matrix[kinggreenplace1, kinggreenplace2] = "Kg";
                     if (greenchaxmat == false)
                     {
@@ -2122,7 +1855,7 @@ namespace program
                 if (kinggreenplace1 != 9 && kinggreenplace2 != 9 && matrix[kinggreenplace1 + 1, kinggreenplace2 + 1] != "Tg" && matrix[kinggreenplace1 + 1, kinggreenplace2 + 1] != "Tg1" && matrix[kinggreenplace1 + 1, kinggreenplace2 + 1] != "Cg" && matrix[kinggreenplace1 + 1, kinggreenplace2 + 1] != "Hg" && matrix[kinggreenplace1 + 1, kinggreenplace2 + 1] != "Qg")
                 {
                     matrix[kinggreenplace1, kinggreenplace2] = "*";
-                    greenchax(kinggreenplace1 + 1, kinggreenplace2 + 1, "green");
+                    chax(kinggreenplace1 + 1, kinggreenplace2 + 1, "green");
                     matrix[kinggreenplace1, kinggreenplace2] = "Kg";
                     if (greenchaxmat == false)
                     {
@@ -2132,7 +1865,7 @@ namespace program
                 if (kinggreenplace1 != 9 && kinggreenplace2 != 2 && matrix[kinggreenplace1 + 1, kinggreenplace2 - 1] != "Tg" && matrix[kinggreenplace1 + 1, kinggreenplace2 - 1] != "Tg1" && matrix[kinggreenplace1 + 1, kinggreenplace2 - 1] != "Cg" && matrix[kinggreenplace1 + 1, kinggreenplace2 - 1] != "Hg" && matrix[kinggreenplace1 + 1, kinggreenplace2 - 1] != "Qg")
                 {
                     matrix[kinggreenplace1, kinggreenplace2] = "*";
-                    greenchax(kinggreenplace1 + 1, kinggreenplace2 - 1, "green");
+                    chax(kinggreenplace1 + 1, kinggreenplace2 - 1, "green");
                     matrix[kinggreenplace1, kinggreenplace2] = "Kg";
                     if (greenchaxmat == false)
                     {
@@ -2154,20 +1887,20 @@ namespace program
                 redblocked = false;
                 string temp;
                 int range;
-                redchax(kingredplace1, kingredplace2);
+                chax(kingredplace1, kingredplace2, "red");
                 if (redchaxmat)
                 {
                     range = redfirstcoordeath.Count;
                     for (int i = 0; i < range; i++)
                     {
-                        greenchax(redfirstcoordeath[i], redsecondcoordeath[i], "green");
+                        chax(redfirstcoordeath[i], redsecondcoordeath[i], "green");
                         if (greenchaxmat)
                         {
                             for (int j = 0; j < greenfirstcoordeath.Count; j++)
                             {
                                 if (matrix[greenfirstcoordeath[j], greensecondcoordeath[j]] == "Kr")
                                 {
-                                    redchax(redfirstcoordeath[i], redsecondcoordeath[i]);
+                                    chax(redfirstcoordeath[i], redsecondcoordeath[i], "red");
                                     if (redchaxmat)
                                     {
                                         continue;
@@ -2176,7 +1909,7 @@ namespace program
                                 temp = matrix[redfirstcoordeath[i], redsecondcoordeath[i]];
                                 matrix[redfirstcoordeath[i], redsecondcoordeath[i]] = matrix[greenfirstcoordeath[j], greensecondcoordeath[j]];
                                 matrix[greenfirstcoordeath[j], greensecondcoordeath[j]] = "*";
-                                redchax(kingredplace1, kingredplace2);
+                                chax(kingredplace1, kingredplace2, "red");
                                 matrix[greenfirstcoordeath[j], greensecondcoordeath[j]] = matrix[redfirstcoordeath[i], redsecondcoordeath[i]];
                                 matrix[redfirstcoordeath[i], redsecondcoordeath[i]] = temp;
                                 if (redchaxmat == false)
@@ -2201,7 +1934,7 @@ namespace program
                                 {
                                     matrix[i, j] = matrix[greenfirstcoorblock[k], greensecondcoorblock[k]];
                                     matrix[greenfirstcoorblock[k], greensecondcoorblock[k]] = "*";
-                                    redchax(kingredplace1, kingredplace2);
+                                    chax(kingredplace1, kingredplace2, "red");
                                     matrix[greenfirstcoorblock[k], greensecondcoorblock[k]] = matrix[i, j];
                                     matrix[i, j] = "*";
                                     if (redchaxmat == false)
@@ -2218,7 +1951,7 @@ namespace program
                 if (kingredplace1 != 2 && matrix[kingredplace1 - 1, kingredplace2] != "Tr" && matrix[kingredplace1 - 1, kingredplace2] != "Tr1" && matrix[kingredplace1 - 1, kingredplace2] != "Cr" && matrix[kingredplace1 - 1, kingredplace2] != "Hr" && matrix[kingredplace1 - 1, kingredplace2] != "Qr")
                 {
                     matrix[kingredplace1, kingredplace2] = "*";
-                    redchax(kingredplace1 - 1, kingredplace2);
+                    chax(kingredplace1 - 1, kingredplace2, "red");
                     matrix[kingredplace1, kingredplace2] = "Kr";
                     if (redchaxmat == false)
                     {
@@ -2228,7 +1961,7 @@ namespace program
                 if (kingredplace1 != 2 && kingredplace2 != 2 && matrix[kingredplace1 - 1, kingredplace2 - 1] != "Tr" && matrix[kingredplace1 - 1, kingredplace2 - 1] != "Tr1" && matrix[kingredplace1 - 1, kingredplace2 - 1] != "Cr" && matrix[kingredplace1 - 1, kingredplace2 - 1] != "Hr" && matrix[kingredplace1 - 1, kingredplace2 - 1] != "Qr")
                 {
                     matrix[kingredplace1, kingredplace2] = "*";
-                    redchax(kingredplace1 - 1, kingredplace2 - 1);
+                    chax(kingredplace1 - 1, kingredplace2 - 1, "red");
                     matrix[kingredplace1, kingredplace2] = "Kr";
                     if (redchaxmat == false)
                     {
@@ -2238,7 +1971,7 @@ namespace program
                 if (kingredplace2 != 9 && kingredplace1 != 2 && matrix[kingredplace1 - 1, kingredplace2 + 1] != "Tr" && matrix[kingredplace1 - 1, kingredplace2 + 1] != "Tr1" && matrix[kingredplace1 - 1, kingredplace2 + 1] != "Cr" && matrix[kingredplace1 - 1, kingredplace2 + 1] != "Hr" && matrix[kingredplace1 - 1, kingredplace2 + 1] != "Qr")
                 {
                     matrix[kingredplace1, kingredplace2] = "*";
-                    redchax(kingredplace1 - 1, kingredplace2 + 1);
+                    chax(kingredplace1 - 1, kingredplace2 + 1, "red");
                     matrix[kingredplace1, kingredplace2] = "Kr";
                     if (redchaxmat == false)
                     {
@@ -2248,7 +1981,7 @@ namespace program
                 if (kingredplace2 != 2 && matrix[kingredplace1, kingredplace2 - 1] != "Tr" && matrix[kingredplace1, kingredplace2 - 1] != "Tr1" && matrix[kingredplace1, kingredplace2 - 1] != "Cr" && matrix[kingredplace1, kingredplace2 - 1] != "Hr" && matrix[kingredplace1, kingredplace2 - 1] != "Qr")
                 {
                     matrix[kingredplace1, kingredplace2] = "*";
-                    redchax(kingredplace1, kingredplace2 - 1);
+                    chax(kingredplace1, kingredplace2 - 1, "red");
                     matrix[kingredplace1, kingredplace2] = "Kr";
                     if (redchaxmat == false)
                     {
@@ -2258,7 +1991,7 @@ namespace program
                 if (kingredplace2 != 9 && matrix[kingredplace1, kingredplace2 + 1] != "Tr" && matrix[kingredplace1, kingredplace2 + 1] != "Tr1" && matrix[kingredplace1, kingredplace2 + 1] != "Cr" && matrix[kingredplace1, kingredplace2 + 1] != "Hr" && matrix[kingredplace1, kingredplace2 + 1] != "Qr")
                 {
                     matrix[kingredplace1, kingredplace2] = "*";
-                    redchax(kingredplace1, kingredplace2 + 1);
+                    chax(kingredplace1, kingredplace2 + 1, "red");
                     matrix[kingredplace1, kingredplace2] = "Kr";
                     if (redchaxmat == false)
                     {
@@ -2268,7 +2001,7 @@ namespace program
                 if (kingredplace1 != 9 && matrix[kingredplace1 + 1, kingredplace2] != "Tr" && matrix[kingredplace1 + 1, kingredplace2] != "Tr1" && matrix[kingredplace1 + 1, kingredplace2] != "Cr" && matrix[kingredplace1 + 1, kingredplace2] != "Hr" && matrix[kingredplace1 + 1, kingredplace2] != "Qr")
                 {
                     matrix[kingredplace1, kingredplace2] = "*";
-                    redchax(kingredplace1 + 1, kingredplace2);
+                    chax(kingredplace1 + 1, kingredplace2, "red");
                     matrix[kingredplace1, kingredplace2] = "Kr";
                     if (redchaxmat == false)
                     {
@@ -2278,7 +2011,7 @@ namespace program
                 if (kingredplace1 != 9 && kingredplace2 != 9 && matrix[kingredplace1 + 1, kingredplace2 + 1] != "Tr" && matrix[kingredplace1 + 1, kingredplace2 + 1] != "Tr1" && matrix[kingredplace1 + 1, kingredplace2 + 1] != "Cr" && matrix[kingredplace1 + 1, kingredplace2 + 1] != "Hr" && matrix[kingredplace1 + 1, kingredplace2 + 1] != "Qr")
                 {
                     matrix[kingredplace1, kingredplace2] = "*";
-                    redchax(kingredplace1 + 1, kingredplace2 + 1);
+                    chax(kingredplace1 + 1, kingredplace2 + 1, "red");
                     matrix[kingredplace1, kingredplace2] = "Kr";
                     if (redchaxmat == false)
                     {
@@ -2288,7 +2021,7 @@ namespace program
                 if (kingredplace1 != 9 && kingredplace2 != 2 && matrix[kingredplace1 + 1, kingredplace2 - 1] != "Tr" && matrix[kingredplace1 + 1, kingredplace2 - 1] != "Tr1" && matrix[kingredplace1 + 1, kingredplace2 - 1] != "Cr" && matrix[kingredplace1 + 1, kingredplace2 - 1] != "Hr" && matrix[kingredplace1 + 1, kingredplace2 - 1] != "Qr")
                 {
                     matrix[kingredplace1, kingredplace2] = "*";
-                    redchax(kingredplace1 + 1, kingredplace2 - 1);
+                    chax(kingredplace1 + 1, kingredplace2 - 1, "red");
                     matrix[kingredplace1, kingredplace2] = "Kr";
                     if (redchaxmat == false)
                     {
@@ -2306,7 +2039,7 @@ namespace program
             }
             bool greenstalemate()
             {
-                if (greenchax(kinggreenplace1, kinggreenplace2, "green"))
+                if (chax(kinggreenplace1, kinggreenplace2, "green"))
                 {
                     return false;
                 }
@@ -2315,7 +2048,7 @@ namespace program
                     if (kinggreenplace1 != 2 && matrix[kinggreenplace1 - 1, kinggreenplace2] != "Tg" && matrix[kinggreenplace1 - 1, kinggreenplace2] != "Tg1" && matrix[kinggreenplace1 - 1, kinggreenplace2] != "Cg" && matrix[kinggreenplace1 - 1, kinggreenplace2] != "Hg" && matrix[kinggreenplace1 - 1, kinggreenplace2] != "Qg")
                     {
                         matrix[kinggreenplace1, kinggreenplace2] = "*";
-                        greenchax(kinggreenplace1 - 1, kinggreenplace2, "green");
+                        chax(kinggreenplace1 - 1, kinggreenplace2, "green");
                         matrix[kinggreenplace1, kinggreenplace2] = "Kg";
                         if (greenchaxmat == false)
                         {
@@ -2325,7 +2058,7 @@ namespace program
                     if (kinggreenplace1 != 2 && kinggreenplace2 != 2 && matrix[kinggreenplace1 - 1, kinggreenplace2 - 1] != "Tg" && matrix[kinggreenplace1 - 1, kinggreenplace2 - 1] != "Tg1" && matrix[kinggreenplace1 - 1, kinggreenplace2 - 1] != "Cg" && matrix[kinggreenplace1 - 1, kinggreenplace2 - 1] != "Hg" && matrix[kinggreenplace1 - 1, kinggreenplace2 - 1] != "Qg")
                     {
                         matrix[kinggreenplace1, kinggreenplace2] = "*";
-                        greenchax(kinggreenplace1 - 1, kinggreenplace2 - 1, "green");
+                        chax(kinggreenplace1 - 1, kinggreenplace2 - 1, "green");
                         matrix[kinggreenplace1, kinggreenplace2] = "Kg";
                         if (greenchaxmat == false)
                         {
@@ -2335,7 +2068,7 @@ namespace program
                     if (kinggreenplace2 != 9 && kinggreenplace1 != 2 && matrix[kinggreenplace1 - 1, kinggreenplace2 + 1] != "Tg" && matrix[kinggreenplace1 - 1, kinggreenplace2 + 1] != "Tg1" && matrix[kinggreenplace1 - 1, kinggreenplace2 + 1] != "Cg" && matrix[kinggreenplace1 - 1, kinggreenplace2 + 1] != "Hg" && matrix[kinggreenplace1 - 1, kinggreenplace2 + 1] != "Qg")
                     {
                         matrix[kinggreenplace1, kinggreenplace2] = "*";
-                        greenchax(kinggreenplace1 - 1, kinggreenplace2 + 1, "green");
+                        chax(kinggreenplace1 - 1, kinggreenplace2 + 1, "green");
                         matrix[kinggreenplace1, kinggreenplace2] = "Kg";
                         if (greenchaxmat == false)
                         {
@@ -2345,7 +2078,7 @@ namespace program
                     if (kinggreenplace2 != 2 && matrix[kinggreenplace1, kinggreenplace2 - 1] != "Tg" && matrix[kinggreenplace1, kinggreenplace2 - 1] != "Tg1" && matrix[kinggreenplace1, kinggreenplace2 - 1] != "Cg" && matrix[kinggreenplace1, kinggreenplace2 - 1] != "Hg" && matrix[kinggreenplace1, kinggreenplace2 - 1] != "Qg")
                     {
                         matrix[kinggreenplace1, kinggreenplace2] = "*";
-                        greenchax(kinggreenplace1, kinggreenplace2 - 1, "green");
+                        chax(kinggreenplace1, kinggreenplace2 - 1, "green");
                         matrix[kinggreenplace1, kinggreenplace2] = "Kg";
                         if (greenchaxmat == false)
                         {
@@ -2355,7 +2088,7 @@ namespace program
                     if (kinggreenplace2 != 9 && matrix[kinggreenplace1, kinggreenplace2 + 1] != "Tg" && matrix[kinggreenplace1, kinggreenplace2 + 1] != "Tg1" && matrix[kinggreenplace1, kinggreenplace2 + 1] != "Cg" && matrix[kinggreenplace1, kinggreenplace2 + 1] != "Hg" && matrix[kinggreenplace1, kinggreenplace2 + 1] != "Qg")
                     {
                         matrix[kinggreenplace1, kinggreenplace2] = "*";
-                        greenchax(kinggreenplace1, kinggreenplace2 + 1, "green");
+                        chax(kinggreenplace1, kinggreenplace2 + 1, "green");
                         matrix[kinggreenplace1, kinggreenplace2] = "Kg";
                         if (greenchaxmat == false)
                         {
@@ -2365,7 +2098,7 @@ namespace program
                     if (kinggreenplace1 != 9 && matrix[kinggreenplace1 + 1, kinggreenplace2] != "Tg" && matrix[kinggreenplace1 + 1, kinggreenplace2] != "Tg1" && matrix[kinggreenplace1 + 1, kinggreenplace2] != "Cg" && matrix[kinggreenplace1 + 1, kinggreenplace2] != "Hg" && matrix[kinggreenplace1 + 1, kinggreenplace2] != "Qg")
                     {
                         matrix[kinggreenplace1, kinggreenplace2] = "*";
-                        greenchax(kinggreenplace1 + 1, kinggreenplace2, "green");
+                        chax(kinggreenplace1 + 1, kinggreenplace2, "green");
                         matrix[kinggreenplace1, kinggreenplace2] = "Kg";
                         if (greenchaxmat == false)
                         {
@@ -2375,7 +2108,7 @@ namespace program
                     if (kinggreenplace1 != 9 && kinggreenplace2 != 9 && matrix[kinggreenplace1 + 1, kinggreenplace2 + 1] != "Tg" && matrix[kinggreenplace1 + 1, kinggreenplace2 + 1] != "Tg1" && matrix[kinggreenplace1 + 1, kinggreenplace2 + 1] != "Cg" && matrix[kinggreenplace1 + 1, kinggreenplace2 + 1] != "Hg" && matrix[kinggreenplace1 + 1, kinggreenplace2 + 1] != "Qg")
                     {
                         matrix[kinggreenplace1, kinggreenplace2] = "*";
-                        greenchax(kinggreenplace1 + 1, kinggreenplace2 + 1, "green");
+                        chax(kinggreenplace1 + 1, kinggreenplace2 + 1, "green");
                         matrix[kinggreenplace1, kinggreenplace2] = "Kg";
                         if (greenchaxmat == false)
                         {
@@ -2385,7 +2118,7 @@ namespace program
                     if (kinggreenplace1 != 9 && kinggreenplace2 != 2 && matrix[kinggreenplace1 + 1, kinggreenplace2 - 1] != "Tg" && matrix[kinggreenplace1 + 1, kinggreenplace2 - 1] != "Tg1" && matrix[kinggreenplace1 + 1, kinggreenplace2 - 1] != "Cg" && matrix[kinggreenplace1 + 1, kinggreenplace2 - 1] != "Hg" && matrix[kinggreenplace1 + 1, kinggreenplace2 - 1] != "Qg")
                     {
                         matrix[kinggreenplace1, kinggreenplace2] = "*";
-                        greenchax(kinggreenplace1 + 1, kinggreenplace2 - 1, "green");
+                        chax(kinggreenplace1 + 1, kinggreenplace2 - 1, "green");
                         matrix[kinggreenplace1, kinggreenplace2] = "Kg";
                         if (greenchaxmat == false)
                         {
@@ -2411,7 +2144,7 @@ namespace program
                                 temp = matrix[i - 1, j - 1];
                                 matrix[i - 1, j - 1] = "Пg";
                                 matrix[i, j] = "*";
-                                greenchax(kinggreenplace1, kinggreenplace2, "green");
+                                chax(kinggreenplace1, kinggreenplace2, "green");
                                 if (greenchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -2428,7 +2161,7 @@ namespace program
                                 temp = matrix[i - 1, j + 1];
                                 matrix[i - 1, j + 1] = "Пg";
                                 matrix[i, j] = "*";
-                                greenchax(kinggreenplace1, kinggreenplace2, "green");
+                                chax(kinggreenplace1, kinggreenplace2, "green");
                                 if (greenchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -2452,7 +2185,7 @@ namespace program
                                 temp = matrix[i - 2, j - 1];
                                 matrix[i - 2, j - 1] = "Hg";
                                 matrix[i, j] = "*";
-                                greenchax(kinggreenplace1, kinggreenplace2, "green");
+                                chax(kinggreenplace1, kinggreenplace2, "green");
                                 if (greenchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -2469,7 +2202,7 @@ namespace program
                                 temp = matrix[i - 2, j + 1];
                                 matrix[i - 2, j + 1] = "Hg";
                                 matrix[i, j] = "*";
-                                greenchax(kinggreenplace1, kinggreenplace2, "green");
+                                chax(kinggreenplace1, kinggreenplace2, "green");
                                 if (greenchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -2486,7 +2219,7 @@ namespace program
                                 temp = matrix[i - 1, j - 2];
                                 matrix[i - 1, j - 2] = "Hg";
                                 matrix[i, j] = "*";
-                                greenchax(kinggreenplace1, kinggreenplace2, "green");
+                                chax(kinggreenplace1, kinggreenplace2, "green");
                                 if (greenchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -2503,7 +2236,7 @@ namespace program
                                 temp = matrix[i - 1, j + 2];
                                 matrix[i - 1, j + 2] = "Hg";
                                 matrix[i, j] = "*";
-                                greenchax(kinggreenplace1, kinggreenplace2, "green");
+                                chax(kinggreenplace1, kinggreenplace2, "green");
                                 if (greenchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -2520,7 +2253,7 @@ namespace program
                                 temp = matrix[i + 2, j + 1];
                                 matrix[i + 2, j + 1] = "Hg";
                                 matrix[i, j] = "*";
-                                greenchax(kinggreenplace1, kinggreenplace2, "green");
+                                chax(kinggreenplace1, kinggreenplace2, "green");
                                 if (greenchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -2537,7 +2270,7 @@ namespace program
                                 temp = matrix[i + 2, j - 1];
                                 matrix[i + 2, j - 1] = "Hg";
                                 matrix[i, j] = "*";
-                                greenchax(kinggreenplace1, kinggreenplace2, "green");
+                                chax(kinggreenplace1, kinggreenplace2, "green");
                                 if (greenchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -2554,7 +2287,7 @@ namespace program
                                 temp = matrix[i + 1, j + 2];
                                 matrix[i + 1, j + 2] = "Hg";
                                 matrix[i, j] = "*";
-                                greenchax(kinggreenplace1, kinggreenplace2, "green");
+                                chax(kinggreenplace1, kinggreenplace2, "green");
                                 if (greenchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -2571,7 +2304,7 @@ namespace program
                                 temp = matrix[i + 1, j - 2];
                                 matrix[i + 1, j - 2] = "Hg";
                                 matrix[i, j] = "*";
-                                greenchax(kinggreenplace1, kinggreenplace2, "green");
+                                chax(kinggreenplace1, kinggreenplace2, "green");
                                 if (greenchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -2595,7 +2328,7 @@ namespace program
                                 temp = matrix[i, j - 1];
                                 matrix[i, j - 1] = matrix[i, j];
                                 matrix[i, j] = "*";
-                                greenchax(kinggreenplace1, kinggreenplace2, "green");
+                                chax(kinggreenplace1, kinggreenplace2, "green");
                                 if (greenchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -2612,7 +2345,7 @@ namespace program
                                 temp = matrix[i, j + 1];
                                 matrix[i, j + 1] = matrix[i, j];
                                 matrix[i, j] = "*";
-                                greenchax(kinggreenplace1, kinggreenplace2, "green");
+                                chax(kinggreenplace1, kinggreenplace2, "green");
                                 if (greenchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -2629,7 +2362,7 @@ namespace program
                                 temp = matrix[i - 1, j];
                                 matrix[i - 1, j] = matrix[i, j];
                                 matrix[i, j] = "*";
-                                greenchax(kinggreenplace1, kinggreenplace2, "green");
+                                chax(kinggreenplace1, kinggreenplace2, "green");
                                 if (greenchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -2646,7 +2379,7 @@ namespace program
                                 temp = matrix[i + 1, j];
                                 matrix[i + 1, j] = matrix[i, j];
                                 matrix[i, j] = "*";
-                                greenchax(kinggreenplace1, kinggreenplace2, "green");
+                                chax(kinggreenplace1, kinggreenplace2, "green");
                                 if (greenchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -2670,7 +2403,7 @@ namespace program
                                 temp = matrix[i - 1, j - 1];
                                 matrix[i - 1, j - 1] = "Cg";
                                 matrix[i, j] = "*";
-                                greenchax(kinggreenplace1, kinggreenplace2, "green");
+                                chax(kinggreenplace1, kinggreenplace2, "green");
                                 if (greenchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -2687,7 +2420,7 @@ namespace program
                                 temp = matrix[i + 1, j - 1];
                                 matrix[i + 1, j - 1] = "Cg";
                                 matrix[i, j] = "*";
-                                greenchax(kinggreenplace1, kinggreenplace2, "green");
+                                chax(kinggreenplace1, kinggreenplace2, "green");
                                 if (greenchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -2704,7 +2437,7 @@ namespace program
                                 temp = matrix[i - 1, j + 1];
                                 matrix[i - 1, j + 1] = "Cg";
                                 matrix[i, j] = "*";
-                                greenchax(kinggreenplace1, kinggreenplace2, "green");
+                                chax(kinggreenplace1, kinggreenplace2, "green");
                                 if (greenchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -2721,7 +2454,7 @@ namespace program
                                 temp = matrix[i + 1, j + 1];
                                 matrix[i + 1, j + 1] = "Cg";
                                 matrix[i, j] = "*";
-                                greenchax(kinggreenplace1, kinggreenplace2, "green");
+                                chax(kinggreenplace1, kinggreenplace2, "green");
                                 if (greenchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -2745,7 +2478,7 @@ namespace program
                                 temp = matrix[i, j - 1];
                                 matrix[i, j - 1] = matrix[i, j];
                                 matrix[i, j] = "*";
-                                greenchax(kinggreenplace1, kinggreenplace2, "green");
+                                chax(kinggreenplace1, kinggreenplace2, "green");
                                 if (greenchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -2762,7 +2495,7 @@ namespace program
                                 temp = matrix[i, j + 1];
                                 matrix[i, j + 1] = matrix[i, j];
                                 matrix[i, j] = "*";
-                                greenchax(kinggreenplace1, kinggreenplace2, "green");
+                                chax(kinggreenplace1, kinggreenplace2, "green");
                                 if (greenchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -2779,7 +2512,7 @@ namespace program
                                 temp = matrix[i - 1, j];
                                 matrix[i - 1, j] = matrix[i, j];
                                 matrix[i, j] = "*";
-                                greenchax(kinggreenplace1, kinggreenplace2, "green");
+                                chax(kinggreenplace1, kinggreenplace2, "green");
                                 if (greenchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -2796,7 +2529,7 @@ namespace program
                                 temp = matrix[i + 1, j];
                                 matrix[i + 1, j] = matrix[i, j];
                                 matrix[i, j] = "*";
-                                greenchax(kinggreenplace1, kinggreenplace2, "green");
+                                chax(kinggreenplace1, kinggreenplace2, "green");
                                 if (greenchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -2813,7 +2546,7 @@ namespace program
                                 temp = matrix[i - 1, j - 1];
                                 matrix[i - 1, j - 1] = matrix[i, j];
                                 matrix[i, j] = "*";
-                                greenchax(kinggreenplace1, kinggreenplace2, "green");
+                                chax(kinggreenplace1, kinggreenplace2, "green");
                                 if (greenchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -2830,7 +2563,7 @@ namespace program
                                 temp = matrix[i + 1, j - 1];
                                 matrix[i + 1, j - 1] = matrix[i, j];
                                 matrix[i, j] = "*";
-                                greenchax(kinggreenplace1, kinggreenplace2, "green");
+                                chax(kinggreenplace1, kinggreenplace2, "green");
                                 if (greenchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -2847,7 +2580,7 @@ namespace program
                                 temp = matrix[i - 1, j + 1];
                                 matrix[i - 1, j + 1] = matrix[i, j];
                                 matrix[i, j] = "*";
-                                greenchax(kinggreenplace1, kinggreenplace2, "green");
+                                chax(kinggreenplace1, kinggreenplace2, "green");
                                 if (greenchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -2864,7 +2597,7 @@ namespace program
                                 temp = matrix[i + 1, j + 1];
                                 matrix[i + 1, j + 1] = matrix[i, j];
                                 matrix[i, j] = "*";
-                                greenchax(kinggreenplace1, kinggreenplace2, "green");
+                                chax(kinggreenplace1, kinggreenplace2, "green");
                                 if (greenchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -2887,7 +2620,7 @@ namespace program
             }
             bool redstalemate()
             {
-                if (redchax(kingredplace1, kingredplace2))
+                if (chax(kingredplace1, kingredplace2, "red"))
                 {
                     return false;
                 }
@@ -2896,7 +2629,7 @@ namespace program
                     if (kingredplace1 != 2 && matrix[kingredplace1 - 1, kingredplace2] != "Tr" && matrix[kingredplace1 - 1, kingredplace2] != "Tr1" && matrix[kingredplace1 - 1, kingredplace2] != "Cr" && matrix[kingredplace1 - 1, kingredplace2] != "Hr" && matrix[kingredplace1 - 1, kingredplace2] != "Qr")
                     {
                         matrix[kingredplace1, kingredplace2] = "*";
-                        redchax(kingredplace1 - 1, kingredplace2);
+                        chax(kingredplace1 - 1, kingredplace2, "red");
                         matrix[kingredplace1, kingredplace2] = "Kr";
                         if (redchaxmat == false)
                         {
@@ -2906,7 +2639,7 @@ namespace program
                     if (kingredplace1 != 2 && kingredplace2 != 2 && matrix[kingredplace1 - 1, kingredplace2 - 1] != "Tr" && matrix[kingredplace1 - 1, kingredplace2 - 1] != "Tr1" && matrix[kingredplace1 - 1, kingredplace2 - 1] != "Cr" && matrix[kingredplace1 - 1, kingredplace2 - 1] != "Hr" && matrix[kingredplace1 - 1, kingredplace2 - 1] != "Qr")
                     {
                         matrix[kingredplace1, kingredplace2] = "*";
-                        redchax(kingredplace1 - 1, kingredplace2 - 1);
+                        chax(kingredplace1 - 1, kingredplace2 - 1, "red");
                         matrix[kingredplace1, kingredplace2] = "Kr";
                         if (redchaxmat == false)
                         {
@@ -2916,7 +2649,7 @@ namespace program
                     if (kingredplace2 != 9 && kingredplace1 != 2 && matrix[kingredplace1 - 1, kingredplace2 + 1] != "Tr" && matrix[kingredplace1 - 1, kingredplace2 + 1] != "Tr1" && matrix[kingredplace1 - 1, kingredplace2 + 1] != "Cr" && matrix[kingredplace1 - 1, kingredplace2 + 1] != "Hr" && matrix[kingredplace1 - 1, kingredplace2 + 1] != "Qr")
                     {
                         matrix[kingredplace1, kingredplace2] = "*";
-                        redchax(kingredplace1 - 1, kingredplace2 + 1);
+                        chax(kingredplace1 - 1, kingredplace2 + 1, "red");
                         matrix[kingredplace1, kingredplace2] = "Kr";
                         if (redchaxmat == false)
                         {
@@ -2926,7 +2659,7 @@ namespace program
                     if (kingredplace2 != 2 && matrix[kingredplace1, kingredplace2 - 1] != "Tr" && matrix[kingredplace1, kingredplace2 - 1] != "Tr1" && matrix[kingredplace1, kingredplace2 - 1] != "Cr" && matrix[kingredplace1, kingredplace2 - 1] != "Hr" && matrix[kingredplace1, kingredplace2 - 1] != "Qr")
                     {
                         matrix[kingredplace1, kingredplace2] = "*";
-                        redchax(kingredplace1, kingredplace2 - 1);
+                        chax(kingredplace1, kingredplace2 - 1, "red");
                         matrix[kingredplace1, kingredplace2] = "Kr";
                         if (redchaxmat == false)
                         {
@@ -2936,7 +2669,7 @@ namespace program
                     if (kingredplace2 != 9 && matrix[kingredplace1, kingredplace2 + 1] != "Tr" && matrix[kingredplace1, kingredplace2 + 1] != "Tr1" && matrix[kingredplace1, kingredplace2 + 1] != "Cr" && matrix[kingredplace1, kingredplace2 + 1] != "Hr" && matrix[kingredplace1, kingredplace2 + 1] != "Qr")
                     {
                         matrix[kingredplace1, kingredplace2] = "*";
-                        redchax(kingredplace1, kingredplace2 + 1);
+                        chax(kingredplace1, kingredplace2 + 1, "red");
                         matrix[kingredplace1, kingredplace2] = "Kr";
                         if (redchaxmat == false)
                         {
@@ -2946,7 +2679,7 @@ namespace program
                     if (kingredplace1 != 9 && matrix[kingredplace1 + 1, kingredplace2] != "Tr" && matrix[kingredplace1 + 1, kingredplace2] != "Tr1" && matrix[kingredplace1 + 1, kingredplace2] != "Cr" && matrix[kingredplace1 + 1, kingredplace2] != "Hr" && matrix[kingredplace1 + 1, kingredplace2] != "Qr")
                     {
                         matrix[kingredplace1, kingredplace2] = "*";
-                        redchax(kingredplace1 + 1, kingredplace2);
+                        chax(kingredplace1 + 1, kingredplace2, "red");
                         matrix[kingredplace1, kingredplace2] = "Kr";
                         if (redchaxmat == false)
                         {
@@ -2956,7 +2689,7 @@ namespace program
                     if (kingredplace1 != 9 && kingredplace2 != 9 && matrix[kingredplace1 + 1, kingredplace2 + 1] != "Tr" && matrix[kingredplace1 + 1, kingredplace2 + 1] != "Tr1" && matrix[kingredplace1 + 1, kingredplace2 + 1] != "Cr" && matrix[kingredplace1 + 1, kingredplace2 + 1] != "Hr" && matrix[kingredplace1 + 1, kingredplace2 + 1] != "Qr")
                     {
                         matrix[kingredplace1, kingredplace2] = "*";
-                        redchax(kingredplace1 + 1, kingredplace2 + 1);
+                        chax(kingredplace1 + 1, kingredplace2 + 1, "red");
                         matrix[kingredplace1, kingredplace2] = "Kr";
                         if (redchaxmat == false)
                         {
@@ -2966,7 +2699,7 @@ namespace program
                     if (kingredplace1 != 9 && kingredplace2 != 2 && matrix[kingredplace1 + 1, kingredplace2 - 1] != "Tr" && matrix[kingredplace1 + 1, kingredplace2 - 1] != "Tr1" && matrix[kingredplace1 + 1, kingredplace2 - 1] != "Cr" && matrix[kingredplace1 + 1, kingredplace2 - 1] != "Hr" && matrix[kingredplace1 + 1, kingredplace2 - 1] != "Qr")
                     {
                         matrix[kingredplace1, kingredplace2] = "*";
-                        redchax(kingredplace1 + 1, kingredplace2 - 1);
+                        chax(kingredplace1 + 1, kingredplace2 - 1, "red");
                         matrix[kingredplace1, kingredplace2] = "Kr";
                         if (redchaxmat == false)
                         {
@@ -2992,7 +2725,7 @@ namespace program
                                 temp = matrix[i + 1, j + 1];
                                 matrix[i + 1, j + 1] = "Пr";
                                 matrix[i, j] = "*";
-                                redchax(kingredplace1, kingredplace2);
+                                chax(kingredplace1, kingredplace2, "red");
                                 if (redchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -3009,7 +2742,7 @@ namespace program
                                 temp = matrix[i + 1, j - 1];
                                 matrix[i + 1, j - 1] = "Пr";
                                 matrix[i, j] = "*";
-                                redchax(kingredplace1, kingredplace2);
+                                chax(kingredplace1, kingredplace2, "red");
                                 if (redchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -3033,7 +2766,7 @@ namespace program
                                 temp = matrix[i - 2, j - 1];
                                 matrix[i - 2, j - 1] = "Hr";
                                 matrix[i, j] = "*";
-                                redchax(kingredplace1, kingredplace2);
+                                chax(kingredplace1, kingredplace2, "red");
                                 if (redchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -3050,7 +2783,7 @@ namespace program
                                 temp = matrix[i - 2, j + 1];
                                 matrix[i - 2, j + 1] = "Hr";
                                 matrix[i, j] = "*";
-                                redchax(kingredplace1, kingredplace2);
+                                chax(kingredplace1, kingredplace2, "red");
                                 if (redchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -3067,7 +2800,7 @@ namespace program
                                 temp = matrix[i - 1, j - 2];
                                 matrix[i - 1, j - 2] = "Hr";
                                 matrix[i, j] = "*";
-                                redchax(kingredplace1, kingredplace2);
+                                chax(kingredplace1, kingredplace2, "red");
                                 if (redchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -3084,7 +2817,7 @@ namespace program
                                 temp = matrix[i - 1, j + 2];
                                 matrix[i - 1, j + 2] = "Hr";
                                 matrix[i, j] = "*";
-                                redchax(kingredplace1, kingredplace2);
+                                chax(kingredplace1, kingredplace2, "red");
                                 if (redchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -3101,7 +2834,7 @@ namespace program
                                 temp = matrix[i + 2, j + 1];
                                 matrix[i + 2, j + 1] = "Hr";
                                 matrix[i, j] = "*";
-                                redchax(kingredplace1, kingredplace2);
+                                chax(kingredplace1, kingredplace2, "red");
                                 if (redchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -3118,7 +2851,7 @@ namespace program
                                 temp = matrix[i + 2, j - 1];
                                 matrix[i + 2, j - 1] = "Hr";
                                 matrix[i, j] = "*";
-                                redchax(kingredplace1, kingredplace2);
+                                chax(kingredplace1, kingredplace2, "red");
                                 if (redchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -3135,7 +2868,7 @@ namespace program
                                 temp = matrix[i + 1, j + 2];
                                 matrix[i + 1, j + 2] = "Hr";
                                 matrix[i, j] = "*";
-                                redchax(kingredplace1, kingredplace2);
+                                chax(kingredplace1, kingredplace2, "red");
                                 if (redchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -3152,7 +2885,7 @@ namespace program
                                 temp = matrix[i + 1, j - 2];
                                 matrix[i + 1, j - 2] = "Hr";
                                 matrix[i, j] = "*";
-                                redchax(kingredplace1, kingredplace2);
+                                chax(kingredplace1, kingredplace2, "red");
                                 if (redchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -3176,7 +2909,7 @@ namespace program
                                 temp = matrix[i, j - 1];
                                 matrix[i, j - 1] = matrix[i, j];
                                 matrix[i, j] = "*";
-                                redchax(kingredplace1, kingredplace2);
+                                chax(kingredplace1, kingredplace2, "red");
                                 if (redchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -3193,7 +2926,7 @@ namespace program
                                 temp = matrix[i, j + 1];
                                 matrix[i, j + 1] = matrix[i, j];
                                 matrix[i, j] = "*";
-                                redchax(kingredplace1, kingredplace2);
+                                chax(kingredplace1, kingredplace2, "red");
                                 if (redchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -3210,7 +2943,7 @@ namespace program
                                 temp = matrix[i - 1, j];
                                 matrix[i - 1, j] = matrix[i, j];
                                 matrix[i, j] = "*";
-                                redchax(kingredplace1, kingredplace2);
+                                chax(kingredplace1, kingredplace2, "red");
                                 if (redchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -3227,7 +2960,7 @@ namespace program
                                 temp = matrix[i + 1, j];
                                 matrix[i + 1, j] = matrix[i, j];
                                 matrix[i, j] = "*";
-                                redchax(kingredplace1, kingredplace2);
+                                chax(kingredplace1, kingredplace2, "red");
                                 if (redchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -3251,7 +2984,7 @@ namespace program
                                 temp = matrix[i - 1, j - 1];
                                 matrix[i - 1, j - 1] = "Cr";
                                 matrix[i, j] = "*";
-                                redchax(kingredplace1, kingredplace2);
+                                chax(kingredplace1, kingredplace2, "red");
                                 if (redchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -3268,7 +3001,7 @@ namespace program
                                 temp = matrix[i + 1, j - 1];
                                 matrix[i + 1, j - 1] = "Cr";
                                 matrix[i, j] = "*";
-                                redchax(kingredplace1, kingredplace2);
+                                chax(kingredplace1, kingredplace2, "red");
                                 if (redchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -3285,7 +3018,7 @@ namespace program
                                 temp = matrix[i - 1, j + 1];
                                 matrix[i - 1, j + 1] = "Cr";
                                 matrix[i, j] = "*";
-                                redchax(kingredplace1, kingredplace2);
+                                chax(kingredplace1, kingredplace2, "red");
                                 if (redchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -3302,7 +3035,7 @@ namespace program
                                 temp = matrix[i + 1, j + 1];
                                 matrix[i + 1, j + 1] = "Cr";
                                 matrix[i, j] = "*";
-                                redchax(kingredplace1, kingredplace2);
+                                chax(kingredplace1, kingredplace2, "red");
                                 if (redchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -3326,7 +3059,7 @@ namespace program
                                 temp = matrix[i, j - 1];
                                 matrix[i, j - 1] = matrix[i, j];
                                 matrix[i, j] = "*";
-                                redchax(kingredplace1, kingredplace2);
+                                chax(kingredplace1, kingredplace2, "red");
                                 if (redchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -3343,7 +3076,7 @@ namespace program
                                 temp = matrix[i, j + 1];
                                 matrix[i, j + 1] = matrix[i, j];
                                 matrix[i, j] = "*";
-                                redchax(kingredplace1, kingredplace2);
+                                chax(kingredplace1, kingredplace2, "red");
                                 if (redchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -3360,7 +3093,7 @@ namespace program
                                 temp = matrix[i - 1, j];
                                 matrix[i - 1, j] = matrix[i, j];
                                 matrix[i, j] = "*";
-                                redchax(kingredplace1, kingredplace2);
+                                chax(kingredplace1, kingredplace2, "red");
                                 if (redchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -3377,7 +3110,7 @@ namespace program
                                 temp = matrix[i + 1, j];
                                 matrix[i + 1, j] = matrix[i, j];
                                 matrix[i, j] = "*";
-                                redchax(kingredplace1, kingredplace2);
+                                chax(kingredplace1, kingredplace2, "red");
                                 if (redchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -3394,7 +3127,7 @@ namespace program
                                 temp = matrix[i - 1, j - 1];
                                 matrix[i - 1, j - 1] = matrix[i, j];
                                 matrix[i, j] = "*";
-                                redchax(kingredplace1, kingredplace2);
+                                chax(kingredplace1, kingredplace2, "red");
                                 if (redchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -3411,7 +3144,7 @@ namespace program
                                 temp = matrix[i + 1, j - 1];
                                 matrix[i + 1, j - 1] = matrix[i, j];
                                 matrix[i, j] = "*";
-                                redchax(kingredplace1, kingredplace2);
+                                chax(kingredplace1, kingredplace2, "red");
                                 if (redchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -3428,7 +3161,7 @@ namespace program
                                 temp = matrix[i - 1, j + 1];
                                 matrix[i - 1, j + 1] = matrix[i, j];
                                 matrix[i, j] = "*";
-                                redchax(kingredplace1, kingredplace2);
+                                chax(kingredplace1, kingredplace2, "red");
                                 if (redchaxmat == true)
                                 {
                                     counterimposmoves++;
@@ -3445,7 +3178,7 @@ namespace program
                                 temp = matrix[i + 1, j + 1];
                                 matrix[i + 1, j + 1] = matrix[i, j];
                                 matrix[i, j] = "*";
-                                redchax(kingredplace1, kingredplace2);
+                                chax(kingredplace1, kingredplace2, "red");
                                 if (redchaxmat == true)
                                 {
                                     counterimposmoves++;
