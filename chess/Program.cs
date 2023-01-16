@@ -1234,78 +1234,48 @@ namespace program
                     }
                 }
             }
+            void killerdetector(int x, int y, string hero, ref bool chaxmat, ref List<int> firstcoordeath, ref List<int> secondcoordeath)
+            {
+                if (matrix[x, y] == hero)
+                {
+                    chaxmat = true;
+                    firstcoordeath.Add(x);
+                    secondcoordeath.Add(y);
+                }
+            }
             //DEATH
             bool greenchax(int n, int m)
             {
-                greenchaxmat = false;
-                greenchaxrighttopslon = true;
-                greenchaxlefttopslon = true;
-                greenchaxrightdownslon = true;
-                greenchaxleftdownslon = true;
-                greenchaxlefttura = true;
-                greenchaxrighttura = true;
-                greenchaxtoptura = true;
-                greenchaxdowntura = true;
-                if (matrix[n - 1, m - 1] == "Пr")
+                bool chaxmat = false;
+                List<int> firstcoordeath = new();
+                List<int> secondcoordeath = new();
+                bool chaxrighttopslon = true;
+                bool chaxlefttopslon = true;
+                bool chaxrightdownslon = true;
+                bool chaxleftdownslon = true;
+                bool chaxlefttura = true;
+                bool chaxrighttura = true;
+                bool chaxtoptura = true;
+                bool chaxdowntura = true;
+                enemyally(matrix[n, m]);
+                if (matrix[n, m] == "Kg")
                 {
-                    greenchaxmat = true;
-                    greenfirstcoordeath.Add(n - 1);
-                    greensecondcoordeath.Add(m - 1);
+                    killerdetector(n - 1, m + 1, enemy1, ref chaxmat, ref firstcoordeath, ref secondcoordeath);
+                    killerdetector(n - 1, m - 1, enemy1, ref chaxmat, ref firstcoordeath, ref secondcoordeath);
                 }
-                if (matrix[n - 1, m + 1] == "Пr")
+                else
                 {
-                    greenchaxmat = true;
-                    greenfirstcoordeath.Add(n - 1);
-                    greensecondcoordeath.Add(m + 1);
+                    killerdetector(n + 1, m + 1, enemy1, ref chaxmat, ref firstcoordeath, ref secondcoordeath);
+                    killerdetector(n + 1, m - 1, enemy1, ref chaxmat, ref firstcoordeath, ref secondcoordeath);
                 }
-                if (matrix[n - 1, m - 2] == "Hr")
-                {
-                    greenchaxmat = true;
-                    greenfirstcoordeath.Add(n - 1);
-                    greensecondcoordeath.Add(m - 2);
-                }
-                if (matrix[n - 1, m + 2] == "Hr")
-                {
-                    greenchaxmat = true;
-                    greenfirstcoordeath.Add(n - 1);
-                    greensecondcoordeath.Add(m + 2);
-                }
-                if (matrix[n - 2, m - 1] == "Hr")
-                {
-                    greenchaxmat = true;
-                    greenfirstcoordeath.Add(n - 2);
-                    greensecondcoordeath.Add(m - 1);
-                }
-                if (matrix[n - 2, m + 1] == "Hr")
-                {
-                    greenchaxmat = true;
-                    greenfirstcoordeath.Add(n - 2);
-                    greensecondcoordeath.Add(m + 1);
-                }
-                if (matrix[n + 1, m - 2] == "Hr")
-                {
-                    greenchaxmat = true;
-                    greenfirstcoordeath.Add(n + 1);
-                    greensecondcoordeath.Add(m - 2);
-                }
-                if (matrix[n + 1, m + 2] == "Hr")
-                {
-                    greenchaxmat = true;
-                    greenfirstcoordeath.Add(n + 1);
-                    greensecondcoordeath.Add(m + 2);
-                }
-                if (matrix[n + 2, m - 1] == "Hr")
-                {
-                    greenchaxmat = true;
-                    greenfirstcoordeath.Add(n + 2);
-                    greensecondcoordeath.Add(m - 1);
-                }
-                if (matrix[n + 2, m + 1] == "Hr")
-                {
-                    greenchaxmat = true;
-                    greenfirstcoordeath.Add(n + 2);
-                    greensecondcoordeath.Add(m + 1);
-                }
+                killerdetector(n - 1, m - 2, enemy3, ref chaxmat, ref firstcoordeath, ref secondcoordeath);
+                killerdetector(n - 1, m + 2, enemy3, ref chaxmat, ref firstcoordeath, ref secondcoordeath);
+                killerdetector(n + 1, m - 2, enemy3, ref chaxmat, ref firstcoordeath, ref secondcoordeath);
+                killerdetector(n + 1, m + 2, enemy3, ref chaxmat, ref firstcoordeath, ref secondcoordeath);
+                killerdetector(n - 2, m - 1, enemy3, ref chaxmat, ref firstcoordeath, ref secondcoordeath);
+                killerdetector(n - 2, m + 1, enemy3, ref chaxmat, ref firstcoordeath, ref secondcoordeath);
+                killerdetector(n + 2, m - 1, enemy3, ref chaxmat, ref firstcoordeath, ref secondcoordeath);
+                killerdetector(n + 2, m + 1, enemy3, ref chaxmat, ref firstcoordeath, ref secondcoordeath);
                 for (int i = 1; i < 12; i++)
                 {
                     if (0 < n - i && 0 < m - i)
