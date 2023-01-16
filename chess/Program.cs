@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Runtime;
 using System.Text;
 
 namespace program
@@ -21,7 +22,7 @@ namespace program
             int counterturaredright = 0;
             int counterkinggreen = 0;
             int counterkingred = 0;
-            string figura;
+            string figura = "";
             int counterstor = 0;
             int counterhod = 1;
             int kinggreenplace1 = 9;
@@ -74,52 +75,25 @@ namespace program
                 {
                     if (counterstor == 0)
                     {
-                        counter();
                         errorcell1 = false;
                         errorcell2 = false;
                         greenfirstcoordeath.Clear();
                         greensecondcoordeath.Clear();
                         redfirstcoorblock.Clear();
                         redsecondcoorblock.Clear();
-                        greenchax(kinggreenplace1, kinggreenplace2);
-                        redchax(kingredplace1, kingredplace2);
                         if (greenstalemate())
                         {
                             Console.WriteLine("Шах и ПАТ! Зеленый рад");
                             break;
                         }
-                        if (redstalemate())
-                        {
-                            Console.WriteLine("Шах и ПАТ! Красный рад");
-                            break;
-                        }
-                        greenchax(kinggreenplace1, kinggreenplace2);
-                        redchax(kingredplace1, kingredplace2);
-                        if (greenchaxmat)
+                        if (greenchax(kinggreenplace1, kinggreenplace2))
                         {
                             if (greenend())
                             {
                                 Console.WriteLine("VIKA! VIKA! VIKA! RED WON");
                                 break;
                             }
-                        }
-                        if (redchaxmat)
-                        {
-                            if (redend())
-                            {
-                                Console.WriteLine("GG WP! GREEN WON");
-                                break;
-                            }
-                        }
-                        greenchax(kinggreenplace1, kinggreenplace2);
-                        redchax(kingredplace1, kingredplace2);
-                        if (greenchaxmat == true)
-                        {
                             Console.WriteLine("ATTENTION! ШАХ!(зеленый! Алло)");
-                        }
-                        if (redchaxmat == true)
-                        {
-                            Console.WriteLine("ATTENTION! ШАХ!(красный! Алло)");
                         }
                         Console.WriteLine($"Ход зеленых  {counterhod} ");
                         cell1 = Console.ReadLine();
@@ -134,273 +108,281 @@ namespace program
                             Console.WriteLine("Внеси данные правильно");
                             continue;
                         }
-                        if (matrix[digit1, digit2] == "Пg")
+                        switch (matrix[digit1, digit2])
                         {
-                            Console.WriteLine("(пешка)");
-                            cell2 = Console.ReadLine();
-                            place2(cell2);
-                            if (errorcell2)
-                            {
-                                matrixbuild();
-                                Console.WriteLine("Внеси данные правильно");
-                                continue;
-                            }
-                            matrix[digit1, digit2] = "*";
-                            temp = matrix[digit3, digit4];
-                            matrix[digit3, digit4] = "Пg";
-                            greenchax(kinggreenplace1, kinggreenplace2);
-                            matrix[digit1, digit2] = "Пg";
-                            matrix[digit3, digit4] = temp;
-                            if (greenchaxmat == true)
-                            {
-                                Console.WriteLine("Король: Та за шо");
-                            }
-                            else if (matrix[digit3, digit4] == "*" && digit2 == digit4 && ((digit2 == digit4 && digit3 - digit1 == -1) || (digit1 == 8 && digit3 - digit1 == -2)))
-                            {
-                                if (digit3 == 2)
+                            case "Пg":
+                                Console.WriteLine("(пешка)");
+                                cell2 = Console.ReadLine();
+                                place2(cell2);
+                                if (errorcell2)
                                 {
-                                    Console.WriteLine("тура(1)/слон(2)/ферзь(3)/конь(4)?");
-                                    answer = Convert.ToInt32(Console.ReadLine());
-                                    while (answer != 1 && answer != 2 && answer != 3 && answer != 4)
+                                    matrixbuild();
+                                    Console.WriteLine("Внеси данные правильно");
+                                    continue;
+                                }
+                                matrix[digit1, digit2] = "*";
+                                temp = matrix[digit3, digit4];
+                                matrix[digit3, digit4] = "Пg";
+                                greenchax(kinggreenplace1, kinggreenplace2);
+                                matrix[digit1, digit2] = "Пg";
+                                matrix[digit3, digit4] = temp;
+                                if (greenchaxmat == true)
+                                {
+                                    Console.WriteLine("Король: Та за шо");
+                                }
+                                else if (matrix[digit3, digit4] == "*" && digit2 == digit4 && ((digit2 == digit4 && digit3 - digit1 == -1) || (digit1 == 8 && digit3 - digit1 == -2)))
+                                {
+                                    if (digit3 == 2)
                                     {
-                                        Console.WriteLine("Выбери что то из вышеперечисленного и напиши цифру");
+                                        Console.WriteLine("тура(1)/слон(2)/ферзь(3)/конь(4)?");
                                         answer = Convert.ToInt32(Console.ReadLine());
+                                        while (answer != 1 && answer != 2 && answer != 3 && answer != 4)
+                                        {
+                                            Console.WriteLine("Выбери что то из вышеперечисленного и напиши цифру");
+                                            answer = Convert.ToInt32(Console.ReadLine());
+                                        }
+                                        switch (answer)
+                                        {
+                                            case 1:
+                                                matrix[digit3, digit4] = "Tg";
+                                                break;
+                                            case 2:
+                                                matrix[digit3, digit4] = "Cg";
+                                                break;
+                                            case 3:
+                                                matrix[digit3, digit4] = "Qg";
+                                                break;
+                                            case 4:
+                                                matrix[digit3, digit4] = "Hg";
+                                                break;
+                                        }
+                                        counterstor++;
+                                        counterhod++;
                                     }
-                                    switch (answer)
+                                    else
                                     {
-                                        case 1:
-                                            matrix[digit3, digit4] = "Tg";
-                                            break;
-                                        case 2:
-                                            matrix[digit3, digit4] = "Cg";
-                                            break;
-                                        case 3:
-                                            matrix[digit3, digit4] = "Qg";
-                                            break;
-                                        case 4:
-                                            matrix[digit3, digit4] = "Hg";
-                                            break;
+                                        matrix[digit3, digit4] = "Пg";
+                                        counterstor++;
+                                        counterhod++;
                                     }
-                                    counterstor++;
-                                    counterhod++;
-                                }
-                                else
-                                {
-                                    matrix[digit3, digit4] = "Пg";
-                                    counterstor++;
-                                    counterhod++;
-                                }
-                                matrix[digit1, digit2] = "*";
-                            }
-                            else if ((matrix[digit3, digit4] == "Пr" || matrix[digit3, digit4] == "Tr" || matrix[digit3, digit4] == "Hr" || matrix[digit3, digit4] == "Cr" || matrix[digit3, digit4] == "Qr" || matrix[digit3, digit4] == "Kr" || matrix[digit3, digit4] == "Tr1") && Math.Abs(digit4 - digit2) == 1 && digit3 - digit1 == -1)
-                            {
-                                if (digit3 == 2)
-                                {
-                                    Console.WriteLine("тура(1)/слон(2)/ферзь(3)/конь(4)?");
-                                    answer = Convert.ToInt32(Console.ReadLine());
-                                    while (answer != 1 && answer != 2 && answer != 3 && answer != 4)
-                                    {
-                                        Console.WriteLine("Выбери что то из вышеперечисленного и цифру");
-                                        answer = Convert.ToInt32(Console.ReadLine());
-                                    }
-                                    switch (answer)
-                                    {
-                                        case 1:
-                                            matrix[digit3, digit4] = "Tg";
-                                            break;
-                                        case 2:
-                                            matrix[digit3, digit4] = "Cg";
-                                            break;
-                                        case 3:
-                                            matrix[digit3, digit4] = "Qg";
-                                            break;
-                                        case 4:
-                                            matrix[digit3, digit4] = "Hg";
-                                            break;
-                                    }
-                                    counterstor++;
-                                    counterhod++;
-                                }
-                                else
-                                {
-                                    matrix[digit3, digit4] = "Пg";
-                                    counterstor++;
-                                    counterhod++;
-                                }
-                                matrix[digit1, digit2] = "*";
-                            }
-                            else
-                            {
-                                Console.WriteLine("Не-а, так нельзя ходить");
-                            }
-                        }
-                        else if (matrix[digit1, digit2] == "Hg")
-                        {
-                            Console.WriteLine("(конь)");
-                            cell2 = Console.ReadLine();
-                            place2(cell2);
-                            if (errorcell2)
-                            {
-                                matrixbuild();
-                                Console.WriteLine("Внеси данные правильно");
-                                continue;
-                            }
-                            matrix[digit1, digit2] = "*";
-                            temp = matrix[digit3, digit4];
-                            matrix[digit3, digit4] = "Hg";
-                            greenchax(kinggreenplace1, kinggreenplace2);
-                            matrix[digit1, digit2] = "Hg";
-                            matrix[digit3, digit4] = temp;
-                            if (greenchaxmat == true)
-                            {
-                                Console.WriteLine("Король: Та за шо");
-                            }
-                            else if (matrix[digit3, digit4] != " " && (Math.Pow((digit3 - digit1), 2) + Math.Pow((digit4 - digit2), 2)) == 5 && matrix[digit3, digit4] != "Пg" && matrix[digit3, digit4] != "Tg" && matrix[digit3, digit4] != "Tg1" && matrix[digit3, digit4] != "Hg" && matrix[digit3, digit4] != "Cg" && matrix[digit3, digit4] != "Kg" && matrix[digit3, digit4] != "Qg")
-                            {
-                                matrix[digit3, digit4] = "Hg";
-                                matrix[digit1, digit2] = "*";
-                                counterstor++;
-                                counterhod++;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Не-а, так нельзя ходить");
-                            }
-                            
-                        }
-                        else if (matrix[digit1, digit2] == "Tg" || matrix[digit1, digit2] == "Tg1")
-                        {
-                            Console.WriteLine("(тура)");
-                            cell2 = Console.ReadLine();
-                            place2(cell2);
-                            if (errorcell2)
-                            {
-                                matrixbuild();
-                                Console.WriteLine("Внеси данные правильно");
-                                continue;
-                            }
-                            figura = matrix[digit1, digit2];
-                            matrix[digit1, digit2] = "*";
-                            temp = matrix[digit3, digit4];
-                            matrix[digit3, digit4] = figura;
-                            greenchax(kinggreenplace1, kinggreenplace2);
-                            matrix[digit1, digit2] = figura;
-                            matrix[digit3, digit4] = temp;
-                            if (greenchaxmat == true)
-                            {
-                                Console.WriteLine("Король: Та за шо");
-                            }
-                            else
-                            {
-                                greentura(figura, digit1, digit2, digit3, digit4);
-                                if (digit1 != digit3 && digit2 != digit4)
-                                {
-                                    Console.WriteLine("Не-а, так нельзя ходить");
-                                }
-                            }
-                        }
-                        else if (matrix[digit1, digit2] == "Cg")
-                        {
-                            Console.WriteLine("(слон)");
-                            cell2 = Console.ReadLine();
-                            place2(cell2);
-                            if (errorcell2)
-                            {
-                                matrixbuild();
-                                Console.WriteLine("Внеси данные правильно");
-                                continue;
-                            }
-                            figura = "Cg";
-                            matrix[digit1, digit2] = "*";
-                            temp = matrix[digit3, digit4];
-                            matrix[digit3, digit4] = figura;
-                            greenchax(kinggreenplace1, kinggreenplace2);
-                            matrix[digit1, digit2] = figura;
-                            matrix[digit3, digit4] = temp;
-                            if (greenchaxmat == true)
-                            {
-                                Console.WriteLine("Король: Та за шо");
-                            }
-                            else
-                            {
-                                greenslon(figura, digit1, digit2, digit3, digit4);
-                                if (Math.Abs(digit3 - digit1) != Math.Abs(digit4 - digit2))
-                                {
-                                    Console.WriteLine("Не-а, так нельзя ходить");
-                                }
-                            }
-                        }
-                        else if (matrix[digit1, digit2] == "Qg")
-                        {
-                            Console.WriteLine("(королева)");
-                            cell2 = Console.ReadLine();
-                            place2(cell2);
-                            if (errorcell2)
-                            {
-                                matrixbuild();
-                                Console.WriteLine("Внеси данные правильно");
-                                continue;
-                            }
-                            figura = "Qg";
-                            matrix[digit1, digit2] = "*";
-                            temp = matrix[digit3, digit4];
-                            matrix[digit3, digit4] = figura;
-                            greenchax(kinggreenplace1, kinggreenplace2);
-                            matrix[digit1, digit2] = figura;
-                            matrix[digit3, digit4] = temp;
-                            if (greenchaxmat == true)
-                            {
-                                Console.WriteLine("Король: Та за шо");
-                            }
-                            else
-                            {
-                                greenslon(figura, digit1, digit2, digit3, digit4);
-                                greentura(figura, digit1, digit2, digit3, digit4);
-                                if (Math.Abs(digit3 - digit1) != Math.Abs(digit4 - digit2) && digit1 != digit3 && digit2 != digit4)
-                                {
-                                    Console.WriteLine("Не-а, так нельзя ходить");
-                                }
-                            }
-                        }
-                        else if (matrix[digit1, digit2] == "Kg")
-                        {
-                            Console.WriteLine("(король)");
-                            cell2 = Console.ReadLine();
-                            place2(cell2);
-                            if (errorcell2)
-                            {
-                                matrixbuild();
-                                Console.WriteLine("Внеси данные правильно");
-                                continue;
-                            }
-                            matrix[digit1, digit2] = "*";
-                            greenchax(digit3, digit4);
-                            matrix[digit1, digit2] = "Kg";
-                            if (greenchaxmat == true)
-                            {
-                                Console.WriteLine("Не надо, дядя. Убьют тебя");
-                            }
-                            else
-                            {
-                                if (((Math.Abs(digit3 - digit1) == 1 && Math.Abs(digit4 - digit2) == 1) || (digit3 - digit1 == 0 && Math.Abs(digit4 - digit2) == 1) || (digit4 - digit2 == 0 && Math.Abs(digit3 - digit1) == 1)) && (matrix[digit3, digit4] != " " && matrix[digit3, digit4] != "Пg" && matrix[digit3, digit4] != "Tg" && matrix[digit3, digit4] != "Tg1" && matrix[digit3, digit4] != "Hg" && matrix[digit3, digit4] != "Cg" && matrix[digit3, digit4] != "Qg"))
-                                {
-                                    matrix[digit3, digit4] = "Kg";
                                     matrix[digit1, digit2] = "*";
-                                    counterkinggreen++;
-                                    counterstor++;
-                                    counterhod++;
-                                    kinggreenplace1 = digit3;
-                                    kinggreenplace2 = digit4;
+                                }
+                                else if ((matrix[digit3, digit4] == "Пr" || matrix[digit3, digit4] == "Tr" || matrix[digit3, digit4] == "Hr" || matrix[digit3, digit4] == "Cr" || matrix[digit3, digit4] == "Qr" || matrix[digit3, digit4] == "Kr" || matrix[digit3, digit4] == "Tr1") && Math.Abs(digit4 - digit2) == 1 && digit3 - digit1 == -1)
+                                {
+                                    if (digit3 == 2)
+                                    {
+                                        Console.WriteLine("тура(1)/слон(2)/ферзь(3)/конь(4)?");
+                                        answer = Convert.ToInt32(Console.ReadLine());
+                                        while (answer != 1 && answer != 2 && answer != 3 && answer != 4)
+                                        {
+                                            Console.WriteLine("Выбери что то из вышеперечисленного и цифру");
+                                            answer = Convert.ToInt32(Console.ReadLine());
+                                        }
+                                        switch (answer)
+                                        {
+                                            case 1:
+                                                matrix[digit3, digit4] = "Tg";
+                                                break;
+                                            case 2:
+                                                matrix[digit3, digit4] = "Cg";
+                                                break;
+                                            case 3:
+                                                matrix[digit3, digit4] = "Qg";
+                                                break;
+                                            case 4:
+                                                matrix[digit3, digit4] = "Hg";
+                                                break;
+                                        }
+                                        counterstor++;
+                                        counterhod++;
+                                    }
+                                    else
+                                    {
+                                        matrix[digit3, digit4] = "Пg";
+                                        counterstor++;
+                                        counterhod++;
+                                    }
+                                    matrix[digit1, digit2] = "*";
                                 }
                                 else
                                 {
                                     Console.WriteLine("Не-а, так нельзя ходить");
                                 }
-                            }
+                                break;
+
+                            case "Hg":
+                                Console.WriteLine("(конь)");
+                                cell2 = Console.ReadLine();
+                                place2(cell2);
+                                if (errorcell2)
+                                {
+                                    matrixbuild();
+                                    Console.WriteLine("Внеси данные правильно");
+                                    continue;
+                                }
+                                matrix[digit1, digit2] = "*";
+                                temp = matrix[digit3, digit4];
+                                matrix[digit3, digit4] = "Hg";
+                                greenchax(kinggreenplace1, kinggreenplace2);
+                                matrix[digit1, digit2] = "Hg";
+                                matrix[digit3, digit4] = temp;
+                                if (greenchaxmat == true)
+                                {
+                                    Console.WriteLine("Король: Та за шо");
+                                }
+                                else if (matrix[digit3, digit4] != " " && (Math.Pow((digit3 - digit1), 2) + Math.Pow((digit4 - digit2), 2)) == 5 && matrix[digit3, digit4] != "Пg" && matrix[digit3, digit4] != "Tg" && matrix[digit3, digit4] != "Tg1" && matrix[digit3, digit4] != "Hg" && matrix[digit3, digit4] != "Cg" && matrix[digit3, digit4] != "Kg" && matrix[digit3, digit4] != "Qg")
+                                {
+                                    matrix[digit3, digit4] = "Hg";
+                                    matrix[digit1, digit2] = "*";
+                                    counterstor++;
+                                    counterhod++;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Не-а, так нельзя ходить");
+                                }
+                                break;
+
+                            case "Tg":
+                                figura = "Tg";
+                                goto case "Tg + Tg1";
+
+                            case "Tg1":
+                                figura = "Tg1";
+                                goto case "Tg + Tg1";
+
+                            case "Tg + Tg1":
+                                Console.WriteLine("(тура)");
+                                cell2 = Console.ReadLine();
+                                place2(cell2);
+                                if (errorcell2)
+                                {
+                                    matrixbuild();
+                                    Console.WriteLine("Внеси данные правильно");
+                                    continue;
+                                }
+                                matrix[digit1, digit2] = "*";
+                                temp = matrix[digit3, digit4];
+                                matrix[digit3, digit4] = figura;
+                                greenchax(kinggreenplace1, kinggreenplace2);
+                                matrix[digit1, digit2] = figura;
+                                matrix[digit3, digit4] = temp;
+                                if (greenchaxmat == true)
+                                {
+                                    Console.WriteLine("Король: Та за шо");
+                                }
+                                else
+                                {
+                                    greentura(figura, digit1, digit2, digit3, digit4);
+                                    if (digit1 != digit3 && digit2 != digit4)
+                                    {
+                                        Console.WriteLine("Не-а, так нельзя ходить");
+                                    }
+                                }
+                                break;
+
+                            case "Cg":
+                                Console.WriteLine("(слон)");
+                                cell2 = Console.ReadLine();
+                                place2(cell2);
+                                if (errorcell2)
+                                {
+                                    matrixbuild();
+                                    Console.WriteLine("Внеси данные правильно");
+                                    continue;
+                                }
+                                figura = "Cg";
+                                matrix[digit1, digit2] = "*";
+                                temp = matrix[digit3, digit4];
+                                matrix[digit3, digit4] = figura;
+                                greenchax(kinggreenplace1, kinggreenplace2);
+                                matrix[digit1, digit2] = figura;
+                                matrix[digit3, digit4] = temp;
+                                if (greenchaxmat == true)
+                                {
+                                    Console.WriteLine("Король: Та за шо");
+                                }
+                                else
+                                {
+                                    greenslon(figura, digit1, digit2, digit3, digit4);
+                                    if (Math.Abs(digit3 - digit1) != Math.Abs(digit4 - digit2))
+                                    {
+                                        Console.WriteLine("Не-а, так нельзя ходить");
+                                    }
+                                }
+                                break;
+
+                            case "Qg":
+                                Console.WriteLine("(королева)");
+                                cell2 = Console.ReadLine();
+                                place2(cell2);
+                                if (errorcell2)
+                                {
+                                    matrixbuild();
+                                    Console.WriteLine("Внеси данные правильно");
+                                    continue;
+                                }
+                                figura = "Qg";
+                                matrix[digit1, digit2] = "*";
+                                temp = matrix[digit3, digit4];
+                                matrix[digit3, digit4] = figura;
+                                greenchax(kinggreenplace1, kinggreenplace2);
+                                matrix[digit1, digit2] = figura;
+                                matrix[digit3, digit4] = temp;
+                                if (greenchaxmat == true)
+                                {
+                                    Console.WriteLine("Король: Та за шо");
+                                }
+                                else
+                                {
+                                    greenslon(figura, digit1, digit2, digit3, digit4);
+                                    greentura(figura, digit1, digit2, digit3, digit4);
+                                    if (Math.Abs(digit3 - digit1) != Math.Abs(digit4 - digit2) && digit1 != digit3 && digit2 != digit4)
+                                    {
+                                        Console.WriteLine("Не-а, так нельзя ходить");
+                                    }
+                                }
+                                break;
+
+                            case "Kg":
+                                Console.WriteLine("(король)");
+                                cell2 = Console.ReadLine();
+                                place2(cell2);
+                                if (errorcell2)
+                                {
+                                    matrixbuild();
+                                    Console.WriteLine("Внеси данные правильно");
+                                    continue;
+                                }
+                                matrix[digit1, digit2] = "*";
+                                greenchax(digit3, digit4);
+                                matrix[digit1, digit2] = "Kg";
+                                if (greenchaxmat == true)
+                                {
+                                    Console.WriteLine("Не надо, дядя. Убьют тебя");
+                                }
+                                else
+                                {
+                                    if (((Math.Abs(digit3 - digit1) == 1 && Math.Abs(digit4 - digit2) == 1) || (digit3 - digit1 == 0 && Math.Abs(digit4 - digit2) == 1) || (digit4 - digit2 == 0 && Math.Abs(digit3 - digit1) == 1)) && (matrix[digit3, digit4] != " " && matrix[digit3, digit4] != "Пg" && matrix[digit3, digit4] != "Tg" && matrix[digit3, digit4] != "Tg1" && matrix[digit3, digit4] != "Hg" && matrix[digit3, digit4] != "Cg" && matrix[digit3, digit4] != "Qg"))
+                                    {
+                                        matrix[digit3, digit4] = "Kg";
+                                        matrix[digit1, digit2] = "*";
+                                        counterkinggreen++;
+                                        counterstor++;
+                                        counterhod++;
+                                        kinggreenplace1 = digit3;
+                                        kinggreenplace2 = digit4;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Не-а, так нельзя ходить");
+                                    }
+                                }
+                                break;
                         }
-                        else if (cell1 == "рокировка вправо")
+                        if (cell1 == "рокировка вправо")
                         {
-                            
+
                             for (int i = 0; i < 3; i++)
                             {
                                 greenchax(9, 6 + i);
@@ -479,48 +461,18 @@ namespace program
                         redsecondcoordeath.Clear();
                         redfirstcoorblock.Clear();
                         redsecondcoorblock.Clear();
-                        greenchax(kinggreenplace1, kinggreenplace2);
-                        redchax(kingredplace1, kingredplace2);
-                        if (greenstalemate())
-                        {
-                            Console.WriteLine("Шах и ПАТ! Зеленый рад");
-                            break;
-                        }
                         if (redstalemate())
                         {
                             Console.WriteLine("Шах и ПАТ! Красный рад");
                             break;
                         }
-                        greenchax(kinggreenplace1, kinggreenplace2);
-                        redchax(kingredplace1, kingredplace2);
-                        if (greenstalemate())
-                        {
-                            Console.WriteLine("Шах и ПАТ! ");
-                        }
-                        if (greenchaxmat)
-                        {
-                            if (greenend())
-                            {
-                                Console.WriteLine("VIKA! VIKA! VIKA! RED WON");
-                                break;
-                            }
-                        }
-                        if (redchaxmat)
+                        if (redchax(kingredplace1, kingredplace2))
                         {
                             if (redend())
                             {
                                 Console.WriteLine("GG WP! GREEN WON");
                                 break;
                             }
-                        }
-                        greenchax(kinggreenplace1, kinggreenplace2);
-                        redchax(kingredplace1, kingredplace2);
-                        if (greenchaxmat == true)
-                        {
-                            Console.WriteLine("ATTENTION! ШАХ!(зеленый! Алло)");
-                        }
-                        if (redchaxmat == true)
-                        {
                             Console.WriteLine("ATTENTION! ШАХ!(красный! Алло)");
                         }
                         Console.WriteLine($"Ход красных {counterhod} ");
@@ -536,270 +488,279 @@ namespace program
                             Console.WriteLine("Внеси данные правильно");
                             continue;
                         }
-                        if (matrix[digit1, digit2] == "Пr")
+                        switch (matrix[digit1, digit2])
                         {
-                            Console.WriteLine("(пешка)");
-                            cell2 = Console.ReadLine();
-                            place2(cell2);
-                            if (errorcell2)
-                            {
-                                matrixbuild();
-                                Console.WriteLine("Внеси данные правильно");
-                                continue;
-                            }
-                            matrix[digit1, digit2] = "*";
-                            temp = matrix[digit3, digit4];
-                            matrix[digit3, digit4] = "Пr";
-                            redchax(kingredplace1, kingredplace2);
-                            matrix[digit1, digit2] = "Пr";
-                            matrix[digit3, digit4] = temp;
-                            if (redchaxmat == true)
-                            {
-                                Console.WriteLine("Король: Та за шо");
-                            }
-                            else if (matrix[digit3, digit4] == "*" && digit2 == digit4 && ((digit2 == digit4 && digit3 - digit1 == 1) || (digit1 == 3 && digit3 - digit1 == 2)))
-                            {
-                                if (digit3 == 9)
+                            case "Пr":
+                                Console.WriteLine("(пешка)");
+                                cell2 = Console.ReadLine();
+                                place2(cell2);
+                                if (errorcell2)
                                 {
-                                    Console.WriteLine("тура(1)/слон(2)/ферзь(3)/конь(4)?");
-                                    answer = Convert.ToInt32(Console.ReadLine());
-                                    while (answer != 1 && answer != 2 && answer != 3 && answer != 4)
+                                    matrixbuild();
+                                    Console.WriteLine("Внеси данные правильно");
+                                    continue;
+                                }
+                                matrix[digit1, digit2] = "*";
+                                temp = matrix[digit3, digit4];
+                                matrix[digit3, digit4] = "Пr";
+                                redchax(kingredplace1, kingredplace2);
+                                matrix[digit1, digit2] = "Пr";
+                                matrix[digit3, digit4] = temp;
+                                if (redchaxmat == true)
+                                {
+                                    Console.WriteLine("Король: Та за шо");
+                                }
+                                else if (matrix[digit3, digit4] == "*" && digit2 == digit4 && ((digit2 == digit4 && digit3 - digit1 == 1) || (digit1 == 3 && digit3 - digit1 == 2)))
+                                {
+                                    if (digit3 == 9)
                                     {
-                                        Console.WriteLine("Выбери что то из вышеперечисленного и цифру");
+                                        Console.WriteLine("тура(1)/слон(2)/ферзь(3)/конь(4)?");
                                         answer = Convert.ToInt32(Console.ReadLine());
+                                        while (answer != 1 && answer != 2 && answer != 3 && answer != 4)
+                                        {
+                                            Console.WriteLine("Выбери что то из вышеперечисленного и цифру");
+                                            answer = Convert.ToInt32(Console.ReadLine());
+                                        }
+                                        switch (answer)
+                                        {
+                                            case 1:
+                                                matrix[digit3, digit4] = "Tr";
+                                                break;
+                                            case 2:
+                                                matrix[digit3, digit4] = "Cr";
+                                                break;
+                                            case 3:
+                                                matrix[digit3, digit4] = "Qr";
+                                                break;
+                                            case 4:
+                                                matrix[digit3, digit4] = "Hr";
+                                                break;
+                                        }
+                                        counterstor--;
+                                        counterhod++;
                                     }
-                                    switch (answer)
+                                    else
                                     {
-                                        case 1:
-                                            matrix[digit3, digit4] = "Tr";
-                                            break;
-                                        case 2:
-                                            matrix[digit3, digit4] = "Cr";
-                                            break;
-                                        case 3:
-                                            matrix[digit3, digit4] = "Qr";
-                                            break;
-                                        case 4:
-                                            matrix[digit3, digit4] = "Hr";
-                                            break;
+                                        matrix[digit3, digit4] = "Пr";
+                                        counterstor--;
+                                        counterhod++;
                                     }
-                                    counterstor--;
-                                    counterhod++;
-                                }
-                                else
-                                {
-                                    matrix[digit3, digit4] = "Пr";
-                                    counterstor--;
-                                    counterhod++;
-                                }
-                                matrix[digit1, digit2] = "*";
-                            }
-                            else if ((matrix[digit3, digit4] == "Пg" || matrix[digit3, digit4] == "Tg" || matrix[digit3, digit4] == "Tg1" || matrix[digit3, digit4] == "Hg" || matrix[digit3, digit4] == "Cg" || matrix[digit3, digit4] == "Kg" || matrix[digit3, digit4] == "Qg") && Math.Abs(digit4 - digit2) == 1 && digit3 - digit1 == 1)
-                            {
-                                if (digit3 == 9)
-                                {
-                                    Console.WriteLine("тура(1)/слон(2)/ферзь(3)/конь(4)?");
-                                    answer = Convert.ToInt32(Console.ReadLine());
-                                    while (answer != 1 && answer != 2 && answer != 3 && answer != 4)
-                                    {
-                                        Console.WriteLine("Выбери что то из вышеперечисленного и цифру");
-                                        answer = Convert.ToInt32(Console.ReadLine());
-                                    }
-                                    switch (answer)
-                                    {
-                                        case 1:
-                                            matrix[digit3, digit4] = "Tr";
-                                            break;
-                                        case 2:
-                                            matrix[digit3, digit4] = "Cr";
-                                            break;
-                                        case 3:
-                                            matrix[digit3, digit4] = "Qr";
-                                            break;
-                                        case 4:
-                                            matrix[digit3, digit4] = "Hr";
-                                            break;
-                                    }
-                                    counterstor--;
-                                    counterhod++;
-                                }
-                                else
-                                {
-                                    matrix[digit3, digit4] = "Пr";
-                                    counterstor--;
-                                    counterhod++;
-                                }
-                                matrix[digit1, digit2] = "*";
-                            }
-                            else
-                            {
-                                Console.WriteLine("Не-а, так нельзя ходить");
-                            }
-                        }
-                        else if (matrix[digit1, digit2] == "Hr")
-                        {
-                            Console.WriteLine("(конь)");
-                            cell2 = Console.ReadLine();
-                            place2(cell2);
-                            if (errorcell2)
-                            {
-                                matrixbuild();
-                                Console.WriteLine("Внеси данные правильно");
-                                continue;
-                            }
-                            matrix[digit1, digit2] = "*";
-                            temp = matrix[digit3, digit4];
-                            matrix[digit3, digit4] = "Hr";
-                            redchax(kingredplace1, kingredplace2);
-                            matrix[digit1, digit2] = "Hr";
-                            matrix[digit3, digit4] = temp;
-                            if (redchaxmat == true)
-                            {
-                                Console.WriteLine("Король: Та за шо");
-                            }
-                            else if (matrix[digit3, digit4] != " " && (Math.Pow((digit3 - digit1), 2) + Math.Pow((digit4 - digit2), 2)) == 5 && matrix[digit3, digit4] != "Пr" && matrix[digit3, digit4] != "Tr" && matrix[digit3, digit4] != "Tr1" && matrix[digit3, digit4] != "Hr" && matrix[digit3, digit4] != "Cr" && matrix[digit3, digit4] != "Kr" && matrix[digit3, digit4] != "Qr")
-                            {
-                                matrix[digit3, digit4] = "Hr";
-                                matrix[digit1, digit2] = "*";
-                                counterstor--;
-                                counterhod++;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Не-а, так нельзя ходить");
-                            }
-                        }
-                        else if (matrix[digit1, digit2] == "Tr" || matrix[digit1, digit2] == "Tr1")
-                        {
-                            Console.WriteLine("(тура)");
-                            cell2 = Console.ReadLine();
-                            place2(cell2);
-                            if (errorcell2)
-                            {
-                                matrixbuild();
-                                Console.WriteLine("Внеси данные правильно");
-                                continue;
-                            }
-                            figura = matrix[digit1, digit2];
-                            matrix[digit1, digit2] = "*";
-                            temp = matrix[digit3, digit4];
-                            matrix[digit3, digit4] = figura;
-                            redchax(kingredplace1, kingredplace2);
-                            matrix[digit1, digit2] = figura;
-                            matrix[digit3, digit4] = temp;
-                            if (redchaxmat == true)
-                            {
-                                Console.WriteLine("Король: Та за шо");
-                            }
-                            else
-                            {
-                                redtura(figura, digit1, digit2, digit3, digit4);
-                                if (digit1 != digit3 && digit2 != digit4)
-                                {
-                                    Console.WriteLine("Не-а, так нельзя ходить");
-                                }
-                            }
-                        }
-                        else if (matrix[digit1, digit2] == "Cr")
-                        {
-                            Console.WriteLine("(слон)");
-                            cell2 = Console.ReadLine();
-                            place2(cell2);
-                            if (errorcell2)
-                            {
-                                matrixbuild();
-                                Console.WriteLine("Внеси данные правильно");
-                                continue;
-                            }
-                            figura = "Cr";
-                            matrix[digit1, digit2] = "*";
-                            temp = matrix[digit3, digit4];
-                            matrix[digit3, digit4] = "Cr";
-                            redchax(kingredplace1, kingredplace2);
-                            matrix[digit1, digit2] = "Cr";
-                            matrix[digit3, digit4] = temp;
-                            if (redchaxmat == true)
-                            {
-                                Console.WriteLine("Король: Та за шо");
-                            }
-                            else
-                            {
-                                redslon(figura, digit1, digit2, digit3, digit4);
-                                if (Math.Abs(digit3 - digit1) != Math.Abs(digit4 - digit2))
-                                {
-                                    Console.WriteLine("Не-а, так нельзя ходить");
-                                }
-                            }
-                        }
-                        else if (matrix[digit1, digit2] == "Qr")
-                        {
-                            Console.WriteLine("(королева)");
-                            cell2 = Console.ReadLine();
-                            place2(cell2);
-                            if (errorcell2)
-                            {
-                                matrixbuild();
-                                Console.WriteLine("Внеси данные правильно");
-                                continue;
-                            }
-                            figura = "Qr";
-                            matrix[digit1, digit2] = "*";
-                            temp = matrix[digit3, digit4];
-                            matrix[digit3, digit4] = figura;
-                            redchax(kingredplace1, kingredplace2);
-                            matrix[digit1, digit2] = figura;
-                            matrix[digit3, digit4] = temp;
-                            if (redchaxmat == true)
-                            {
-                                Console.WriteLine("Король: Та за шо");
-                            }
-                            else
-                            {
-                                redslon(figura, digit1, digit2, digit3, digit4);
-                                redtura(figura, digit1, digit2, digit3, digit4);
-                                if (Math.Abs(digit3 - digit1) != Math.Abs(digit4 - digit2) && digit1 != digit3 && digit2 != digit4)
-                                {
-                                    Console.WriteLine("Не-а, так нельзя ходить");
-                                }
-                            }
-                        }
-                        else if (matrix[digit1, digit2] == "Kr")
-                        {
-                            Console.WriteLine("(король)");
-                            cell2 = Console.ReadLine();
-                            place2(cell2);
-                            if (errorcell2)
-                            {
-                                matrixbuild();
-                                Console.WriteLine("Внеси данные правильно");
-                                continue;
-                            }
-                            matrix[digit1, digit2] = "*";
-                            redchax(digit3, digit4);
-                            matrix[digit1, digit2] = "Kr";
-                            if (redchaxmat)
-                            {
-                                Console.WriteLine("Не надо, дядя. Убьют тебя");
-                            }
-                            else
-                            {
-                                if (((Math.Abs(digit3 - digit1) == 1 && Math.Abs(digit4 - digit2) == 1) || (digit3 - digit1 == 0 && Math.Abs(digit4 - digit2) == 1) || (digit4 - digit2 == 0 && Math.Abs(digit3 - digit1) == 1)) && (matrix[digit3, digit4] != " " && matrix[digit3, digit4] != "Пr" && matrix[digit3, digit4] != "Tr" && matrix[digit3, digit4] != "Tr1" && matrix[digit3, digit4] != "Hr" && matrix[digit3, digit4] != "Cr" && matrix[digit3, digit4] != "Qr"))
-                                {
-                                    matrix[digit3, digit4] = "Kr";
                                     matrix[digit1, digit2] = "*";
-                                    counterkingred++;
-                                    counterstor--;
-                                    counterhod++;
-                                    kingredplace1 = digit3;
-                                    kingredplace2 = digit4;
+                                }
+                                else if ((matrix[digit3, digit4] == "Пg" || matrix[digit3, digit4] == "Tg" || matrix[digit3, digit4] == "Tg1" || matrix[digit3, digit4] == "Hg" || matrix[digit3, digit4] == "Cg" || matrix[digit3, digit4] == "Kg" || matrix[digit3, digit4] == "Qg") && Math.Abs(digit4 - digit2) == 1 && digit3 - digit1 == 1)
+                                {
+                                    if (digit3 == 9)
+                                    {
+                                        Console.WriteLine("тура(1)/слон(2)/ферзь(3)/конь(4)?");
+                                        answer = Convert.ToInt32(Console.ReadLine());
+                                        while (answer != 1 && answer != 2 && answer != 3 && answer != 4)
+                                        {
+                                            Console.WriteLine("Выбери что то из вышеперечисленного и цифру");
+                                            answer = Convert.ToInt32(Console.ReadLine());
+                                        }
+                                        switch (answer)
+                                        {
+                                            case 1:
+                                                matrix[digit3, digit4] = "Tr";
+                                                break;
+                                            case 2:
+                                                matrix[digit3, digit4] = "Cr";
+                                                break;
+                                            case 3:
+                                                matrix[digit3, digit4] = "Qr";
+                                                break;
+                                            case 4:
+                                                matrix[digit3, digit4] = "Hr";
+                                                break;
+                                        }
+                                        counterstor--;
+                                        counterhod++;
+                                    }
+                                    else
+                                    {
+                                        matrix[digit3, digit4] = "Пr";
+                                        counterstor--;
+                                        counterhod++;
+                                    }
+                                    matrix[digit1, digit2] = "*";
                                 }
                                 else
                                 {
                                     Console.WriteLine("Не-а, так нельзя ходить");
                                 }
-                            }
+                                break;
+                            case "Hr":
+                                Console.WriteLine("(конь)");
+                                cell2 = Console.ReadLine();
+                                place2(cell2);
+                                if (errorcell2)
+                                {
+                                    matrixbuild();
+                                    Console.WriteLine("Внеси данные правильно");
+                                    continue;
+                                }
+                                matrix[digit1, digit2] = "*";
+                                temp = matrix[digit3, digit4];
+                                matrix[digit3, digit4] = "Hr";
+                                redchax(kingredplace1, kingredplace2);
+                                matrix[digit1, digit2] = "Hr";
+                                matrix[digit3, digit4] = temp;
+                                if (redchaxmat == true)
+                                {
+                                    Console.WriteLine("Король: Та за шо");
+                                }
+                                else if (matrix[digit3, digit4] != " " && (Math.Pow((digit3 - digit1), 2) + Math.Pow((digit4 - digit2), 2)) == 5 && matrix[digit3, digit4] != "Пr" && matrix[digit3, digit4] != "Tr" && matrix[digit3, digit4] != "Tr1" && matrix[digit3, digit4] != "Hr" && matrix[digit3, digit4] != "Cr" && matrix[digit3, digit4] != "Kr" && matrix[digit3, digit4] != "Qr")
+                                {
+                                    matrix[digit3, digit4] = "Hr";
+                                    matrix[digit1, digit2] = "*";
+                                    counterstor--;
+                                    counterhod++;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Не-а, так нельзя ходить");
+                                }
+                                break;
+
+                            case "Tr":
+                                figura = "Tr";
+                                goto case "Tr + Tr1";
+
+                            case "Tr1":
+                                figura = "Tr1";
+                                goto case "Tr + Tr1";
+
+                            case "Tr + Tr1":
+                                Console.WriteLine("(тура)");
+                                cell2 = Console.ReadLine();
+                                place2(cell2);
+                                if (errorcell2)
+                                {
+                                    matrixbuild();
+                                    Console.WriteLine("Внеси данные правильно");
+                                    continue;
+                                }
+                                figura = matrix[digit1, digit2];
+                                matrix[digit1, digit2] = "*";
+                                temp = matrix[digit3, digit4];
+                                matrix[digit3, digit4] = figura;
+                                redchax(kingredplace1, kingredplace2);
+                                matrix[digit1, digit2] = figura;
+                                matrix[digit3, digit4] = temp;
+                                if (redchaxmat == true)
+                                {
+                                    Console.WriteLine("Король: Та за шо");
+                                }
+                                else
+                                {
+                                    redtura(figura, digit1, digit2, digit3, digit4);
+                                    if (digit1 != digit3 && digit2 != digit4)
+                                    {
+                                        Console.WriteLine("Не-а, так нельзя ходить");
+                                    }
+                                }
+                                break;
+
+                            case "Cr":
+                                Console.WriteLine("(слон)");
+                                cell2 = Console.ReadLine();
+                                place2(cell2);
+                                if (errorcell2)
+                                {
+                                    matrixbuild();
+                                    Console.WriteLine("Внеси данные правильно");
+                                    continue;
+                                }
+                                figura = "Cr";
+                                matrix[digit1, digit2] = "*";
+                                temp = matrix[digit3, digit4];
+                                matrix[digit3, digit4] = "Cr";
+                                redchax(kingredplace1, kingredplace2);
+                                matrix[digit1, digit2] = "Cr";
+                                matrix[digit3, digit4] = temp;
+                                if (redchaxmat == true)
+                                {
+                                    Console.WriteLine("Король: Та за шо");
+                                }
+                                else
+                                {
+                                    redslon(figura, digit1, digit2, digit3, digit4);
+                                    if (Math.Abs(digit3 - digit1) != Math.Abs(digit4 - digit2))
+                                    {
+                                        Console.WriteLine("Не-а, так нельзя ходить");
+                                    }
+                                }
+                                break;
+
+                            case "Qr":
+                                Console.WriteLine("(королева)");
+                                cell2 = Console.ReadLine();
+                                place2(cell2);
+                                if (errorcell2)
+                                {
+                                    matrixbuild();
+                                    Console.WriteLine("Внеси данные правильно");
+                                    continue;
+                                }
+                                figura = "Qr";
+                                matrix[digit1, digit2] = "*";
+                                temp = matrix[digit3, digit4];
+                                matrix[digit3, digit4] = figura;
+                                redchax(kingredplace1, kingredplace2);
+                                matrix[digit1, digit2] = figura;
+                                matrix[digit3, digit4] = temp;
+                                if (redchaxmat == true)
+                                {
+                                    Console.WriteLine("Король: Та за шо");
+                                }
+                                else
+                                {
+                                    redslon(figura, digit1, digit2, digit3, digit4);
+                                    redtura(figura, digit1, digit2, digit3, digit4);
+                                    if (Math.Abs(digit3 - digit1) != Math.Abs(digit4 - digit2) && digit1 != digit3 && digit2 != digit4)
+                                    {
+                                        Console.WriteLine("Не-а, так нельзя ходить");
+                                    }
+                                }
+                                break;
+
+                            case "Kr":
+                                Console.WriteLine("(король)");
+                                cell2 = Console.ReadLine();
+                                place2(cell2);
+                                if (errorcell2)
+                                {
+                                    matrixbuild();
+                                    Console.WriteLine("Внеси данные правильно");
+                                    continue;
+                                }
+                                matrix[digit1, digit2] = "*";
+                                redchax(digit3, digit4);
+                                matrix[digit1, digit2] = "Kr";
+                                if (redchaxmat)
+                                {
+                                    Console.WriteLine("Не надо, дядя. Убьют тебя");
+                                }
+                                else
+                                {
+                                    if (((Math.Abs(digit3 - digit1) == 1 && Math.Abs(digit4 - digit2) == 1) || (digit3 - digit1 == 0 && Math.Abs(digit4 - digit2) == 1) || (digit4 - digit2 == 0 && Math.Abs(digit3 - digit1) == 1)) && (matrix[digit3, digit4] != " " && matrix[digit3, digit4] != "Пr" && matrix[digit3, digit4] != "Tr" && matrix[digit3, digit4] != "Tr1" && matrix[digit3, digit4] != "Hr" && matrix[digit3, digit4] != "Cr" && matrix[digit3, digit4] != "Qr"))
+                                    {
+                                        matrix[digit3, digit4] = "Kr";
+                                        matrix[digit1, digit2] = "*";
+                                        counterkingred++;
+                                        counterstor--;
+                                        counterhod++;
+                                        kingredplace1 = digit3;
+                                        kingredplace2 = digit4;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Не-а, так нельзя ходить");
+                                    }
+                                }
+                                break;
                         }
-                        else if (cell1 == "рокировка влево")
+                        if (cell1 == "рокировка влево")
                         {
                             for (int i = 0; i < 3; i++)
                             {
@@ -921,7 +882,7 @@ namespace program
                             {
                                 Console.Write(" " + greenlosses);
                             }
-                            if (i == 10 && j == 10 && greenlosses != "")
+                            else if (i == 10 && j == 10 && greenlosses != "")
                             {
                                 Console.Write(" " + redlosses);
                             }
@@ -930,8 +891,8 @@ namespace program
                         Console.BackgroundColor = ConsoleColor.Black;
                         Console.ForegroundColor = ConsoleColor.White;
                     }
-                }                
-                if (counterstor == 1)
+                }
+                else if (counterstor == 1)
                 {
                     for (int i = 10; i > 0; i--)
                     {
@@ -1057,87 +1018,77 @@ namespace program
             {
                 if (cell1.Length == 2)
                 {
-                    if (Convert.ToString(cell1[0]) == "A")
+                    switch (Convert.ToString(cell1[0]))
                     {
-                        digit1 = 2;
-                    }
-                    else if (Convert.ToString(cell1[0]) == "B")
-                    {
-                        digit1 = 3;
-                    }
-                    else if (Convert.ToString(cell1[0]) == "C")
-                    {
-                        digit1 = 4;
-                    }
-                    else if (Convert.ToString(cell1[0]) == "D")
-                    {
-                        digit1 = 5;
-                    }
-                    else if (Convert.ToString(cell1[0]) == "E")
-                    {
-                        digit1 = 6;
-                    }
-                    else if (Convert.ToString(cell1[0]) == "F")
-                    {
-                        digit1 = 7;
-                    }
-                    else if (Convert.ToString(cell1[0]) == "G")
-                    {
-                        digit1 = 8;
-                    }
-                    else if (Convert.ToString(cell1[0]) == "H")
-                    {
-                        digit1 = 9;
+                        case "A":
+                            digit1 = 2;
+                            break;
+                        case "B":
+                            digit1 = 3;
+                            break;
+                        case "C":
+                            digit1 = 4;
+                            break;
+                        case "D":
+                            digit1 = 5;
+                            break;
+                        case "E":
+                            digit1 = 6;
+                            break;
+                        case "F":
+                            digit1 = 7;
+                            break;
+                        case "G":
+                            digit1 = 8;
+                            break;
+                        case "H":
+                            digit1 = 9;
+                            break;
                     }
                     if (1 < Convert.ToInt32(cell1[1]) - 47 && Convert.ToInt32(cell1[1]) - 47 < 10)
                     {
                         digit2 = Convert.ToInt32(cell1[1]) - 47;
                     }
                 }
-                if (cell1.Length != 2 || (Convert.ToString(cell1[1]) != "1" && Convert.ToString(cell1[1]) != "2" && Convert.ToString(cell1[1]) != "3" && Convert.ToString(cell1[1]) != "4" && Convert.ToString(cell1[1]) != "5" && Convert.ToString(cell1[1]) != "6" && Convert.ToString(cell1[1]) != "7" && Convert.ToString(cell1[1]) != "8"))
-                {
-                    errorcell1 = true;
-                }
                 if (cell1 == "рокировка вправо" || cell1 == "рокировка влево")
                 {
                     errorcell1 = false;
+                }
+                else if (cell1.Length != 2 || (Convert.ToString(cell1[1]) != "1" && Convert.ToString(cell1[1]) != "2" && Convert.ToString(cell1[1]) != "3" && Convert.ToString(cell1[1]) != "4" && Convert.ToString(cell1[1]) != "5" && Convert.ToString(cell1[1]) != "6" && Convert.ToString(cell1[1]) != "7" && Convert.ToString(cell1[1]) != "8"))
+                {
+                    errorcell1 = true;
                 }
             }
             void place2(string green)
             {
                 if (cell2.Length == 2)
                 {
-                    if (Convert.ToString(cell2[0]) == "A")
+                    switch (Convert.ToString(cell2[0]))
                     {
-                        digit3 = 2;
-                    }
-                    else if (Convert.ToString(cell2[0]) == "B")
-                    {
-                        digit3 = 3;
-                    }
-                    else if (Convert.ToString(cell2[0]) == "C")
-                    {
-                        digit3 = 4;
-                    }
-                    else if (Convert.ToString(cell2[0]) == "D")
-                    {
-                        digit3 = 5;
-                    }
-                    else if (Convert.ToString(cell2[0]) == "E")
-                    {
-                        digit3 = 6;
-                    }
-                    else if (Convert.ToString(cell2[0]) == "F")
-                    {
-                        digit3 = 7;
-                    }
-                    else if (Convert.ToString(cell2[0]) == "G")
-                    {
-                        digit3 = 8;
-                    }
-                    else if (Convert.ToString(cell2[0]) == "H")
-                    {
-                        digit3 = 9;
+                        case "A":
+                            digit3 = 2;
+                            break;
+                        case "B":
+                            digit3 = 3;
+                            break;
+                        case "C":
+                            digit3 = 4;
+                            break;
+                        case "D":
+                            digit3 = 5;
+                            break;
+                        case "E":
+                            digit3 = 6;
+                            break;
+                        case "F":
+                            digit3 = 7;
+                            break;
+                        case "G":
+                            digit3 = 8;
+                            break;
+                        case "H":
+                            digit3 = 9;
+                            break;
                     }
                     if (1 < Convert.ToInt32(cell2[1]) - 47 && Convert.ToInt32(cell2[1]) - 47 < 10)
                     {
@@ -1148,7 +1099,7 @@ namespace program
                 {
                     errorcell2 = true;
                 }
-                if (cell1[0] == cell2[0] && cell1[1] == cell2[1])
+                else if (cell1[0] == cell2[0] && cell1[1] == cell2[1])
                 {
                     errorcell2 = true;
                 }
@@ -1497,7 +1448,7 @@ namespace program
                 }
                 counterproh = 0;
             }
-            void greenchax(int n, int m)
+            bool greenchax(int n, int m)
             {
                 greenchaxmat = false;
                 greenchaxrighttopslon = true;
@@ -1724,8 +1675,9 @@ namespace program
                         greensecondcoordeath.Add(m + 1);
                     }
                 }
+                return greenchaxmat;
             }
-            void redchax(int n, int m)
+            bool redchax(int n, int m)
             {
                 redchaxmat = false;
                 redchaxrighttopslon = true;
@@ -1951,6 +1903,7 @@ namespace program
                         redsecondcoordeath.Add(m + 1);
                     }
                 }
+                return redchaxmat;
             }
             void redblock(int n, int m)
             {
@@ -2130,7 +2083,7 @@ namespace program
                 if (matrix[n - 2, m] == "Пr" && n == 6 && matrix[n - 1, m] == "*")
                 {
                     greenfirstcoorblock.Add(n - 2);
-                    greensecondcoorblock.Add(m );
+                    greensecondcoorblock.Add(m);
                 }
                 if (matrix[n - 1, m - 2] == "Hr")
                 {
@@ -2586,8 +2539,7 @@ namespace program
             }
             bool greenstalemate()
             {
-                greenchax(kinggreenplace1, kinggreenplace2);
-                if (greenchaxmat)
+                if (greenchax(kinggreenplace1, kinggreenplace2))
                 {
                     return false;
                 }
@@ -3168,8 +3120,7 @@ namespace program
             }
             bool redstalemate()
             {
-                redchax(kingredplace1, kingredplace2);
-                if (redchaxmat)
+                if (redchax(kingredplace1, kingredplace2))
                 {
                     return false;
                 }
