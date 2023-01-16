@@ -1,4 +1,6 @@
+using Microsoft.VisualBasic;
 using System;
+using System.Drawing;
 using System.Runtime;
 using System.Text;
 
@@ -11,10 +13,10 @@ namespace program
             string cell1;
             string cell2;
             string temp;
-            int digit1 = -1;
-            int digit2 = -1;
-            int digit3 = -1;
-            int digit4 = -1;
+            int dig1 = -1;
+            int dig2 = -1;
+            int dig3 = -1;
+            int dig4 = -1;
             int counterproh = 0;
             int counterturagreenleft = 0;
             int counterturagreenright = 0;
@@ -29,15 +31,15 @@ namespace program
             int kinggreenplace2 = 6;
             int kingredplace1 = 2;
             int kingredplace2 = 6;
-            bool greenchaxmat;
-            bool greenchaxrighttopslon;
-            bool greenchaxlefttopslon;
-            bool greenchaxrightdownslon;
-            bool greenchaxleftdownslon;
-            bool greenchaxlefttura;
-            bool greenchaxrighttura;
-            bool greenchaxtoptura;
-            bool greenchaxdowntura;
+            bool greenchaxmat = false;
+            bool greenchaxrighttopslon = true;
+            bool greenchaxlefttopslon = true;
+            bool greenchaxrightdownslon = true;
+            bool greenchaxleftdownslon = true;
+            bool greenchaxlefttura = true;
+            bool greenchaxrighttura = true;
+            bool greenchaxtoptura = true;
+            bool greenchaxdowntura = true;
             bool redchaxmat = false;
             bool redchaxrighttopslon;
             bool redchaxlefttopslon;
@@ -56,6 +58,13 @@ namespace program
             int answer;
             string greenlosses = "";
             string redlosses = "";
+            string ally1 = "";
+            string ally2 = "";
+            string ally3 = "";
+            string ally4 = "";
+            string ally5 = "";
+            string ally6 = "";
+            string ally7 = "";
             List<int> greenfirstcoordeath = new();
             List<int> greensecondcoordeath = new();
             List<int> redfirstcoordeath = new();
@@ -108,7 +117,7 @@ namespace program
                             Console.WriteLine("Внеси данные правильно");
                             continue;
                         }
-                        switch (matrix[digit1, digit2])
+                        switch (matrix[dig1, dig2])
                         {
                             case "Пg":
                                 Console.WriteLine("(пешка)");
@@ -120,19 +129,14 @@ namespace program
                                     Console.WriteLine("Внеси данные правильно");
                                     continue;
                                 }
-                                matrix[digit1, digit2] = "*";
-                                temp = matrix[digit3, digit4];
-                                matrix[digit3, digit4] = "Пg";
-                                greenchax(kinggreenplace1, kinggreenplace2);
-                                matrix[digit1, digit2] = "Пg";
-                                matrix[digit3, digit4] = temp;
-                                if (greenchaxmat == true)
+                                attempt("Пg");
+                                if (greenchaxmat)
                                 {
                                     Console.WriteLine("Король: Та за шо");
                                 }
-                                else if (matrix[digit3, digit4] == "*" && digit2 == digit4 && ((digit2 == digit4 && digit3 - digit1 == -1) || (digit1 == 8 && digit3 - digit1 == -2)))
+                                else if (matrix[dig3, dig4] == "*" && dig2 == dig4 && ((dig2 == dig4 && dig3 - dig1 == -1) || (dig1 == 8 && dig3 - dig1 == -2)))
                                 {
-                                    if (digit3 == 2)
+                                    if (dig3 == 2)
                                     {
                                         Console.WriteLine("тура(1)/слон(2)/ферзь(3)/конь(4)?");
                                         answer = Convert.ToInt32(Console.ReadLine());
@@ -144,32 +148,30 @@ namespace program
                                         switch (answer)
                                         {
                                             case 1:
-                                                matrix[digit3, digit4] = "Tg";
+                                                matrix[dig3, dig4] = "Tg";
                                                 break;
                                             case 2:
-                                                matrix[digit3, digit4] = "Cg";
+                                                matrix[dig3, dig4] = "Cg";
                                                 break;
                                             case 3:
-                                                matrix[digit3, digit4] = "Qg";
+                                                matrix[dig3, dig4] = "Qg";
                                                 break;
                                             case 4:
-                                                matrix[digit3, digit4] = "Hg";
+                                                matrix[dig3, dig4] = "Hg";
                                                 break;
                                         }
-                                        counterstor++;
-                                        counterhod++;
                                     }
                                     else
                                     {
-                                        matrix[digit3, digit4] = "Пg";
-                                        counterstor++;
-                                        counterhod++;
+                                        matrix[dig3, dig4] = "Пg";
                                     }
-                                    matrix[digit1, digit2] = "*";
+                                    counterstor++;
+                                    counterhod++;
+                                    matrix[dig1, dig2] = "*";
                                 }
-                                else if ((matrix[digit3, digit4] == "Пr" || matrix[digit3, digit4] == "Tr" || matrix[digit3, digit4] == "Hr" || matrix[digit3, digit4] == "Cr" || matrix[digit3, digit4] == "Qr" || matrix[digit3, digit4] == "Kr" || matrix[digit3, digit4] == "Tr1") && Math.Abs(digit4 - digit2) == 1 && digit3 - digit1 == -1)
+                                else if ((matrix[dig3, dig4] == "Пr" || matrix[dig3, dig4] == "Tr" || matrix[dig3, dig4] == "Hr" || matrix[dig3, dig4] == "Cr" || matrix[dig3, dig4] == "Qr" || matrix[dig3, dig4] == "Kr" || matrix[dig3, dig4] == "Tr1") && Math.Abs(dig4 - dig2) == 1 && dig3 - dig1 == -1)
                                 {
-                                    if (digit3 == 2)
+                                    if (dig3 == 2)
                                     {
                                         Console.WriteLine("тура(1)/слон(2)/ферзь(3)/конь(4)?");
                                         answer = Convert.ToInt32(Console.ReadLine());
@@ -181,28 +183,26 @@ namespace program
                                         switch (answer)
                                         {
                                             case 1:
-                                                matrix[digit3, digit4] = "Tg";
+                                                matrix[dig3, dig4] = "Tg";
                                                 break;
                                             case 2:
-                                                matrix[digit3, digit4] = "Cg";
+                                                matrix[dig3, dig4] = "Cg";
                                                 break;
                                             case 3:
-                                                matrix[digit3, digit4] = "Qg";
+                                                matrix[dig3, dig4] = "Qg";
                                                 break;
                                             case 4:
-                                                matrix[digit3, digit4] = "Hg";
+                                                matrix[dig3, dig4] = "Hg";
                                                 break;
                                         }
-                                        counterstor++;
-                                        counterhod++;
                                     }
                                     else
                                     {
-                                        matrix[digit3, digit4] = "Пg";
-                                        counterstor++;
-                                        counterhod++;
+                                        matrix[dig3, dig4] = "Пg";
                                     }
-                                    matrix[digit1, digit2] = "*";
+                                    counterstor++;
+                                    counterhod++;
+                                    matrix[dig1, dig2] = "*";
                                 }
                                 else
                                 {
@@ -220,20 +220,15 @@ namespace program
                                     Console.WriteLine("Внеси данные правильно");
                                     continue;
                                 }
-                                matrix[digit1, digit2] = "*";
-                                temp = matrix[digit3, digit4];
-                                matrix[digit3, digit4] = "Hg";
-                                greenchax(kinggreenplace1, kinggreenplace2);
-                                matrix[digit1, digit2] = "Hg";
-                                matrix[digit3, digit4] = temp;
-                                if (greenchaxmat == true)
+                                attempt("Hg");
+                                if (greenchaxmat)
                                 {
                                     Console.WriteLine("Король: Та за шо");
                                 }
-                                else if (matrix[digit3, digit4] != " " && (Math.Pow((digit3 - digit1), 2) + Math.Pow((digit4 - digit2), 2)) == 5 && matrix[digit3, digit4] != "Пg" && matrix[digit3, digit4] != "Tg" && matrix[digit3, digit4] != "Tg1" && matrix[digit3, digit4] != "Hg" && matrix[digit3, digit4] != "Cg" && matrix[digit3, digit4] != "Kg" && matrix[digit3, digit4] != "Qg")
+                                else if (matrix[dig3, dig4] != " " && (Math.Pow((dig3 - dig1), 2) + Math.Pow((dig4 - dig2), 2)) == 5 && matrix[dig3, dig4] != "Пg" && matrix[dig3, dig4] != "Tg" && matrix[dig3, dig4] != "Tg1" && matrix[dig3, dig4] != "Hg" && matrix[dig3, dig4] != "Cg" && matrix[dig3, dig4] != "Kg" && matrix[dig3, dig4] != "Qg")
                                 {
-                                    matrix[digit3, digit4] = "Hg";
-                                    matrix[digit1, digit2] = "*";
+                                    matrix[dig3, dig4] = "Hg";
+                                    matrix[dig1, dig2] = "*";
                                     counterstor++;
                                     counterhod++;
                                 }
@@ -261,23 +256,14 @@ namespace program
                                     Console.WriteLine("Внеси данные правильно");
                                     continue;
                                 }
-                                matrix[digit1, digit2] = "*";
-                                temp = matrix[digit3, digit4];
-                                matrix[digit3, digit4] = figura;
-                                greenchax(kinggreenplace1, kinggreenplace2);
-                                matrix[digit1, digit2] = figura;
-                                matrix[digit3, digit4] = temp;
-                                if (greenchaxmat == true)
+                                attempt(figura);
+                                if (greenchaxmat)
                                 {
                                     Console.WriteLine("Король: Та за шо");
                                 }
                                 else
                                 {
-                                    greentura(figura, digit1, digit2, digit3, digit4);
-                                    if (digit1 != digit3 && digit2 != digit4)
-                                    {
-                                        Console.WriteLine("Не-а, так нельзя ходить");
-                                    }
+                                    tura();
                                 }
                                 break;
 
@@ -292,20 +278,15 @@ namespace program
                                     continue;
                                 }
                                 figura = "Cg";
-                                matrix[digit1, digit2] = "*";
-                                temp = matrix[digit3, digit4];
-                                matrix[digit3, digit4] = figura;
-                                greenchax(kinggreenplace1, kinggreenplace2);
-                                matrix[digit1, digit2] = figura;
-                                matrix[digit3, digit4] = temp;
-                                if (greenchaxmat == true)
+                                attempt(figura);
+                                if (greenchaxmat)
                                 {
                                     Console.WriteLine("Король: Та за шо");
                                 }
                                 else
                                 {
-                                    greenslon(figura, digit1, digit2, digit3, digit4);
-                                    if (Math.Abs(digit3 - digit1) != Math.Abs(digit4 - digit2))
+                                    slon();
+                                    if (Math.Abs(dig3 - dig1) != Math.Abs(dig4 - dig2))
                                     {
                                         Console.WriteLine("Не-а, так нельзя ходить");
                                     }
@@ -323,21 +304,16 @@ namespace program
                                     continue;
                                 }
                                 figura = "Qg";
-                                matrix[digit1, digit2] = "*";
-                                temp = matrix[digit3, digit4];
-                                matrix[digit3, digit4] = figura;
-                                greenchax(kinggreenplace1, kinggreenplace2);
-                                matrix[digit1, digit2] = figura;
-                                matrix[digit3, digit4] = temp;
-                                if (greenchaxmat == true)
+                                attempt(figura);
+                                if (greenchaxmat)
                                 {
                                     Console.WriteLine("Король: Та за шо");
                                 }
                                 else
                                 {
-                                    greenslon(figura, digit1, digit2, digit3, digit4);
-                                    greentura(figura, digit1, digit2, digit3, digit4);
-                                    if (Math.Abs(digit3 - digit1) != Math.Abs(digit4 - digit2) && digit1 != digit3 && digit2 != digit4)
+                                    slon();
+                                    tura();
+                                    if (Math.Abs(dig3 - dig1) != Math.Abs(dig4 - dig2) && dig1 != dig3 && dig2 != dig4)
                                     {
                                         Console.WriteLine("Не-а, так нельзя ходить");
                                     }
@@ -354,24 +330,24 @@ namespace program
                                     Console.WriteLine("Внеси данные правильно");
                                     continue;
                                 }
-                                matrix[digit1, digit2] = "*";
-                                greenchax(digit3, digit4);
-                                matrix[digit1, digit2] = "Kg";
-                                if (greenchaxmat == true)
+                                matrix[dig1, dig2] = "*";
+                                greenchax(dig3, dig4);
+                                matrix[dig1, dig2] = "Kg";
+                                if (greenchaxmat)
                                 {
                                     Console.WriteLine("Не надо, дядя. Убьют тебя");
                                 }
                                 else
                                 {
-                                    if (((Math.Abs(digit3 - digit1) == 1 && Math.Abs(digit4 - digit2) == 1) || (digit3 - digit1 == 0 && Math.Abs(digit4 - digit2) == 1) || (digit4 - digit2 == 0 && Math.Abs(digit3 - digit1) == 1)) && (matrix[digit3, digit4] != " " && matrix[digit3, digit4] != "Пg" && matrix[digit3, digit4] != "Tg" && matrix[digit3, digit4] != "Tg1" && matrix[digit3, digit4] != "Hg" && matrix[digit3, digit4] != "Cg" && matrix[digit3, digit4] != "Qg"))
+                                    if (((Math.Abs(dig3 - dig1) == 1 && Math.Abs(dig4 - dig2) == 1) || (dig3 - dig1 == 0 && Math.Abs(dig4 - dig2) == 1) || (dig4 - dig2 == 0 && Math.Abs(dig3 - dig1) == 1)) && (matrix[dig3, dig4] != " " && matrix[dig3, dig4] != "Пg" && matrix[dig3, dig4] != "Tg" && matrix[dig3, dig4] != "Tg1" && matrix[dig3, dig4] != "Hg" && matrix[dig3, dig4] != "Cg" && matrix[dig3, dig4] != "Qg"))
                                     {
-                                        matrix[digit3, digit4] = "Kg";
-                                        matrix[digit1, digit2] = "*";
+                                        matrix[dig3, dig4] = "Kg";
+                                        matrix[dig1, dig2] = "*";
                                         counterkinggreen++;
                                         counterstor++;
                                         counterhod++;
-                                        kinggreenplace1 = digit3;
-                                        kinggreenplace2 = digit4;
+                                        kinggreenplace1 = dig3;
+                                        kinggreenplace2 = dig4;
                                     }
                                     else
                                     {
@@ -382,7 +358,6 @@ namespace program
                         }
                         if (cell1 == "рокировка вправо")
                         {
-
                             for (int i = 0; i < 3; i++)
                             {
                                 greenchax(9, 6 + i);
@@ -448,7 +423,7 @@ namespace program
                         }
                         else
                         {
-                            Console.WriteLine("Фигуру выбери! Желательно свою");
+                            Console.WriteLine("Берешь свою фигуру и бьешь вражескую. Понял?");
                         }
                         matrixbuild();
                     }
@@ -488,7 +463,7 @@ namespace program
                             Console.WriteLine("Внеси данные правильно");
                             continue;
                         }
-                        switch (matrix[digit1, digit2])
+                        switch (matrix[dig1, dig2])
                         {
                             case "Пr":
                                 Console.WriteLine("(пешка)");
@@ -500,19 +475,14 @@ namespace program
                                     Console.WriteLine("Внеси данные правильно");
                                     continue;
                                 }
-                                matrix[digit1, digit2] = "*";
-                                temp = matrix[digit3, digit4];
-                                matrix[digit3, digit4] = "Пr";
-                                redchax(kingredplace1, kingredplace2);
-                                matrix[digit1, digit2] = "Пr";
-                                matrix[digit3, digit4] = temp;
-                                if (redchaxmat == true)
+                                attempt("Пr");
+                                if (redchaxmat)
                                 {
                                     Console.WriteLine("Король: Та за шо");
                                 }
-                                else if (matrix[digit3, digit4] == "*" && digit2 == digit4 && ((digit2 == digit4 && digit3 - digit1 == 1) || (digit1 == 3 && digit3 - digit1 == 2)))
+                                else if (matrix[dig3, dig4] == "*" && dig2 == dig4 && ((dig2 == dig4 && dig3 - dig1 == 1) || (dig1 == 3 && dig3 - dig1 == 2)))
                                 {
-                                    if (digit3 == 9)
+                                    if (dig3 == 9)
                                     {
                                         Console.WriteLine("тура(1)/слон(2)/ферзь(3)/конь(4)?");
                                         answer = Convert.ToInt32(Console.ReadLine());
@@ -524,32 +494,30 @@ namespace program
                                         switch (answer)
                                         {
                                             case 1:
-                                                matrix[digit3, digit4] = "Tr";
+                                                matrix[dig3, dig4] = "Tr";
                                                 break;
                                             case 2:
-                                                matrix[digit3, digit4] = "Cr";
+                                                matrix[dig3, dig4] = "Cr";
                                                 break;
                                             case 3:
-                                                matrix[digit3, digit4] = "Qr";
+                                                matrix[dig3, dig4] = "Qr";
                                                 break;
                                             case 4:
-                                                matrix[digit3, digit4] = "Hr";
+                                                matrix[dig3, dig4] = "Hr";
                                                 break;
                                         }
-                                        counterstor--;
-                                        counterhod++;
                                     }
                                     else
                                     {
-                                        matrix[digit3, digit4] = "Пr";
-                                        counterstor--;
-                                        counterhod++;
+                                        matrix[dig3, dig4] = "Пr";
                                     }
-                                    matrix[digit1, digit2] = "*";
+                                    counterstor--;
+                                    counterhod++;
+                                    matrix[dig1, dig2] = "*";
                                 }
-                                else if ((matrix[digit3, digit4] == "Пg" || matrix[digit3, digit4] == "Tg" || matrix[digit3, digit4] == "Tg1" || matrix[digit3, digit4] == "Hg" || matrix[digit3, digit4] == "Cg" || matrix[digit3, digit4] == "Kg" || matrix[digit3, digit4] == "Qg") && Math.Abs(digit4 - digit2) == 1 && digit3 - digit1 == 1)
+                                else if ((matrix[dig3, dig4] == "Пg" || matrix[dig3, dig4] == "Tg" || matrix[dig3, dig4] == "Tg1" || matrix[dig3, dig4] == "Hg" || matrix[dig3, dig4] == "Cg" || matrix[dig3, dig4] == "Kg" || matrix[dig3, dig4] == "Qg") && Math.Abs(dig4 - dig2) == 1 && dig3 - dig1 == 1)
                                 {
-                                    if (digit3 == 9)
+                                    if (dig3 == 9)
                                     {
                                         Console.WriteLine("тура(1)/слон(2)/ферзь(3)/конь(4)?");
                                         answer = Convert.ToInt32(Console.ReadLine());
@@ -561,28 +529,26 @@ namespace program
                                         switch (answer)
                                         {
                                             case 1:
-                                                matrix[digit3, digit4] = "Tr";
+                                                matrix[dig3, dig4] = "Tr";
                                                 break;
                                             case 2:
-                                                matrix[digit3, digit4] = "Cr";
+                                                matrix[dig3, dig4] = "Cr";
                                                 break;
                                             case 3:
-                                                matrix[digit3, digit4] = "Qr";
+                                                matrix[dig3, dig4] = "Qr";
                                                 break;
                                             case 4:
-                                                matrix[digit3, digit4] = "Hr";
+                                                matrix[dig3, dig4] = "Hr";
                                                 break;
                                         }
-                                        counterstor--;
-                                        counterhod++;
                                     }
                                     else
                                     {
-                                        matrix[digit3, digit4] = "Пr";
-                                        counterstor--;
-                                        counterhod++;
+                                        matrix[dig3, dig4] = "Пr";
                                     }
-                                    matrix[digit1, digit2] = "*";
+                                    counterstor--;
+                                    counterhod++;
+                                    matrix[dig1, dig2] = "*";
                                 }
                                 else
                                 {
@@ -599,20 +565,15 @@ namespace program
                                     Console.WriteLine("Внеси данные правильно");
                                     continue;
                                 }
-                                matrix[digit1, digit2] = "*";
-                                temp = matrix[digit3, digit4];
-                                matrix[digit3, digit4] = "Hr";
-                                redchax(kingredplace1, kingredplace2);
-                                matrix[digit1, digit2] = "Hr";
-                                matrix[digit3, digit4] = temp;
-                                if (redchaxmat == true)
+                                attempt("Hr");
+                                if (redchaxmat)
                                 {
                                     Console.WriteLine("Король: Та за шо");
                                 }
-                                else if (matrix[digit3, digit4] != " " && (Math.Pow((digit3 - digit1), 2) + Math.Pow((digit4 - digit2), 2)) == 5 && matrix[digit3, digit4] != "Пr" && matrix[digit3, digit4] != "Tr" && matrix[digit3, digit4] != "Tr1" && matrix[digit3, digit4] != "Hr" && matrix[digit3, digit4] != "Cr" && matrix[digit3, digit4] != "Kr" && matrix[digit3, digit4] != "Qr")
+                                else if (matrix[dig3, dig4] != " " && (Math.Pow((dig3 - dig1), 2) + Math.Pow((dig4 - dig2), 2)) == 5 && matrix[dig3, dig4] != "Пr" && matrix[dig3, dig4] != "Tr" && matrix[dig3, dig4] != "Tr1" && matrix[dig3, dig4] != "Hr" && matrix[dig3, dig4] != "Cr" && matrix[dig3, dig4] != "Kr" && matrix[dig3, dig4] != "Qr")
                                 {
-                                    matrix[digit3, digit4] = "Hr";
-                                    matrix[digit1, digit2] = "*";
+                                    matrix[dig3, dig4] = "Hr";
+                                    matrix[dig1, dig2] = "*";
                                     counterstor--;
                                     counterhod++;
                                 }
@@ -640,21 +601,15 @@ namespace program
                                     Console.WriteLine("Внеси данные правильно");
                                     continue;
                                 }
-                                figura = matrix[digit1, digit2];
-                                matrix[digit1, digit2] = "*";
-                                temp = matrix[digit3, digit4];
-                                matrix[digit3, digit4] = figura;
-                                redchax(kingredplace1, kingredplace2);
-                                matrix[digit1, digit2] = figura;
-                                matrix[digit3, digit4] = temp;
-                                if (redchaxmat == true)
+                                attempt(figura);
+                                if (redchaxmat)
                                 {
                                     Console.WriteLine("Король: Та за шо");
                                 }
                                 else
                                 {
-                                    redtura(figura, digit1, digit2, digit3, digit4);
-                                    if (digit1 != digit3 && digit2 != digit4)
+                                    tura();
+                                    if (dig1 != dig3 && dig2 != dig4)
                                     {
                                         Console.WriteLine("Не-а, так нельзя ходить");
                                     }
@@ -672,20 +627,15 @@ namespace program
                                     continue;
                                 }
                                 figura = "Cr";
-                                matrix[digit1, digit2] = "*";
-                                temp = matrix[digit3, digit4];
-                                matrix[digit3, digit4] = "Cr";
-                                redchax(kingredplace1, kingredplace2);
-                                matrix[digit1, digit2] = "Cr";
-                                matrix[digit3, digit4] = temp;
-                                if (redchaxmat == true)
+                                attempt("Cr");
+                                if (redchaxmat)
                                 {
                                     Console.WriteLine("Король: Та за шо");
                                 }
                                 else
                                 {
-                                    redslon(figura, digit1, digit2, digit3, digit4);
-                                    if (Math.Abs(digit3 - digit1) != Math.Abs(digit4 - digit2))
+                                    slon();
+                                    if (Math.Abs(dig3 - dig1) != Math.Abs(dig4 - dig2))
                                     {
                                         Console.WriteLine("Не-а, так нельзя ходить");
                                     }
@@ -703,21 +653,16 @@ namespace program
                                     continue;
                                 }
                                 figura = "Qr";
-                                matrix[digit1, digit2] = "*";
-                                temp = matrix[digit3, digit4];
-                                matrix[digit3, digit4] = figura;
-                                redchax(kingredplace1, kingredplace2);
-                                matrix[digit1, digit2] = figura;
-                                matrix[digit3, digit4] = temp;
-                                if (redchaxmat == true)
+                                attempt("Qr");
+                                if (redchaxmat)
                                 {
                                     Console.WriteLine("Король: Та за шо");
                                 }
                                 else
                                 {
-                                    redslon(figura, digit1, digit2, digit3, digit4);
-                                    redtura(figura, digit1, digit2, digit3, digit4);
-                                    if (Math.Abs(digit3 - digit1) != Math.Abs(digit4 - digit2) && digit1 != digit3 && digit2 != digit4)
+                                    slon();
+                                    tura();
+                                    if (Math.Abs(dig3 - dig1) != Math.Abs(dig4 - dig2) && dig1 != dig3 && dig2 != dig4)
                                     {
                                         Console.WriteLine("Не-а, так нельзя ходить");
                                     }
@@ -734,24 +679,24 @@ namespace program
                                     Console.WriteLine("Внеси данные правильно");
                                     continue;
                                 }
-                                matrix[digit1, digit2] = "*";
-                                redchax(digit3, digit4);
-                                matrix[digit1, digit2] = "Kr";
+                                matrix[dig1, dig2] = "*";
+                                redchax(dig3, dig4);
+                                matrix[dig1, dig2] = "Kr";
                                 if (redchaxmat)
                                 {
                                     Console.WriteLine("Не надо, дядя. Убьют тебя");
                                 }
                                 else
                                 {
-                                    if (((Math.Abs(digit3 - digit1) == 1 && Math.Abs(digit4 - digit2) == 1) || (digit3 - digit1 == 0 && Math.Abs(digit4 - digit2) == 1) || (digit4 - digit2 == 0 && Math.Abs(digit3 - digit1) == 1)) && (matrix[digit3, digit4] != " " && matrix[digit3, digit4] != "Пr" && matrix[digit3, digit4] != "Tr" && matrix[digit3, digit4] != "Tr1" && matrix[digit3, digit4] != "Hr" && matrix[digit3, digit4] != "Cr" && matrix[digit3, digit4] != "Qr"))
+                                    if (((Math.Abs(dig3 - dig1) == 1 && Math.Abs(dig4 - dig2) == 1) || (dig3 - dig1 == 0 && Math.Abs(dig4 - dig2) == 1) || (dig4 - dig2 == 0 && Math.Abs(dig3 - dig1) == 1)) && (matrix[dig3, dig4] != " " && matrix[dig3, dig4] != "Пr" && matrix[dig3, dig4] != "Tr" && matrix[dig3, dig4] != "Tr1" && matrix[dig3, dig4] != "Hr" && matrix[dig3, dig4] != "Cr" && matrix[dig3, dig4] != "Qr"))
                                     {
-                                        matrix[digit3, digit4] = "Kr";
-                                        matrix[digit1, digit2] = "*";
+                                        matrix[dig3, dig4] = "Kr";
+                                        matrix[dig1, dig2] = "*";
                                         counterkingred++;
                                         counterstor--;
                                         counterhod++;
-                                        kingredplace1 = digit3;
-                                        kingredplace2 = digit4;
+                                        kingredplace1 = dig3;
+                                        kingredplace2 = dig4;
                                     }
                                     else
                                     {
@@ -930,11 +875,11 @@ namespace program
                             }
                             Console.BackgroundColor = ConsoleColor.Black;
                             Console.ForegroundColor = ConsoleColor.White;
-                            if (i == 1 && j == 10 && greenlosses != "")
+                            if (i == 1 && j == 1 && greenlosses != "")
                             {
                                 Console.Write(" " + greenlosses);
                             }
-                            if (i == 10 && j == 10 && greenlosses != "")
+                            else if (i == 10 && j == 1 && greenlosses != "")
                             {
                                 Console.Write(" " + redlosses);
                             }
@@ -961,45 +906,42 @@ namespace program
                 {
                     for (int j = 2; j < 10; j++)
                     {
-                        if (matrix[i, j] == "Tg" || matrix[i, j] == "Tg1")
+                        switch (matrix[i, j])
                         {
-                            losecountergreentura++;
-                        }
-                        else if (matrix[i, j] == "Tr" || matrix[i, j] == "Tr1")
-                        {
-                            losecounterredtura++;
-                        }
-                        else if (matrix[i, j] == "Cg")
-                        {
-                            losecountergreenslon++;
-                        }
-                        else if (matrix[i, j] == "Cr")
-                        {
-                            losecounterredslon++;
-                        }
-                        else if (matrix[i, j] == "Hg")
-                        {
-                            losecountergreenhorse++;
-                        }
-                        else if (matrix[i, j] == "Hr")
-                        {
-                            losecounterredhorse++;
-                        }
-                        else if (matrix[i, j] == "Qg")
-                        {
-                            losecountergreenqueen++;
-                        }
-                        else if (matrix[i, j] == "Qr")
-                        {
-                            losecounterredqueen++;
-                        }
-                        else if (matrix[i, j] == "Пg")
-                        {
-                            losecountergreenpeshak++;
-                        }
-                        else if (matrix[i, j] == "Пr")
-                        {
-                            losecounterredpeshak++;
+                            case "Tg":
+                                goto case "Tg1";
+                            case "Tg1":
+                                losecountergreentura++;
+                                break;
+                            case "Tr":
+                                goto case "Tr1";
+                            case "Tr1":
+                                losecounterredtura++;
+                                break;
+                            case "Cg":
+                                losecountergreenslon++;
+                                break;
+                            case "Cr":
+                                losecounterredslon++;
+                                break;
+                            case "Hg":
+                                 losecountergreenhorse++;
+                                break;
+                            case "Hr":
+                                losecounterredhorse++;
+                                break;
+                            case "Qg":
+                                losecountergreenqueen++;
+                                break;
+                            case "Qr":
+                                losecounterredqueen++;
+                                break;
+                            case "Пg":
+                                losecountergreenpeshak++;
+                                break;
+                            case "Пr":
+                                losecounterredpeshak++;
+                                break;
                         }
                     }
                 }
@@ -1021,33 +963,33 @@ namespace program
                     switch (Convert.ToString(cell1[0]))
                     {
                         case "A":
-                            digit1 = 2;
+                            dig1 = 2;
                             break;
                         case "B":
-                            digit1 = 3;
+                            dig1 = 3;
                             break;
                         case "C":
-                            digit1 = 4;
+                            dig1 = 4;
                             break;
                         case "D":
-                            digit1 = 5;
+                            dig1 = 5;
                             break;
                         case "E":
-                            digit1 = 6;
+                            dig1 = 6;
                             break;
                         case "F":
-                            digit1 = 7;
+                            dig1 = 7;
                             break;
                         case "G":
-                            digit1 = 8;
+                            dig1 = 8;
                             break;
                         case "H":
-                            digit1 = 9;
+                            dig1 = 9;
                             break;
                     }
                     if (1 < Convert.ToInt32(cell1[1]) - 47 && Convert.ToInt32(cell1[1]) - 47 < 10)
                     {
-                        digit2 = Convert.ToInt32(cell1[1]) - 47;
+                        dig2 = Convert.ToInt32(cell1[1]) - 47;
                     }
                 }
                 if (cell1 == "рокировка вправо" || cell1 == "рокировка влево")
@@ -1066,33 +1008,33 @@ namespace program
                     switch (Convert.ToString(cell2[0]))
                     {
                         case "A":
-                            digit3 = 2;
+                            dig3 = 2;
                             break;
                         case "B":
-                            digit3 = 3;
+                            dig3 = 3;
                             break;
                         case "C":
-                            digit3 = 4;
+                            dig3 = 4;
                             break;
                         case "D":
-                            digit3 = 5;
+                            dig3 = 5;
                             break;
                         case "E":
-                            digit3 = 6;
+                            dig3 = 6;
                             break;
                         case "F":
-                            digit3 = 7;
+                            dig3 = 7;
                             break;
                         case "G":
-                            digit3 = 8;
+                            dig3 = 8;
                             break;
                         case "H":
-                            digit3 = 9;
+                            dig3 = 9;
                             break;
                     }
                     if (1 < Convert.ToInt32(cell2[1]) - 47 && Convert.ToInt32(cell2[1]) - 47 < 10)
                     {
-                        digit4 = Convert.ToInt32(cell2[1]) - 47;
+                        dig4 = Convert.ToInt32(cell2[1]) - 47;
                     }
                 }
                 if (cell2.Length != 2 || (Convert.ToString(cell2[1]) != "1" && Convert.ToString(cell2[1]) != "2" && Convert.ToString(cell2[1]) != "3" && Convert.ToString(cell2[1]) != "4" && Convert.ToString(cell2[1]) != "5" && Convert.ToString(cell2[1]) != "6" && Convert.ToString(cell2[1]) != "7" && Convert.ToString(cell2[1]) != "8"))
@@ -1104,21 +1046,81 @@ namespace program
                     errorcell2 = true;
                 }
             }
-            void greentura(string a, int n, int nn, int m, int mm)
+            void attempt(string attacker)
             {
-                if (digit1 == digit3)
+                matrix[dig1, dig2] = "*";
+                temp = matrix[dig3, dig4];
+                matrix[dig3, dig4] = attacker;
+                if (attacker == "Пg" || attacker == "Tg" || attacker == "Tg1" || attacker == "Cg" || attacker == "Hg" || attacker == "Qg")
                 {
-                    if (digit4 > digit2)
+                    greenchax(kinggreenplace1, kinggreenplace2);
+                }
+                else
+                {
+                    redchax(kingredplace1, kingredplace2);
+                }
+                matrix[dig1, dig2] = attacker;
+                matrix[dig3, dig4] = temp;
+            }
+            void tura()
+            {
+                string enemy1 = "";
+                string enemy2 = "";
+                string enemy3 = "";
+                string enemy4 = "";
+                string enemy5 = "";
+                string enemy6 = "";
+                string enemy7 = "";
+                string color = "";
+                if (figura == "Tg1" || figura == "Tg" || figura == "Qg")
+                {
+                    enemy1 = "Пr";
+                    enemy2 = "Tr";
+                    enemy3 = "Tr1";
+                    enemy4 = "Cr";
+                    enemy5 = "Hr";
+                    enemy6 = "Qr";
+                    enemy7 = "Kr";
+                    ally1 = "Пg";
+                    ally2 = "Tg";
+                    ally3 = "Tg1";
+                    ally4 = "Cg";
+                    ally5 = "Hg";
+                    ally6 = "Qg";
+                    ally7 = "Kg";
+                    color = "green";
+                }
+                else
+                {
+                    enemy1 = "Пg";
+                    enemy2 = "Tg";
+                    enemy3 = "Tg1";
+                    enemy4 = "Cg";
+                    enemy5 = "Hg";
+                    enemy6 = "Qg";
+                    enemy7 = "Kg";
+                    ally1 = "Пr";
+                    ally2 = "Tr";
+                    ally3 = "Tr1";
+                    ally4 = "Cr";
+                    ally5 = "Hr";
+                    ally6 = "Qr";
+                    ally7 = "Kr";
+                    color = "red";
+                }
+                if (dig1 == dig3)
+                {
+                    if (dig4 > dig2)
                     {
                         counterproh--;
                     }
-                    else if (matrix[digit3, digit4] == "Пr" || matrix[digit3, digit4] == "Tr" || matrix[digit3, digit4] == "Hr" || matrix[digit3, digit4] == "Cr" || matrix[digit3, digit4] == "Qr" || matrix[digit3, digit4] == "Kr" || matrix[digit3, digit4] == "Tr1")
+                    else if (matrix[dig3, dig4] == enemy1 || matrix[dig3, dig4] == enemy2 || matrix[dig3, dig4] == enemy3 || matrix[dig3, dig4] == enemy4 || matrix[dig3, dig4] == enemy5 || matrix[dig3, dig4] == enemy6 || matrix[dig3, dig4] == enemy7)
                     {
                         counterproh--;
                     }
-                    for (int i = Math.Min(digit2, digit4); i < Math.Max(digit2, digit4); i++)
+                    for (int i = Math.Min(dig2, dig4); i < Math.Max(dig2, dig4); i++)
                     {
-                        if (matrix[digit1, i] != "*")
+                        if (matrix[dig1, i] != "*")
                         {
                             counterproh++;
                         }
@@ -1128,12 +1130,19 @@ namespace program
                             break;
                         }
                     }
-                    if (counterproh == 0 && matrix[digit3, digit4] != "Пg" && matrix[digit3, digit4] != "Tg" && matrix[digit3, digit4] != "Tg1" && matrix[digit3, digit4] != "Hg" && matrix[digit3, digit4] != "Cg" && matrix[digit3, digit4] != "Kg" && matrix[digit3, digit4] != "Qg")
+                    if (counterproh == 0 && matrix[dig3, dig4] != ally1 && matrix[dig3, dig4] != ally2 && matrix[dig3, dig4] != ally3 && matrix[dig3, dig4] != ally4 && matrix[dig3, dig4] != ally5 && matrix[dig3, dig4] != ally6 && matrix[dig3, dig4] != ally7)
                     {
-                        matrix[digit3, digit4] = figura;
-                        matrix[digit1, digit2] = "*";
-                        counterstor++;
+                        matrix[dig3, dig4] = figura;
+                        matrix[dig1, dig2] = "*";
                         counterhod++;
+                        if (color == "green")
+                        {
+                            counterstor++;
+                        }
+                        else if (color == "red")
+                        {
+                            counterstor--;
+                        }
                         if (figura == "Тg")
                         {
                             counterturagreenleft++;
@@ -1142,22 +1151,30 @@ namespace program
                         {
                             counterturagreenright++;
                         }
+                        else if (figura == "Тr")
+                        {
+                            counterturaredleft++;
+                        }
+                        else if (figura == "Тr1")
+                        {
+                            counterturaredright++;
+                        }
                     }
                 }
-                else if (digit2 == digit4)
+                else if (dig2 == dig4)
                 {
-                    if (digit1 < digit3)
+                    if (dig1 < dig3)
                     {
                         counterproh--;
 
                     }
-                    else if (matrix[digit3, digit4] == "Пr" || matrix[digit3, digit4] == "Tr" || matrix[digit3, digit4] == "Hr" || matrix[digit3, digit4] == "Cr" || matrix[digit3, digit4] == "Qr" || matrix[digit3, digit4] == "Kr" || matrix[digit3, digit4] == "Tr1")
+                    else if (matrix[dig3, dig4] == enemy1 || matrix[dig3, dig4] == enemy2 || matrix[dig3, dig4] == enemy3 || matrix[dig3, dig4] == enemy4 || matrix[dig3, dig4] == enemy5 || matrix[dig3, dig4] == enemy6 || matrix[dig3, dig4] == enemy7)
                     {
                         counterproh--;
                     }
-                    for (int i = Math.Min(digit1, digit3); i < Math.Max(digit1, digit3); i++)
+                    for (int i = Math.Min(dig1, dig3); i < Math.Max(dig1, dig3); i++)
                     {
-                        if (matrix[i, digit2] != "*")
+                        if (matrix[i, dig2] != "*")
                         {
                             counterproh++;
                         }
@@ -1167,12 +1184,19 @@ namespace program
                             break;
                         }
                     }
-                    if (counterproh == 0 && matrix[digit3, digit4] != "Пg" && matrix[digit3, digit4] != "Tg" && matrix[digit3, digit4] != "Tg1" && matrix[digit3, digit4] != "Hg" && matrix[digit3, digit4] != "Cg" && matrix[digit3, digit4] != "Kg" && matrix[digit3, digit4] != "Qg")
+                    if (counterproh == 0 && matrix[dig3, dig4] != ally1 && matrix[dig3, dig4] != ally2 && matrix[dig3, dig4] != ally3 && matrix[dig3, dig4] != ally4 && matrix[dig3, dig4] != ally5 && matrix[dig3, dig4] != ally6 && matrix[dig3, dig4] != ally7)
                     {
-                        matrix[digit3, digit4] = figura;
-                        matrix[digit1, digit2] = "*";
-                        counterstor++;
+                        matrix[dig3, dig4] = figura;
+                        matrix[dig1, dig2] = "*";
                         counterhod++;
+                        if (color == "green")
+                        {
+                            counterstor++;
+                        }
+                        else if (color == "red")
+                        {
+                            counterstor--;
+                        }
                         if (figura == "Тg")
                         {
                             counterturagreenleft++;
@@ -1181,191 +1205,51 @@ namespace program
                         {
                             counterturagreenright++;
                         }
-                    }
-                }
-                counterproh = 0;
-            }
-            void greenslon(string a, int n, int nn, int m, int mm)
-            {
-                if (Math.Abs(digit3 - digit1) == Math.Abs(digit4 - digit2) && matrix[digit3, digit4] != "Пg" && matrix[digit3, digit4] != "Tg" && matrix[digit3, digit4] != "Tg1" && matrix[digit3, digit4] != "Hg" && matrix[digit3, digit4] != "Cg" && matrix[digit3, digit4] != "Kg" && matrix[digit3, digit4] != "Qg")
-                {
-                    if (digit1 > digit3 && digit2 > digit4)
-                    {
-                        for (int i = 0; i < Math.Abs(digit3 - digit1); i++)
-                        {
-                            if (matrix[digit1 - i, digit2 - i] != "*")
-                            {
-                                counterproh++;
-                            }
-                        }
-                        if (counterproh > 1)
-                        {
-                            Console.WriteLine("ТЫ НЕ ПРОЙДЕШЬ");
-                        }
-                        else
-                        {
-                            counterstor++;
-                            counterhod++;
-                            matrix[digit3, digit4] = figura;
-                            matrix[digit1, digit2] = "*";
-                        }
-                    }
-                    else if (digit1 > digit3 && digit2 < digit4)
-                    {
-                        for (int i = 0; i < Math.Abs(digit3 - digit1); i++)
-                        {
-                            if (matrix[digit1 - i, digit2 + i] != "*")
-                            {
-                                counterproh++;
-                            }
-                        }
-                        if (counterproh > 1)
-                        {
-                            Console.WriteLine("ТЫ НЕ ПРОЙДЕШЬ");
-                        }
-                        else
-                        {
-                            counterstor++;
-                            counterhod++;
-                            matrix[digit3, digit4] = figura;
-                            matrix[digit1, digit2] = "*";
-                        }
-                    }
-                    else if (digit1 < digit3 && digit2 > digit4)
-                    {
-                        for (int i = 0; i < Math.Abs(digit3 - digit1); i++)
-                        {
-                            if (matrix[digit1 + i, digit2 - i] != "*")
-                            {
-                                counterproh++;
-                            }
-                        }
-                        if (counterproh > 1)
-                        {
-                            Console.WriteLine("ТЫ НЕ ПРОЙДЕШЬ");
-                        }
-                        else
-                        {
-                            counterstor++;
-                            counterhod++;
-                            matrix[digit3, digit4] = figura;
-                            matrix[digit1, digit2] = "*";
-                        }
-                    }
-                    else if (digit1 < digit3 && digit2 < digit4)
-                    {
-                        for (int i = 0; i < Math.Abs(digit3 - digit1); i++)
-                        {
-                            if (matrix[digit1 + i, digit2 + i] != "*")
-                            {
-                                counterproh++;
-                            }
-                        }
-                        if (counterproh > 1)
-                        {
-                            Console.WriteLine("ТЫ НЕ ПРОЙДЕШЬ");
-                        }
-                        else
-                        {
-                            counterstor++;
-                            counterhod++;
-                            matrix[digit3, digit4] = figura;
-                            matrix[digit1, digit2] = "*";
-                        }
-                    }
-                }
-                counterproh = 0;
-            }
-            void redtura(string a, int n, int nn, int m, int mm)
-            {
-                if (digit1 == digit3)
-                {
-                    if (digit4 > digit2)
-                    {
-                        counterproh--;
-                    }
-                    else if (matrix[digit3, digit4] == "Пg" || matrix[digit3, digit4] == "Tg" || matrix[digit3, digit4] == "Hg" || matrix[digit3, digit4] == "Cg" || matrix[digit3, digit4] == "Qg" || matrix[digit3, digit4] == "Kg" || matrix[digit3, digit4] == "Tg1")
-                    {
-                        counterproh--;
-                    }
-                    for (int i = Math.Min(digit2, digit4); i < Math.Max(digit2, digit4); i++)
-                    {
-                        if (matrix[digit1, i] != "*")
-                        {
-                            counterproh++;
-                        }
-                        if (counterproh > 0)
-                        {
-                            Console.WriteLine("ТЫ НЕ ПРОЙДЕШЬ");
-                            break;
-                        }
-                    }
-                    if (counterproh == 0 && matrix[digit3, digit4] != "Пr" && matrix[digit3, digit4] != "Tr" && matrix[digit3, digit4] != "Tr1" && matrix[digit3, digit4] != "Hr" && matrix[digit3, digit4] != "Cr" && matrix[digit3, digit4] != "Kr" && matrix[digit3, digit4] != "Qr")
-                    {
-                        matrix[digit3, digit4] = figura;
-                        matrix[digit1, digit2] = "*";
-                        counterstor--;
-                        counterhod++;
-                        if (figura == "Tr")
+                        else if (figura == "Тr")
                         {
                             counterturaredleft++;
                         }
-                        else if (figura == "Tr1")
+                        else if (figura == "Тr1")
                         {
                             counterturaredright++;
                         }
                     }
                 }
-                else if (digit2 == digit4)
+                if (dig1 != dig3 && dig2 != dig4)
                 {
-                    if (digit1 < digit3)
-                    {
-                        counterproh--;
-
-                    }
-                    else if (matrix[digit3, digit4] == "Пg" || matrix[digit3, digit4] == "Tg" || matrix[digit3, digit4] == "Hg" || matrix[digit3, digit4] == "Cg" || matrix[digit3, digit4] == "Qg" || matrix[digit3, digit4] == "Kg" || matrix[digit3, digit4] == "Tg1")
-                    {
-                        counterproh--;
-                    }
-                    for (int i = Math.Min(digit1, digit3); i < Math.Max(digit1, digit3); i++)
-                    {
-                        if (matrix[i, digit2] != "*")
-                        {
-                            counterproh++;
-                        }
-                        if (counterproh > 0)
-                        {
-                            Console.WriteLine("ТЫ НЕ ПРОЙДЕШЬ");
-                            break;
-                        }
-                    }
-                    if (counterproh == 0 && matrix[digit3, digit4] != "Пr" && matrix[digit3, digit4] != "Tr" && matrix[digit3, digit4] != "Tr1" && matrix[digit3, digit4] != "Hr" && matrix[digit3, digit4] != "Cr" && matrix[digit3, digit4] != "Kr" && matrix[digit3, digit4] != "Qr")
-                    {
-                        matrix[digit3, digit4] = figura;
-                        matrix[digit1, digit2] = "*";
-                        counterstor--;
-                        counterhod++;
-                        if (figura == "Tr")
-                        {
-                            counterturaredleft++;
-                        }
-                        else if (figura == "Tr1")
-                        {
-                            counterturaredright++;
-                        }
-                    }
+                    Console.WriteLine("Не-а, так нельзя ходить");
                 }
                 counterproh = 0;
             }
-            void redslon(string a, int n, int nn, int m, int mm)
+            void slon()
             {
-                if (Math.Abs(digit3 - digit1) == Math.Abs(digit4 - digit2) && matrix[digit3, digit4] != "Пr" && matrix[digit3, digit4] != "Tr" && matrix[digit3, digit4] != "Tr1" && matrix[digit3, digit4] != "Hr" && matrix[digit3, digit4] != "Cr" && matrix[digit3, digit4] != "Kr" && matrix[digit3, digit4] != "Qr")
+                if (figura == "Cg" || figura == "Qg")
                 {
-                    if (digit1 > digit3 && digit2 > digit4)
+                    ally1 = "Пg";
+                    ally2 = "Tg";
+                    ally3 = "Tg1";
+                    ally4 = "Cg";
+                    ally5 = "Hg";
+                    ally6 = "Qg";
+                    ally7 = "Kg";
+                }
+                else
+                {
+                    ally1 = "Пr";
+                    ally2 = "Tr";
+                    ally3 = "Tr1";
+                    ally4 = "Cr";
+                    ally5 = "Hr";
+                    ally6 = "Qr";
+                    ally7 = "Kr";
+                }
+                if (Math.Abs(dig3 - dig1) == Math.Abs(dig4 - dig2) && matrix[dig3, dig4] != ally1 && matrix[dig3, dig4] != ally2 && matrix[dig3, dig4] != ally3 && matrix[dig3, dig4] != ally4 && matrix[dig3, dig4] != ally5 && matrix[dig3, dig4] != ally6 && matrix[dig3, dig4] != ally7)
+                {
+                    if (dig1 > dig3 && dig2 > dig4)
                     {
-                        for (int i = 0; i < Math.Abs(digit3 - digit1); i++)
+                        for (int i = 0; i < Math.Abs(dig3 - dig1); i++)
                         {
-                            if (matrix[digit1 - i, digit2 - i] != "*")
+                            if (matrix[dig1 - i, dig2 - i] != "*")
                             {
                                 counterproh++;
                             }
@@ -1376,17 +1260,17 @@ namespace program
                         }
                         else
                         {
-                            counterstor--;
+                            counterstor++;
                             counterhod++;
-                            matrix[digit3, digit4] = figura;
-                            matrix[digit1, digit2] = "*";
+                            matrix[dig3, dig4] = figura;
+                            matrix[dig1, dig2] = "*";
                         }
                     }
-                    else if (digit1 > digit3 && digit2 < digit4)
+                    else if (dig1 > dig3 && dig2 < dig4)
                     {
-                        for (int i = 0; i < Math.Abs(digit3 - digit1); i++)
+                        for (int i = 0; i < Math.Abs(dig3 - dig1); i++)
                         {
-                            if (matrix[digit1 - i, digit2 + i] != "*")
+                            if (matrix[dig1 - i, dig2 + i] != "*")
                             {
                                 counterproh++;
                             }
@@ -1397,17 +1281,17 @@ namespace program
                         }
                         else
                         {
-                            counterstor--;
+                            counterstor++;
                             counterhod++;
-                            matrix[digit3, digit4] = figura;
-                            matrix[digit1, digit2] = "*";
+                            matrix[dig3, dig4] = figura;
+                            matrix[dig1, dig2] = "*";
                         }
                     }
-                    else if (digit1 < digit3 && digit2 > digit4)
+                    else if (dig1 < dig3 && dig2 > dig4)
                     {
-                        for (int i = 0; i < Math.Abs(digit3 - digit1); i++)
+                        for (int i = 0; i < Math.Abs(dig3 - dig1); i++)
                         {
-                            if (matrix[digit1 + i, digit2 - i] != "*")
+                            if (matrix[dig1 + i, dig2 - i] != "*")
                             {
                                 counterproh++;
                             }
@@ -1418,17 +1302,17 @@ namespace program
                         }
                         else
                         {
-                            counterstor--;
+                            counterstor++;
                             counterhod++;
-                            matrix[digit3, digit4] = figura;
-                            matrix[digit1, digit2] = "*";
+                            matrix[dig3, dig4] = figura;
+                            matrix[dig1, dig2] = "*";
                         }
                     }
-                    else if (digit1 < digit3 && digit2 < digit4)
+                    else if (dig1 < dig3 && dig2 < dig4)
                     {
-                        for (int i = 0; i < Math.Abs(digit3 - digit1); i++)
+                        for (int i = 0; i < Math.Abs(dig3 - dig1); i++)
                         {
-                            if (matrix[digit1 + i, digit2 + i] != "*")
+                            if (matrix[dig1 + i, dig2 + i] != "*")
                             {
                                 counterproh++;
                             }
@@ -1439,10 +1323,10 @@ namespace program
                         }
                         else
                         {
-                            counterstor--;
+                            counterstor++;
                             counterhod++;
-                            matrix[digit3, digit4] = figura;
-                            matrix[digit1, digit2] = "*";
+                            matrix[dig3, dig4] = figura;
+                            matrix[dig1, dig2] = "*";
                         }
                     }
                 }
@@ -1450,15 +1334,6 @@ namespace program
             }
             bool greenchax(int n, int m)
             {
-                greenchaxmat = false;
-                greenchaxrighttopslon = true;
-                greenchaxlefttopslon = true;
-                greenchaxrightdownslon = true;
-                greenchaxleftdownslon = true;
-                greenchaxlefttura = true;
-                greenchaxrighttura = true;
-                greenchaxtoptura = true;
-                greenchaxdowntura = true;
                 if (matrix[n - 1, m - 1] == "Пr")
                 {
                     greenchaxmat = true;
