@@ -7,7 +7,7 @@ using System.Text;
 
 namespace program
 {
-    class World
+    class Chess
     {
         static void Main(string[] args)
         {
@@ -88,12 +88,12 @@ namespace program
             Console.WriteLine("Обозначения: Т - тура, Н - horse, С - слон, Q - queen, К - король, П - пешка");
             Console.WriteLine("Структура хода: сначала пишешь букву и цифру клетки, где стоит фигура, потом куда хочешь ею походить(пример G3 E3)");
             Console.WriteLine("Для рокировки - рокировка вправо/рокировка влево");
-            string[,] matrix = new string[12, 12] { { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " }, { " ", " ", "A", "B", "C", "D", "E", "F", "G", "H", " ", " " }, { " ", "8", "*", "*", "*", "*", "*", "*", "*", "*", "8", " " }, { " ", "7", "*", "*", "*", "*", "*", "*", "*", "*", "7", " " }, { " ", "6", "*", "*", "*", "*", "*", "*", "*", "*", "6", " " }, { " ", "5", "*", "*", "*", "*", "*", "*", "*", "*", "5", " " }, { " ", "4", "*", "*", "*", "Kr", "*", "*", "*", "*", "4", " " }, { " ", "3", "*", "*", "*", "Пr", "*", "*", "*", "*", "3", " " }, { " ", "2", "*", "*", "*", "Tg", "*", "*", "*", "*", "2", " " }, { " ", "1", "*", "*", "Tg", "*", "Tg", "*", "Tg", "*", "1", " " }, { " ", " ", "A", "B", "C", "D", "E", "F", "G", "H", " ", " " }, { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " } };
+            string[,] matrix = new string[12, 12] { { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " }, { " ", " ", "A", "B", "C", "D", "E", "F", "G", "H", " ", " " }, { " ", "8", "Tr", "Hr", "Cr", "Qr", "Kr", "Cr", "Hr", "Tr1", "8", " " }, { " ", "7", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "7", " " }, { " ", "6", "*", "*", "*", "*", "*", "*", "*", "*", "6", " " }, { " ", "5", "*", "*", "*", "*", "*", "*", "*", "*", "5", " " }, { " ", "4", "*", "*", "*", "*", "*", "*", "*", "*", "4", " " }, { " ", "3", "*", "*", "*", "*", "*", "*", "*", "*", "3", " " }, { " ", "2", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "2", " " }, { " ", "1", "Tg", "Hg", "Cg", "Qg", "Kg", "Cg", "Hg", "Tg1", "1", " " }, { " ", " ", "A", "B", "C", "D", "E", "F", "G", "H", " ", " " }, { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " } };
             matrixbuild();
             while (true)
             {
-                 //try
-                 //
+                 try
+                 {
                     if (counterside == 0)
                     {
                         errorcell = false;
@@ -134,10 +134,6 @@ namespace program
                             Console.WriteLine("Внеси данные правильно");
                             continue;
                         }
-                        Console.WriteLine(dig1);
-                        Console.WriteLine(dig2);
-                        Console.WriteLine("DWA");
-                        Console.WriteLine(58 - Convert.ToInt32(cell1[1]));
                         switch (matrix[dig1, dig2])
                         {
                             case "Пg":
@@ -500,12 +496,12 @@ namespace program
                         }
                         matrixbuild();
                     }
-                 /*}
+                 }
                  catch
                  {
                      Console.WriteLine("Ай, код поплавило");
                      matrixbuild();
-                 }*/
+                 }
             }
             Console.WriteLine("Ось i казочцi кiнець, а хто слухав - молодець");
             void matrixbuild()
@@ -642,7 +638,7 @@ namespace program
                     {
                         switch (matrix[i, j])
                         {
-                            /*case "Tg":
+                            case "Tg":
                                 goto case "Tg1";
                             case "Tg1":
                                 losecountergreentura++;
@@ -651,7 +647,7 @@ namespace program
                                 goto case "Tr1";
                             case "Tr1":
                                 losecounterredtura++;
-                                break;*/
+                                break;
                             case "Cg":
                                 losecountergreenslon++;
                                 break;
@@ -715,9 +711,9 @@ namespace program
                 if (cell2.Length == 2)
                 {
                     letterconverter(cell2, ref dig4);
-                    if (1 < 58 - Convert.ToInt32(cell1[1]) && 58 - Convert.ToInt32(cell1[1]) < 10)
+                    if (1 < 58 - Convert.ToInt32(cell2[1]) && 58 - Convert.ToInt32(cell2[1]) < 10)
                     {
-                        dig3 = 58 - Convert.ToInt32(cell1[1]);
+                        dig3 = 58 - Convert.ToInt32(cell2[1]);
                     }
                 }
                 if (cell2.Length != 2 || (Convert.ToString(cell2[1]) != "1" && Convert.ToString(cell2[1]) != "2" && Convert.ToString(cell2[1]) != "3" && Convert.ToString(cell2[1]) != "4" && Convert.ToString(cell2[1]) != "5" && Convert.ToString(cell2[1]) != "6" && Convert.ToString(cell2[1]) != "7" && Convert.ToString(cell2[1]) != "8"))
@@ -1667,7 +1663,7 @@ namespace program
                     {
                         return false;
                     }
-                    if (free_area_around_king(0, 9, kingplace1 - 1, kingplace2 + 1, color) == false)
+                    if (free_area_around_king(0, 9, kingplace1, kingplace2 + 1, color) == false)
                     {
                         return false;
                     }
