@@ -73,14 +73,19 @@ namespace program
             Console.WriteLine("Обозначения: Т - тура, Н - horse, С - слон, Q - queen, К - король, П - пешка");
             Console.WriteLine("Структура хода: сначала пишешь букву и цифру клетки, где стоит фигура, потом куда хочешь ею походить(пример G3 E3)");
             Console.WriteLine("Для рокировки - рокировка вправо/рокировка влево");
-            string[,] matrix = new string[12, 12] { { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " }, { " ", " ", "A", "B", "C", "D", "E", "F", "G", "H", " ", " " }, { " ", "8", "Tr", "Hr", "Cr", "Qr", "Kr", "Cr", "Hr", "Tr1", "8", " " }, { " ", "7", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "7", " " }, { " ", "6", "*", "*", "*", "*", "*", "*", "*", "*", "6", " " }, { " ", "5", "*", "*", "*", "*", "*", "*", "*", "*", "5", " " }, { " ", "4", "*", "*", "*", "*", "*", "*", "*", "*", "4", " " }, { " ", "3", "*", "*", "*", "*", "*", "*", "*", "*", "3", " " }, { " ", "2", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "2", " " }, { " ", "1", "Tg", "Hg", "Cg", "Qg", "Kg", "Cg", "Hg", "Tg1", "1", " " }, { " ", " ", "A", "B", "C", "D", "E", "F", "G", "H", " ", " " }, { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " } };
+            string[,] matrix = new string[12, 12] { { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " }, { " ", " ", "A", "B", "C", "D", "E", "F", "G", "H", " ", " " }, { " ", "8", "Tr", "Hr", "Cr", "Qr", "Kr", "Cr", "Hr", "Tr1", "8", " " }, { " ", "7", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "7", " " }, { " ", "6", "*", "*", "*", "Hg", "*", "*", "*", "*", "6", " " }, { " ", "5", "*", "*", "*", "*", "*", "*", "*", "*", "5", " " }, { " ", "4", "*", "*", "*", "*", "*", "*", "*", "*", "4", " " }, { " ", "3", "*", "*", "*", "*", "*", "*", "*", "*", "3", " " }, { " ", "2", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "2", " " }, { " ", "1", "Tg", "*", "*", "Cg", "Kg", "Cg", "*", "Tg1", "1", " " }, { " ", " ", "A", "B", "C", "D", "E", "F", "G", "H", " ", " " }, { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " } };
             matrix_build();
             while (true)
             {
-                 try
-                 {
+                 //try
+                 //{
                     if (counter_side == 0)
                     {
+                        int a = 1;
+                        int b = 2;
+                        int c = 3;
+                        a = b;
+                        b = c;
                         error_cell = false;
                         first_coor_death.Clear();
                         second_coor_death.Clear();
@@ -225,12 +230,17 @@ namespace program
                                         counter_side++;
                                         counter_moves++;
                                         king_green_coor2 = 8;
+                                        counter_king_green_moves++;
                                     }
                                 }
                                 else
                                 {
                                     Console.WriteLine("Не, ходил ты уже турой или королем");
                                 }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Где то битое поле");
                             }
                         }
                         else if (cell1 == "РОКИРОВКА ВЛЕВО")
@@ -257,12 +267,17 @@ namespace program
                                         counter_side++;
                                         counter_moves++;
                                         king_green_coor2 = 4;
+                                        counter_king_green_moves++;
                                     }
                                 }
                                 else
                                 {
                                     Console.WriteLine("Не, ходил ты уже турой или королем");
                                 }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Где то битое поле");
                             }
                         }
                         if (counter_side != 1)
@@ -279,7 +294,7 @@ namespace program
                             Console.WriteLine("Шах и ПАТ! Красный рад");
                             break;
                         }
-                        else if (chax(king_red_coor1, king_red_coor2, "red"))
+                        if (chax(king_red_coor1, king_red_coor2, "red"))
                         {
                             if (end("red"))
                             {
@@ -297,6 +312,7 @@ namespace program
                             Console.WriteLine("Внеси данные правильно");
                             continue;
                         }
+                        Console.WriteLine(matrix[4, 5]);
                         switch (matrix[dig1, dig2])
                         {
                             case "Пr":
@@ -412,12 +428,17 @@ namespace program
                                         matrix[2, 9] = "*";
                                         counter_side--;
                                         counter_moves++;
+                                        counter_king_red_moves++;
                                     }
                                 }
                                 else
                                 {
                                     Console.WriteLine("Не, ходил ты уже турой или королем");
                                 }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Где то битое поле");
                             }
                         }
                         else if (cell1 == "РОКИРОВКА ВПРАВО")
@@ -443,12 +464,17 @@ namespace program
                                         matrix[2, 6] = "*";
                                         counter_side--;
                                         counter_moves++;
+                                        counter_king_red_moves++;
                                     }
                                 }
                                 else
                                 {
                                     Console.WriteLine("Не, ходил ты уже турой или королем");
                                 }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Где то битое поле");
                             }
                         }
                         if (counter_side != 0)
@@ -457,12 +483,12 @@ namespace program
                         }
                         matrix_build();
                     }
-                 }
+                 /*}
                  catch
                  {
                      Console.WriteLine("Ай, код поплавило");
                      matrix_build();
-                 }
+                 }*/
             }
             Console.WriteLine("Ось i казочцi кiнець, а хто слухав - молодець");
             void matrix_build()
@@ -794,7 +820,7 @@ namespace program
                 {
                     Console.WriteLine("Король: Та за шо");
                 }
-                else if (matrix[dig3, dig4] == "*" && dig2 == dig4 && ((dig2 == dig4 && dig3 - dig1 == distance) || (dig1 == edge_start && dig3 - dig1 == 2 * distance)))
+                else if (matrix[dig3, dig4] == "*" && dig2 == dig4 && ((dig3 - dig1 == distance) || (dig1 == edge_start && dig3 - dig1 == 2 * distance && matrix[dig3 - distance, dig4] == "*")))
                 {
                     if (dig3 == edge_end)
                     {
@@ -1412,8 +1438,6 @@ namespace program
                 bool killed = false;
                 bool blocked = false;
                 string temp;
-                int tempdigit1;
-                int tempdigit2;
                 int range1;
                 if (color == "green")
                 {
@@ -1450,13 +1474,11 @@ namespace program
                                     }
                                 }
                                 temp = matrix[ally_first_coor_death[i], ally_second_coor_death[i]];
-                                tempdigit1 = ally_first_coor_death[i];
-                                tempdigit2 = ally_second_coor_death[i];
-                                matrix[ally_first_coor_death[i], ally_second_coor_death[i]] = matrix[opposite_first_coor_death[j], opposite_second_coor_death[j]];
-                                matrix[opposite_first_coor_death[j], opposite_second_coor_death[j]] = "*";
+                                matrix[ally_first_coor_death[i], ally_second_coor_death[i]] = matrix[opposite_first_coor_death[j], opposite_first_coor_death[j]];
+                                matrix[opposite_first_coor_death[j], opposite_first_coor_death[j]] = "*";
                                 chax(king_coor1, king_coor2, color);
-                                matrix[opposite_first_coor_death[j], opposite_second_coor_death[j]] = matrix[tempdigit1, tempdigit2];
-                                matrix[tempdigit1, tempdigit2] = temp;
+                                matrix[opposite_first_coor_death[j], opposite_first_coor_death[j]] = matrix[ally_first_coor_death[i], ally_second_coor_death[i]];
+                                matrix[ally_first_coor_death[i], ally_second_coor_death[i]] = temp;
                                 if (chaxmat == false)
                                 {
                                     killed = true;
@@ -1498,15 +1520,7 @@ namespace program
                 {
                     return false;
                 }
-                if (free_area_around_king(0, 2, king_coor1, king_coor2 - 1, color) == false)
-                {
-                    return false;
-                }
-                if (free_area_around_king(2, 0, king_coor1 - 1, king_coor2, color) == false)
-                {
-                    return false;
-                }
-                if (free_area_around_king(0, 9, king_coor1 - 1, king_coor2 + 1, color) == false)
+                if (free_area_around_king(2, 2, king_coor1 - 1, king_coor2 - 1, color) == false)
                 {
                     return false;
                 }
@@ -1519,6 +1533,14 @@ namespace program
                     return false;
                 }
                 if (free_area_around_king(9, 2, king_coor1 + 1, king_coor2 - 1, color) == false)
+                {
+                    return false;
+                }
+                if (free_area_around_king(0, 9, king_coor1, king_coor2 + 1, color) == false)
+                {
+                    return false;
+                }
+                if (free_area_around_king(0, 2, king_coor1, king_coor2 - 1, color) == false)
                 {
                     return false;
                 }
