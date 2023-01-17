@@ -88,7 +88,7 @@ namespace program
             Console.WriteLine("Обозначения: Т - тура, Н - horse, С - слон, Q - queen, К - король, П - пешка");
             Console.WriteLine("Структура хода: сначала пишешь букву и цифру клетки, где стоит фигура, потом куда хочешь ею походить(пример G3 E3)");
             Console.WriteLine("Для рокировки - рокировка вправо/рокировка влево");
-            string[,] matrix = new string[12, 12] { { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " }, { " ", " ", "1", "2", "3", "4", "5", "6", "7", "8", " ", " " }, { " ", "A", "*", "Hr", "Cr", "*", "*", "*", "*", "Tr1", "A", " " }, { " ", "B", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "B", " " }, { " ", "C", "*", "*", "*", "*", "*", "*", "*", "*", "C", " " }, { " ", "D", "*", "*", "*", "*", "*", "*", "*", "*", "D", " " }, { " ", "E", "Kr", "*", "*", "*", "*", "*", "*", "*", "E", " " }, { " ", "F", "*", "*", "*", "*", "*", "*", "Tg", "Qg", "F", " " }, { " ", "G", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "G", " " }, { " ", "Н", "*", "Hg", "Cg", "*", "*", "Cg", "Hg", "Tg1", "Н", " " }, { " ", " ", "1", "2", "3", "4", "5", "6", "7", "8", " ", " " }, { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " } };
+            string[,] matrix = new string[12, 12] { { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " }, { " ", " ", "1", "2", "3", "4", "5", "6", "7", "8", " ", " " }, { " ", "A", "Tr", "Hr", "Cr", "Qr", "Kr", "Cr", "Hr", "Tr1", "A", " " }, { " ", "B", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "B", " " }, { " ", "C", "*", "*", "*", "*", "*", "*", "*", "*", "C", " " }, { " ", "D", "*", "*", "*", "*", "*", "*", "*", "*", "D", " " }, { " ", "E", "*", "*", "*", "*", "*", "*", "*", "*", "E", " " }, { " ", "F", "*", "*", "*", "*", "*", "*", "*", "*", "F", " " }, { " ", "G", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "G", " " }, { " ", "Н", "*", "Hg", "Cg", "Qg", "Kg", "Cg", "Hg", "Tg1", "Н", " " }, { " ", " ", "1", "2", "3", "4", "5", "6", "7", "8", " ", " " }, { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " } };
             matrixbuild();
             while (true)
             {
@@ -1372,6 +1372,8 @@ namespace program
             
             void block(int n, int m, string color) // указывать цвет который блокирует атаку оппонента
             {
+                firstcoorblock.Clear();
+                secondcoorblock.Clear();
                 chaxrighttopslon = true;
                 chaxlefttopslon = true;
                 chaxrightdownslon = true;
@@ -1383,8 +1385,8 @@ namespace program
                 if (color == "green")
                 {
                     enemyally("Kr");
-                    killerdetector(n - 1, m, enemyП, firstcoorblock, secondcoorblock);
-                    if (matrix[n - 2, m] == enemyП && n == 6 && matrix[n + 1, m] == "*")
+                    killerdetector(n + 1, m, enemyП, firstcoorblock, secondcoorblock);
+                    if (matrix[n + 2, m] == enemyП && n == 6 && matrix[n + 1, m] == "*")
                     {
                         killerdetector(n + 2, m, enemyП, firstcoorblock, secondcoorblock);
                     }
@@ -1392,10 +1394,10 @@ namespace program
                 else if (color == "red")
                 {
                     enemyally("Kg");
-                    killerdetector(n + 1, m, enemyП, firstcoorblock, secondcoorblock);
-                    if (matrix[n + 2, m] == enemyП && n == 8 && matrix[n - 1, m] == "*")
+                    killerdetector(n - 1, m, enemyП, firstcoorblock, secondcoorblock);
+                    if (matrix[n - 2, m] == enemyП && n == 5 && matrix[n - 1, m] == "*")
                     {
-                        killerdetector(n + 2, m, enemyП, firstcoorblock, secondcoorblock);
+                        killerdetector(n - 2, m, enemyП, firstcoorblock, secondcoorblock);
                     }
                 }
 
@@ -1420,7 +1422,7 @@ namespace program
                     }
                     if (n + i < 11 && 0 < m - i)
                     {
-                        slondetector(n + i, m - i, ref chaxleftdownslon, firstcoorblock, secondcoorblock);
+                        slondetector(n + i, m - i, ref chaxrightdownslon, firstcoorblock, secondcoorblock);
                     }
                     if (n + i < 11 && m + i < 11)
                     {
@@ -1462,13 +1464,13 @@ namespace program
                     redsecondcoorblock = secondcoorblock;
                 }
             }
-            bool free_area_around_king(int limitcoor1, int limitcoor2, int x, int y)
-            { 
+            bool free_area_around_king(int limitcoor1, int limitcoor2, int x, int y, string col)
+            {
                 if (kinggreenplace1 != limitcoor1 && kinggreenplace2 != limitcoor2 && matrix[x, y] != allyП && matrix[x, y] != allyC && matrix[x, y] != allyH && matrix[x, y] != allyT && matrix[x, y] != allyT1 && matrix[x, y] != allyQ)
                 {
                     temp = matrix[kingplace1, kingplace2];
                     matrix[kingplace1, kingplace2] = "*";
-                    chax(x, y, color);
+                    chax(x, y, col);
                     matrix[kingplace1, kingplace2] = temp;
                     if (chaxmat == false)
                     {
@@ -1486,7 +1488,6 @@ namespace program
                 int tempdigit1;
                 int tempdigit2;
                 int range1;
-                int range2;
                 if (color == "green")
                 {
                     oppositecolor = "red";
@@ -1545,60 +1546,56 @@ namespace program
                             if (matrix[i, j] == "*")
                             {
                                 block(i, j, color);
-                                for (int k = 0; k < firstcoorblock.Count; k++)/////не умирает красный//////////////////////////////???????????????????A
+                                for (int k = 0; k < firstcoorblock.Count; k++)
                                 {
-                                    Console.WriteLine("matrix[firstcoorblock[i], secondcoorblock[i]] = " + matrix[firstcoorblock[k], secondcoorblock[k]]);
-                                    Console.WriteLine("firstcoorblock[k] = " + firstcoorblock[k]);
-                                    Console.WriteLine("secondcoorblock[k] = " + secondcoorblock[k]);
-                                    Console.Write(k);
                                     matrix[i, j] = matrix[firstcoorblock[k], secondcoorblock[k]];
                                     matrix[firstcoorblock[k], secondcoorblock[k]] = "*";
                                     chax(kingplace1, kingplace2, color);
+                                    matrixbuild();
                                     matrix[firstcoorblock[k], secondcoorblock[k]] = matrix[i, j];
                                     matrix[i, j] = "*";
                                     if (chaxmat == false)
                                     {
-                                        blocked = true;/////////////////////////////////?????????????????????
+                                        blocked = true;
                                     }
                                 }
+
                             }
                         }
                     }
                 }
-                if (free_area_around_king(2, 0, kinggreenplace1 - 1, kinggreenplace2) == false)
+                if (free_area_around_king(2, 0, kinggreenplace1 - 1, kinggreenplace2, color) == false)
                 {
                     return false;
                 }
-                if (free_area_around_king(2, 9, kinggreenplace1 - 1, kinggreenplace2 + 1) == false)
+                if (free_area_around_king(2, 9, kinggreenplace1 - 1, kinggreenplace2 + 1, color) == false)
                 {
                     return false;
                 }
-                if (free_area_around_king(0, 2, kinggreenplace1, kinggreenplace2 - 1) == false)
+                if (free_area_around_king(0, 2, kinggreenplace1, kinggreenplace2 - 1, color) == false)
                 {
                     return false;
                 }
-                if (free_area_around_king(2, 0, kinggreenplace1 - 1, kinggreenplace2) == false)
+                if (free_area_around_king(2, 0, kinggreenplace1 - 1, kinggreenplace2, color) == false)
                 {
                     return false;
                 }
-                if (free_area_around_king(0, 9, kinggreenplace1 - 1, kinggreenplace2 + 1) == false)
+                if (free_area_around_king(0, 9, kinggreenplace1 - 1, kinggreenplace2 + 1, color) == false)
                 {
                     return false;
                 }
-                if (free_area_around_king(9, 0, kinggreenplace1 + 1, kinggreenplace2) == false)
+                if (free_area_around_king(9, 0, kinggreenplace1 + 1, kinggreenplace2, color) == false)
                 {
                     return false;
                 }
-                if (free_area_around_king(9, 9, kinggreenplace1 + 1, kinggreenplace2 + 1) == false)
+                if (free_area_around_king(9, 9, kinggreenplace1 + 1, kinggreenplace2 + 1, color) == false)
                 {
                     return false;
                 }
-                if (free_area_around_king(9, 2, kinggreenplace1 + 1, kinggreenplace2 - 1) == false)
+                if (free_area_around_king(9, 2, kinggreenplace1 + 1, kinggreenplace2 - 1, color) == false)
                 {
                     return false;
                 }
-                Console.WriteLine("blocked = " + blocked);
-                Console.WriteLine("killed = " + killed);
                 if (killed || blocked)
                 {
                     return false;
