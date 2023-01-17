@@ -32,87 +32,64 @@ namespace program
             string allyT1 = "";
             string allyQ = "";
             string allyK = "";
-            int counterproh = 0;
-            int counterturagreenleft = 0;
-            int counterturagreenright = 0;
-            int counterturaredleft = 0;
-            int counterturaredright = 0;
-            int counterkinggreen = 0;
-            int counterkingred = 0;
+            int counter_no_free_place = 0;
+            int counter_tura1_green_moves = 0;
+            int counter_tura2_green_moves = 0;
+            int counter_tura1_red_moves = 0;
+            int counter_tura2_red_moves = 0;
+            int counter_king_green_moves = 0;
+            int counter_king_red_moves = 0;
             string figura = "";
-            int counterside = 0;
-            int counterhod = 1;
-            int kinggreenplace1 = 9;
-            int kinggreenplace2 = 6;
-            int kingredplace1 = 2;
-            int kingredplace2 = 6;
-            bool greenchaxmat = false;
-            bool redchaxmat = false;
+            int counter_side = 0;
+            int counter_moves = 1;
+            int king_green_coor1 = 9;
+            int king_green_coor2 = 6;
+            int king_red_coor1 = 2;
+            int king_red_coor2 = 6;
             bool chaxmat = false;
-            bool chaxrighttopslon = true;
-            bool chaxlefttopslon = true;
-            bool chaxrightdownslon = true;
-            bool chaxleftdownslon = true;
-            bool chaxlefttura = true;
-            bool chaxrighttura = true;
-            bool chaxtoptura = true;
-            bool chaxdowntura = true;
-            bool greenkilled = false;
-            bool greenblocked = false;
-            bool redkilled = false;
-            bool greenblocksreded = false;
-            bool errorcell = false;
+            bool chax_right_top_slon = true;
+            bool chax_left_top_slon = true;
+            bool chax_right_down_slon = true;
+            bool chax_left_down_slon = true;
+            bool chax_left_tura = true;
+            bool chax_right_tura = true;
+            bool chax_top_tura = true;
+            bool chax_down_tura = true;
+            bool error_cell = false;
             int answer;
             int advantage;
-            string color = "";
-            string greenlosses = "";
-            string redlosses = "";
-            int kingplace1 = -1;
-            int kingplace2 = -1;
-            List<int> greenfirstcoordeath = new();
-            List<int> greensecondcoordeath = new();
-            List<int> redfirstcoordeath = new();
-            List<int> redsecondcoordeath = new();
-            List<int> redfirstcoorblock = new();
-            List<int> redsecondcoorblock = new();
-            List<int> greenfirstcoorblock = new();
-            List<int> greensecondcoorblock = new();
-            List<int> firstcoordeath = new();
-            List<int> secondcoordeath = new();
-            List<int> firstcoorblock = new();
-            List<int> secondcoorblock = new();
-            List<int> oppositefirstcoordeath = new();
-            List<int> oppositesecondcoordeath = new();
-            List<int> myfirstcoordeath = new();
-            List<int> mysecondcoordeath = new();
+            string green_losses = "";
+            string red_losses = "";
+            int king_coor1 = -1;
+            int king_coor2 = -1;
+            List<int> first_coor_death = new();
+            List<int> second_coor_death = new();
+            List<int> first_coor_block = new();
+            List<int> second_coor_block = new();
+            List<int> opposite_first_coor_death = new();
+            List<int> opposite_second_coor_death = new();
+            List<int> ally_first_coor_death = new();
+            List<int> ally_second_coor_death = new();
             Console.WriteLine("Обозначения: Т - тура, Н - horse, С - слон, Q - queen, К - король, П - пешка");
             Console.WriteLine("Структура хода: сначала пишешь букву и цифру клетки, где стоит фигура, потом куда хочешь ею походить(пример G3 E3)");
             Console.WriteLine("Для рокировки - рокировка вправо/рокировка влево");
             string[,] matrix = new string[12, 12] { { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " }, { " ", " ", "A", "B", "C", "D", "E", "F", "G", "H", " ", " " }, { " ", "8", "Tr", "Hr", "Cr", "Qr", "Kr", "Cr", "Hr", "Tr1", "8", " " }, { " ", "7", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "7", " " }, { " ", "6", "*", "*", "*", "*", "*", "*", "*", "*", "6", " " }, { " ", "5", "*", "*", "*", "*", "*", "*", "*", "*", "5", " " }, { " ", "4", "*", "*", "*", "*", "*", "*", "*", "*", "4", " " }, { " ", "3", "*", "*", "*", "*", "*", "*", "*", "*", "3", " " }, { " ", "2", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "2", " " }, { " ", "1", "Tg", "Hg", "Cg", "Qg", "Kg", "Cg", "Hg", "Tg1", "1", " " }, { " ", " ", "A", "B", "C", "D", "E", "F", "G", "H", " ", " " }, { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " } };
-            matrixbuild();
+            matrix_build();
             while (true)
             {
                  try
                  {
-                    if (counterside == 0)
+                    if (counter_side == 0)
                     {
-                        errorcell = false;
-                        greenfirstcoordeath.Clear();
-                        greensecondcoordeath.Clear();
-                        redfirstcoordeath.Clear();
-                        redsecondcoordeath.Clear();
-                        redfirstcoorblock.Clear();
-                        redsecondcoorblock.Clear();
-                        greenfirstcoorblock.Clear();
-                        greensecondcoorblock.Clear();
-                        firstcoordeath.Clear();
-                        secondcoordeath.Clear();
+                        error_cell = false;
+                        first_coor_death.Clear();
+                        second_coor_death.Clear();
                         if (stalemate("green"))
                         {
                             Console.WriteLine("Шах и ПАТ! Зеленый рад");
                             break;
                         }
-                        else if (chax(kinggreenplace1, kinggreenplace2, "green"))
+                        else if (chax(king_green_coor1, king_green_coor2, "green"))
                         {
                             if (end("green"))
                             {
@@ -121,16 +98,12 @@ namespace program
                             }
                             Console.WriteLine("ATTENTION! ШАХ!(зеленый! Алло)");
                         }
-                        Console.WriteLine($"Ход зеленых {counterhod} ");
+                        Console.WriteLine($"Ход зеленых {counter_moves} ");
                         cell1 = Console.ReadLine().ToUpper();
-                        if (cell1 == "s")
-                        {
-                            counterside = 1;
-                        }
                         place1(cell1);
-                        if (errorcell)
+                        if (error_cell)
                         {
-                            matrixbuild();
+                            matrix_build();
                             Console.WriteLine("Внеси данные правильно");
                             continue;
                         }
@@ -140,9 +113,9 @@ namespace program
                                 Console.WriteLine("(пешка)");
                                 cell2 = Console.ReadLine().ToUpper();
                                 place2(cell2);
-                                if (errorcell)
+                                if (error_cell)
                                 {
-                                    matrixbuild();
+                                    matrix_build();
                                     Console.WriteLine("Внеси данные правильно");
                                     continue;
                                 }
@@ -153,9 +126,9 @@ namespace program
                                 Console.WriteLine("(конь)");
                                 cell2 = Console.ReadLine().ToUpper();
                                 place2(cell2);
-                                if (errorcell)
+                                if (error_cell)
                                 {
-                                    matrixbuild();
+                                    matrix_build();
                                     Console.WriteLine("Внеси данные правильно");
                                     continue;
                                 }
@@ -174,9 +147,9 @@ namespace program
                                 Console.WriteLine("(тура)");
                                 cell2 = Console.ReadLine().ToUpper();
                                 place2(cell2);
-                                if (errorcell)
+                                if (error_cell)
                                 {
-                                    matrixbuild();
+                                    matrix_build();
                                     Console.WriteLine("Внеси данные правильно");
                                     continue;
                                 }
@@ -187,9 +160,9 @@ namespace program
                                 Console.WriteLine("(слон)");
                                 cell2 = Console.ReadLine().ToUpper();
                                 place2(cell2);
-                                if (errorcell)
+                                if (error_cell)
                                 {
-                                    matrixbuild();
+                                    matrix_build();
                                     Console.WriteLine("Внеси данные правильно");
                                     continue;
                                 }
@@ -201,9 +174,9 @@ namespace program
                                 Console.WriteLine("(королева)");
                                 cell2 = Console.ReadLine().ToUpper();
                                 place2(cell2);
-                                if (errorcell)
+                                if (error_cell)
                                 {
-                                    matrixbuild();
+                                    matrix_build();
                                     Console.WriteLine("Внеси данные правильно");
                                     continue;
                                 }
@@ -220,29 +193,28 @@ namespace program
                                 Console.WriteLine("(король)");
                                 cell2 = Console.ReadLine().ToUpper();
                                 place2(cell2);
-                                if (errorcell)
+                                if (error_cell)
                                 {
-                                    matrixbuild();
+                                    matrix_build();
                                     Console.WriteLine("Внеси данные правильно");
                                     continue;
                                 }
                                 king("Kg");
                                 break;
                         }
-                        if (cell1 == "рокировка вправо")
+                        if (cell1 == "РОКИРОВКА ВПРАВО")
                         {
                             for (int i = 0; i < 3; i++)
                             {
-                                chax(9, 6 + i, "green");
-                                if (greenchaxmat)
+                                if (chax(9, 6 + i, "green"))
                                 {
                                     Console.WriteLine("Mission(рокировка) impossible");
                                     break;
                                 }
                             }
-                            if (greenchaxmat == false)
+                            if (chaxmat == false)
                             {
-                                if (counterkinggreen == 0 && counterturagreenright == 0)
+                                if (counter_king_green_moves == 0 && counter_tura2_green_moves == 0)
                                 {
                                     if (matrix[9, 7] == "*" && matrix[9, 8] == "*")
                                     {
@@ -250,9 +222,9 @@ namespace program
                                         matrix[9, 7] = "Tg1";
                                         matrix[9, 8] = "Kg";
                                         matrix[9, 9] = "*";
-                                        counterside++;
-                                        counterhod++;
-                                        kinggreenplace2 = 8;
+                                        counter_side++;
+                                        counter_moves++;
+                                        king_green_coor2 = 8;
                                     }
                                 }
                                 else
@@ -261,20 +233,19 @@ namespace program
                                 }
                             }
                         }
-                        else if (cell1 == "рокировка влево")
+                        else if (cell1 == "РОКИРОВКА ВЛЕВО")
                         {
                             for (int i = 0; i < 3; i++)
                             {
-                                chax(9, 6 - i, "green");
-                                if (greenchaxmat)
+                                if (chax(9, 6 - i, "green"))
                                 {
                                     Console.WriteLine("Mission(рокировка) impossible");
                                     break;
                                 }
                             }
-                            if (greenchaxmat == false)
+                            if (chaxmat == false)
                             {
-                                if (counterkinggreen == 0 && counterturagreenleft == 0)
+                                if (counter_king_green_moves == 0 && counter_tura1_green_moves == 0)
                                 {
                                     if (matrix[9, 3] == "*" && matrix[9, 4] == "*" && matrix[9, 5] == "*")
                                     {
@@ -283,9 +254,9 @@ namespace program
                                         matrix[9, 4] = "Kg";
                                         matrix[9, 5] = "Tg";
                                         matrix[9, 6] = "*";
-                                        counterside++;
-                                        counterhod++;
-                                        kinggreenplace2 = 4;
+                                        counter_side++;
+                                        counter_moves++;
+                                        king_green_coor2 = 4;
                                     }
                                 }
                                 else
@@ -294,25 +265,21 @@ namespace program
                                 }
                             }
                         }
-                        if (counterside != 1)
+                        if (counter_side != 1)
                         {
                             Console.WriteLine("Берешь свою фигуру и бьешь вражескую. Понял?");
                         }
-                        matrixbuild();
+                        matrix_build();
                     }
-                    if (counterside == 1)
+                    if (counter_side == 1)
                     {
-                        errorcell = false;
-                        redfirstcoordeath.Clear();
-                        redsecondcoordeath.Clear();
-                        redfirstcoorblock.Clear();
-                        redsecondcoorblock.Clear();
+                        error_cell = false;
                         if (stalemate("red"))
                         {
                             Console.WriteLine("Шах и ПАТ! Красный рад");
                             break;
                         }
-                        else if (chax(kingredplace1, kingredplace2, "red"))
+                        else if (chax(king_red_coor1, king_red_coor2, "red"))
                         {
                             if (end("red"))
                             {
@@ -321,16 +288,12 @@ namespace program
                             }
                             Console.WriteLine("ATTENTION! ШАХ!(красный! Алло)");
                         }
-                        Console.WriteLine($"Ход красных {counterhod} ");
-                        cell1 = Console.ReadLine();
-                        if (cell1 == "s")
-                        {
-                            counterside = 0;
-                        }
+                        Console.WriteLine($"Ход красных {counter_moves} ");
+                        cell1 = Console.ReadLine().ToUpper();
                         place1(cell1);
-                        if (errorcell)
+                        if (error_cell)
                         {
-                            matrixbuild();
+                            matrix_build();
                             Console.WriteLine("Внеси данные правильно");
                             continue;
                         }
@@ -340,9 +303,9 @@ namespace program
                                 Console.WriteLine("(пешка)");
                                 cell2 = Console.ReadLine().ToUpper();
                                 place2(cell2);
-                                if (errorcell)
+                                if (error_cell)
                                 {
-                                    matrixbuild();
+                                    matrix_build();
                                     Console.WriteLine("Внеси данные правильно");
                                     continue;
                                 }
@@ -352,9 +315,9 @@ namespace program
                                 Console.WriteLine("(конь)");
                                 cell2 = Console.ReadLine().ToUpper();
                                 place2(cell2);
-                                if (errorcell)
+                                if (error_cell)
                                 {
-                                    matrixbuild();
+                                    matrix_build();
                                     Console.WriteLine("Внеси данные правильно");
                                     continue;
                                 }
@@ -373,9 +336,9 @@ namespace program
                                 Console.WriteLine("(тура)");
                                 cell2 = Console.ReadLine().ToUpper();
                                 place2(cell2);
-                                if (errorcell)
+                                if (error_cell)
                                 {
-                                    matrixbuild();
+                                    matrix_build();
                                     Console.WriteLine("Внеси данные правильно");
                                     continue;
                                 }
@@ -386,9 +349,9 @@ namespace program
                                 Console.WriteLine("(слон)");
                                 cell2 = Console.ReadLine().ToUpper();
                                 place2(cell2);
-                                if (errorcell)
+                                if (error_cell)
                                 {
-                                    matrixbuild();
+                                    matrix_build();
                                     Console.WriteLine("Внеси данные правильно");
                                     continue;
                                 }
@@ -400,9 +363,9 @@ namespace program
                                 Console.WriteLine("(королева)");
                                 cell2 = Console.ReadLine().ToUpper();
                                 place2(cell2);
-                                if (errorcell)
+                                if (error_cell)
                                 {
-                                    matrixbuild();
+                                    matrix_build();
                                     Console.WriteLine("Внеси данные правильно");
                                     continue;
                                 }
@@ -418,29 +381,28 @@ namespace program
                                     Console.WriteLine("(король)");
                                     cell2 = Console.ReadLine().ToUpper();
                                     place2(cell2);
-                                    if (errorcell)
+                                    if (error_cell)
                                     {
-                                        matrixbuild();
+                                        matrix_build();
                                         Console.WriteLine("Внеси данные правильно");
                                         continue;
                                     }
                                     king("Kr");
                                     break;
                         }
-                        if (cell1 == "рокировка влево")
+                        if (cell1 == "РОКИРОВКА ВЛЕВО")
                         {
                             for (int i = 0; i < 3; i++)
                             {
-                                chax(2, 6 + i, "red");
-                                if (redchaxmat)
+                                if (chax(2, 6 + i, "red"))
                                 {
                                     Console.WriteLine("Mission(рокировка) impossible");
                                     break;
                                 }
                             }
-                            if (redchaxmat == false)
+                            if (chaxmat == false)
                             {
-                                if (counterkingred == 0 && counterturaredright == 0)
+                                if (counter_king_red_moves == 0 && counter_tura2_red_moves == 0)
                                 {
                                     if (matrix[2, 7] == "*" && matrix[2, 8] == "*")
                                     {
@@ -448,8 +410,8 @@ namespace program
                                         matrix[2, 7] = "Tr1";
                                         matrix[2, 8] = "Kr";
                                         matrix[2, 9] = "*";
-                                        counterside--;
-                                        counterhod++;
+                                        counter_side--;
+                                        counter_moves++;
                                     }
                                 }
                                 else
@@ -458,20 +420,19 @@ namespace program
                                 }
                             }
                         }
-                        else if (cell1 == "рокировка вправо")
+                        else if (cell1 == "РОКИРОВКА ВПРАВО")
                         {
                             for (int i = 0; i < 3; i++)
                             {
-                                chax(2, 6 - i, "red");
-                                if (redchaxmat)
+                                if (chax(2, 6 - i, "red"))
                                 {
                                     Console.WriteLine("Mission(рокировка) impossible");
                                     break;
                                 }
                             }
-                            if (redchaxmat == false)
+                            if (chaxmat == false)
                             {
-                                if (counterkingred == 0 && counterturaredleft == 0)
+                                if (counter_king_red_moves == 0 && counter_tura1_red_moves == 0)
                                 {
                                     if (matrix[2, 3] == "*" && matrix[2, 4] == "*" && matrix[2, 5] == "*")
                                     {
@@ -480,8 +441,8 @@ namespace program
                                         matrix[2, 4] = "Kr";
                                         matrix[2, 5] = "Tr";
                                         matrix[2, 6] = "*";
-                                        counterside--;
-                                        counterhod++;
+                                        counter_side--;
+                                        counter_moves++;
                                     }
                                 }
                                 else
@@ -490,24 +451,24 @@ namespace program
                                 }
                             }
                         }
-                        if (counterside != 0)
+                        if (counter_side != 0)
                         {
                             Console.WriteLine("Фигуру выбери! Желательно свою");
                         }
-                        matrixbuild();
+                        matrix_build();
                     }
                  }
                  catch
                  {
                      Console.WriteLine("Ай, код поплавило");
-                     matrixbuild();
+                     matrix_build();
                  }
             }
             Console.WriteLine("Ось i казочцi кiнець, а хто слухав - молодець");
-            void matrixbuild()
+            void matrix_build()
             {
-                counter();
-                if (counterside == 0)
+                counter_figures();
+                if (counter_side == 0)
                 {
                     for (int i = 1; i < 11; i++)
                     {
@@ -515,13 +476,13 @@ namespace program
                         {
                             if (matrix[i, j] == "Kg")
                             {
-                                kinggreenplace1 = i;
-                                kinggreenplace2 = j;
+                                king_green_coor1 = i;
+                                king_green_coor2 = j;
                             }
                             if (matrix[i, j] == "Kr")
                             {
-                                kingredplace1 = i;
-                                kingredplace2 = j;
+                                king_red_coor1 = i;
+                                king_red_coor2 = j;
                             }
                             if ((i + j) % 2 == 0)
                             {
@@ -555,19 +516,19 @@ namespace program
                             }
                             Console.BackgroundColor = ConsoleColor.Black;
                             Console.ForegroundColor = ConsoleColor.White;
-                            if (i == 1 && j == 10 && greenlosses != "")
+                            if (i == 1 && j == 10 && green_losses != "")
                             {
-                                Console.Write(" " + greenlosses);
+                                Console.Write(" " + green_losses);
                             }
-                            else if (i == 10 && j == 10 && greenlosses != "")
+                            else if (i == 10 && j == 10 && green_losses != "")
                             {
-                                Console.Write(" " + redlosses);
+                                Console.Write(" " + red_losses);
                             }
                         }
                         Console.WriteLine();
                     }
                 }
-                else if (counterside == 1)
+                else if (counter_side == 1)
                 {
                     for (int i = 10; i > 0; i--)
                     {
@@ -605,13 +566,13 @@ namespace program
                             }
                             Console.BackgroundColor = ConsoleColor.Black;
                             Console.ForegroundColor = ConsoleColor.White;
-                            if (i == 1 && j == 1 && greenlosses != "")
+                            if (i == 1 && j == 1 && green_losses != "")
                             {
-                                Console.Write(" " + greenlosses);
+                                Console.Write(" " + green_losses);
                             }
-                            if (i == 10 && j == 1 && redlosses != "")
+                            if (i == 10 && j == 1 && red_losses != "")
                             {
-                                Console.Write(" " + redlosses);
+                                Console.Write(" " + red_losses);
                             }
                         }
                         Console.WriteLine();
@@ -620,18 +581,18 @@ namespace program
                     }
                 }
             }
-            void counter()
+            void counter_figures()
             {
-                int losecountergreentura = 0;
-                int losecounterredtura = 0;
-                int losecountergreenslon = 0;
-                int losecounterredslon = 0;
-                int losecountergreenhorse = 0;
-                int losecounterredhorse = 0;
-                int losecountergreenqueen = 0;
-                int losecounterredqueen = 0;
-                int losecountergreenpeshak = 0;
-                int losecounterredpeshak = 0;
+                int lose_counter_green_tura = 0;
+                int lose_counter_red_tura = 0;
+                int lose_counter_green_slon = 0;
+                int lose_counter_red_slon = 0;
+                int lose_counter_green_horse = 0;
+                int lose_counter_red_horse = 0;
+                int lose_counter_green_queen = 0;
+                int lose_counter_red_queen = 0;
+                int lose_counter_green_peshak = 0;
+                int lose_counter_red_peshak = 0;
                 for (int i = 2; i < 10; i++)
                 {
                     for (int j = 2; j < 10; j++)
@@ -641,76 +602,76 @@ namespace program
                             case "Tg":
                                 goto case "Tg1";
                             case "Tg1":
-                                losecountergreentura++;
+                                lose_counter_green_tura++;
                                 break;
                             case "Tr":
                                 goto case "Tr1";
                             case "Tr1":
-                                losecounterredtura++;
+                                lose_counter_red_tura++;
                                 break;
                             case "Cg":
-                                losecountergreenslon++;
+                                lose_counter_green_slon++;
                                 break;
                             case "Cr":
-                                losecounterredslon++;
+                                lose_counter_red_slon++;
                                 break;
                             case "Hg":
-                                 losecountergreenhorse++;
+                                lose_counter_green_horse++;
                                 break;
                             case "Hr":
-                                losecounterredhorse++;
+                                lose_counter_red_horse++;
                                 break;
                             case "Qg":
-                                losecountergreenqueen++;
+                                lose_counter_green_queen++;
                                 break;
                             case "Qr":
-                                losecounterredqueen++;
+                                lose_counter_red_queen++;
                                 break;
                             case "Пg":
-                                losecountergreenpeshak++;
+                                lose_counter_green_peshak++;
                                 break;
                             case "Пr":
-                                losecounterredpeshak++;
+                                lose_counter_red_peshak++;
                                 break;
                         }
                     }
                 }
-                advantage = 8 - losecounterredpeshak + 3 * (2 - losecounterredhorse) + 3 * (2 - losecounterredslon) + 5 * (2 - losecounterredtura) + 9 * (1 - losecounterredqueen) - (8 - losecountergreenpeshak + 3 * (2 - losecountergreenhorse) + 3 * (2 - losecountergreenslon) + 5 * (2 - losecountergreentura) + 9 * (1 - losecountergreenqueen));
-                greenlosses = string.Concat(Enumerable.Repeat("П", 8 - losecountergreenpeshak)) + string.Concat(Enumerable.Repeat("H", 2 - losecountergreenhorse)) + string.Concat(Enumerable.Repeat("C", 2 - losecountergreenslon)) + string.Concat(Enumerable.Repeat("T", 2 - losecountergreentura)) + string.Concat(Enumerable.Repeat("Q", 1 - losecountergreenqueen));
-                redlosses = string.Concat(Enumerable.Repeat("П", 8 - losecounterredpeshak)) + string.Concat(Enumerable.Repeat("H", 2 - losecounterredhorse)) + string.Concat(Enumerable.Repeat("C", 2 - losecounterredslon)) + string.Concat(Enumerable.Repeat("T", 2 - losecounterredtura)) + string.Concat(Enumerable.Repeat("Q", 1 - losecounterredqueen));
+                advantage = 8 - lose_counter_red_peshak + 3 * (2 - lose_counter_red_horse) + 3 * (2 - lose_counter_red_slon) + 5 * (2 - lose_counter_red_tura) + 9 * (1 - lose_counter_red_queen) - (8 - lose_counter_green_peshak + 3 * (2 - lose_counter_green_horse) + 3 * (2 - lose_counter_green_slon) + 5 * (2 - lose_counter_green_tura) + 9 * (1 - lose_counter_green_queen));
+                green_losses = string.Concat(Enumerable.Repeat("П", 8 - lose_counter_green_peshak)) + string.Concat(Enumerable.Repeat("H", 2 - lose_counter_green_horse)) + string.Concat(Enumerable.Repeat("C", 2 - lose_counter_green_slon)) + string.Concat(Enumerable.Repeat("T", 2 - lose_counter_green_tura)) + string.Concat(Enumerable.Repeat("Q", 1 - lose_counter_green_queen));
+                red_losses = string.Concat(Enumerable.Repeat("П", 8 - lose_counter_red_peshak)) + string.Concat(Enumerable.Repeat("H", 2 - lose_counter_red_horse)) + string.Concat(Enumerable.Repeat("C", 2 - lose_counter_red_slon)) + string.Concat(Enumerable.Repeat("T", 2 - lose_counter_red_tura)) + string.Concat(Enumerable.Repeat("Q", 1 - lose_counter_red_queen));
                 if (advantage > 0)
                 {
-                    redlosses += " +" + Convert.ToString(8 - losecounterredpeshak + 3 * (2 - losecounterredhorse) + 3 * (2 - losecounterredslon) + 5 * (2 - losecounterredtura) + 9 * (1 - losecounterredqueen) - (8 - losecountergreenpeshak + 3 * (2 - losecountergreenhorse) + 3 * (2 - losecountergreenslon) + 5 * (2 - losecountergreentura) + 9 * (1 - losecountergreenqueen)));
+                    red_losses += " +" + Convert.ToString(8 - lose_counter_red_peshak + 3 * (2 - lose_counter_red_horse) + 3 * (2 - lose_counter_red_slon) + 5 * (2 - lose_counter_red_tura) + 9 * (1 - lose_counter_red_queen) - (8 - lose_counter_green_peshak + 3 * (2 - lose_counter_green_horse) + 3 * (2 - lose_counter_green_slon) + 5 * (2 - lose_counter_green_tura) + 9 * (1 - lose_counter_green_queen)));
                 }
                 else if (advantage < 0)
                 {
-                    greenlosses += " +" + Convert.ToString((8 - losecountergreenpeshak + 3 * (2 - losecountergreenhorse) + 3 * (2 - losecountergreenslon) + 5 * (2 - losecountergreentura) + 9 * (1 - losecountergreenqueen)) - (8 - losecounterredpeshak + 3 * (2 - losecounterredhorse) + 3 * (2 - losecounterredslon) + 5 * (2 - losecounterredtura) + 9 * (1 - losecounterredqueen)));
+                    green_losses += " +" + Convert.ToString((8 - lose_counter_green_peshak + 3 * (2 - lose_counter_green_horse) + 3 * (2 - lose_counter_green_slon) + 5 * (2 - lose_counter_green_tura) + 9 * (1 - lose_counter_green_queen)) - (8 - lose_counter_red_peshak + 3 * (2 - lose_counter_red_horse) + 3 * (2 - lose_counter_red_slon) + 5 * (2 - lose_counter_red_tura) + 9 * (1 - lose_counter_red_queen)));
                 }
             }
             void place1(string green)
             {
                 if (cell1.Length == 2)
                 {
-                    letterconverter(cell1, ref dig2);
+                    letter_converter(cell1, ref dig2);
                     if (1 < 58 - Convert.ToInt32(cell1[1]) && 58 - Convert.ToInt32(cell1[1]) < 10)
                     {
                         dig1 = 58 - Convert.ToInt32(cell1[1]);
                     }
                 }
-                if (cell1 == "рокировка вправо" || cell1 == "рокировка влево")
+                if (cell1 == "РОКИРОВКА ВПРАВО" || cell1 == "РОКИРОВКА ВЛЕВО")
                 {
-                    errorcell = false;
+                    error_cell = false;
                 }
                 else if (cell1.Length != 2 || (Convert.ToString(cell1[1]) != "1" && Convert.ToString(cell1[1]) != "2" && Convert.ToString(cell1[1]) != "3" && Convert.ToString(cell1[1]) != "4" && Convert.ToString(cell1[1]) != "5" && Convert.ToString(cell1[1]) != "6" && Convert.ToString(cell1[1]) != "7" && Convert.ToString(cell1[1]) != "8"))
                 {
-                    errorcell = true;
+                    error_cell = true;
                 }
             }
             void place2(string green)
             {
                 if (cell2.Length == 2)
                 {
-                    letterconverter(cell2, ref dig4);
+                    letter_converter(cell2, ref dig4);
                     if (1 < 58 - Convert.ToInt32(cell2[1]) && 58 - Convert.ToInt32(cell2[1]) < 10)
                     {
                         dig3 = 58 - Convert.ToInt32(cell2[1]);
@@ -718,14 +679,14 @@ namespace program
                 }
                 if (cell2.Length != 2 || (Convert.ToString(cell2[1]) != "1" && Convert.ToString(cell2[1]) != "2" && Convert.ToString(cell2[1]) != "3" && Convert.ToString(cell2[1]) != "4" && Convert.ToString(cell2[1]) != "5" && Convert.ToString(cell2[1]) != "6" && Convert.ToString(cell2[1]) != "7" && Convert.ToString(cell2[1]) != "8"))
                 {
-                    errorcell = true;
+                    error_cell = true;
                 }
                 else if (cell1[0] == cell2[0] && cell1[1] == cell2[1])
                 {
-                    errorcell = true;
+                    error_cell = true;
                 }
             }
-            void letterconverter(string cell, ref int dig)
+            void letter_converter(string cell, ref int dig)
             {
                 switch (Convert.ToString(cell[0]))
                 {
@@ -762,20 +723,19 @@ namespace program
                 matrix[dig3, dig4] = attacker;
                 if (attacker == "Пg" || attacker == "Tg" || attacker == "Tg1" || attacker == "Cg" || attacker == "Hg" || attacker == "Qg")
                 {
-                    chax(kinggreenplace1, kinggreenplace2, "green");
+                    chax(king_green_coor1, king_green_coor2, "green");
                     matrix[dig1, dig2] = attacker;
                     matrix[dig3, dig4] = temp;
-                    return greenchaxmat;
                 }
                 else
                 {
-                    chax(kingredplace1, kingredplace2, "red");
+                    chax(king_red_coor1, king_red_coor2, "red");
                     matrix[dig1, dig2] = attacker;
                     matrix[dig3, dig4] = temp;
-                    return redchaxmat;
                 }
+                return chaxmat;
             }
-            void enemyally(string hero)
+            void enemy_ally(string hero)
             {
                 if (hero == "Tg1" || hero == "Tg" || hero == "Cg" || hero == "Hg" || hero == "Qg" || hero == "Kg" || hero == "Пg")
                 {
@@ -814,29 +774,29 @@ namespace program
             }
             void peshak(string hero)
             {
-                int edgestart = 0;
-                int edgeend = 0;
+                int edge_start = 0;
+                int edge_end = 0;
                 int distance = 0;
                 if (hero == "Пg")
                 {
-                    edgestart = 8;
-                    edgeend = 2;
+                    edge_start = 8;
+                    edge_end = 2;
                     distance = -1;
                 }
                 else
                 {
-                    edgestart = 3;
-                    edgeend = 9;
+                    edge_start = 3;
+                    edge_end = 9;
                     distance = 1;
                 }
-                enemyally(hero);
+                enemy_ally(hero);
                 if (attempt(hero))
                 {
                     Console.WriteLine("Король: Та за шо");
                 }
-                else if (matrix[dig3, dig4] == "*" && dig2 == dig4 && ((dig2 == dig4 && dig3 - dig1 == distance) || (dig1 == edgestart && dig3 - dig1 == 2 * distance)))
+                else if (matrix[dig3, dig4] == "*" && dig2 == dig4 && ((dig2 == dig4 && dig3 - dig1 == distance) || (dig1 == edge_start && dig3 - dig1 == 2 * distance)))
                 {
-                    if (dig3 == edgeend)
+                    if (dig3 == edge_end)
                     {
                         Console.WriteLine("тура(1)/слон(2)/ферзь(3)/конь(4)?");
                         answer = Convert.ToInt32(Console.ReadLine());
@@ -867,18 +827,18 @@ namespace program
                     }
                     if (hero == "Пg")
                     {
-                        counterside++;
+                        counter_side++;
                     }
                     else
                     {
-                        counterside--;
+                        counter_side--;
                     }
-                    counterhod++;
+                    counter_moves++;
                     matrix[dig1, dig2] = "*";
                 }
                 else if ((matrix[dig3, dig4] == enemyП || matrix[dig3, dig4] == enemyC || matrix[dig3, dig4] == enemyH || matrix[dig3, dig4] == enemyT || matrix[dig3, dig4] == enemyT1 || matrix[dig3, dig4] == enemyQ || matrix[dig3, dig4] == enemyK) && Math.Abs(dig4 - dig2) == 1 && dig3 - dig1 == distance)
                 {
-                    if (dig3 == edgeend)
+                    if (dig3 == edge_end)
                     {
                         Console.WriteLine("тура(1)/слон(2)/ферзь(3)/конь(4)?");
                         answer = Convert.ToInt32(Console.ReadLine());
@@ -909,13 +869,13 @@ namespace program
                     }
                     if (hero == "Пg")
                     {
-                        counterside++;
+                        counter_side++;
                     }
                     else
                     {
-                        counterside--;
+                        counter_side--;
                     }
-                    counterhod++;
+                    counter_moves++;
                     matrix[dig1, dig2] = "*";
                 }
                 else
@@ -925,7 +885,7 @@ namespace program
             }
             void horse(string hero)
             {
-                enemyally(hero);
+                enemy_ally(hero);
                 if (attempt(hero))
                 {
                     Console.WriteLine("Король: Та за шо");
@@ -936,13 +896,13 @@ namespace program
                     matrix[dig1, dig2] = "*";
                     if (hero == "Hg")
                     {
-                        counterside++;
+                        counter_side++;
                     }
                     else
                     {
-                        counterside--;
+                        counter_side--;
                     }
-                    counterhod++;
+                    counter_moves++;
                 }
                 else
                 {
@@ -951,7 +911,7 @@ namespace program
             }
             void tura()
             {
-                enemyally(figura);
+                enemy_ally(figura);
                 if (attempt(figura))
                 {
                     Console.WriteLine("Король: Та за шо");
@@ -960,48 +920,48 @@ namespace program
                 {
                     if (dig4 > dig2 || matrix[dig3, dig4] == enemyП || matrix[dig3, dig4] == enemyC || matrix[dig3, dig4] == enemyH || matrix[dig3, dig4] == enemyT || matrix[dig3, dig4] == enemyT1 || matrix[dig3, dig4] == enemyQ || matrix[dig3, dig4] == enemyK)
                     {
-                        counterproh--;
+                        counter_no_free_place--;
                     }
                     for (int i = Math.Min(dig2, dig4); i < Math.Max(dig2, dig4); i++)
                     {
                         if (matrix[dig1, i] != "*")
                         {
-                            counterproh++;
+                            counter_no_free_place++;
                         }
-                        if (counterproh > 0)
+                        if (counter_no_free_place > 0)
                         {
                             Console.WriteLine("ТЫ НЕ ПРОЙДЕШЬ");
                             break;
                         }
                     }
-                    if (counterproh == 0 && matrix[dig3, dig4] != allyП && matrix[dig3, dig4] != allyC && matrix[dig3, dig4] != allyH && matrix[dig3, dig4] != allyT && matrix[dig3, dig4] != allyT1 && matrix[dig3, dig4] != allyQ && matrix[dig3, dig4] != allyK)
+                    if (counter_no_free_place == 0 && matrix[dig3, dig4] != allyП && matrix[dig3, dig4] != allyC && matrix[dig3, dig4] != allyH && matrix[dig3, dig4] != allyT && matrix[dig3, dig4] != allyT1 && matrix[dig3, dig4] != allyQ && matrix[dig3, dig4] != allyK)
                     {
                         matrix[dig3, dig4] = figura;
                         matrix[dig1, dig2] = "*";
-                        counterhod++;
+                        counter_moves++;
                         if (figura == "Tg" || figura == "Tg1" || figura == "Qg")
                         {
-                            counterside++;
+                            counter_side++;
                         }
                         else if (figura == "Tr" || figura == "Tr1" || figura == "Qr")
                         {
-                            counterside--;
+                            counter_side--;
                         }
                         if (figura == "Tg")
                         {
-                            counterturagreenleft++;
+                            counter_tura1_green_moves++;
                         }
                         else if (figura == "Tg1")
                         {
-                            counterturagreenright++;
+                            counter_tura2_green_moves++;
                         }
                         else if (figura == "Tr")
                         {
-                            counterturaredleft++;
+                            counter_tura1_red_moves++;
                         }
                         else if (figura == "Tr1")
                         {
-                            counterturaredright++;
+                            counter_tura2_red_moves++;
                         }
                     }
                 }
@@ -1009,48 +969,48 @@ namespace program
                 {
                     if (dig1 < dig3 || matrix[dig3, dig4] == enemyП || matrix[dig3, dig4] == enemyC || matrix[dig3, dig4] == enemyH || matrix[dig3, dig4] == enemyT || matrix[dig3, dig4] == enemyT1 || matrix[dig3, dig4] == enemyQ || matrix[dig3, dig4] == enemyK)
                     {
-                        counterproh--;
+                        counter_no_free_place--;
                     }
                     for (int i = Math.Min(dig1, dig3); i < Math.Max(dig1, dig3); i++)
                     {
                         if (matrix[i, dig2] != "*")
                         {
-                            counterproh++;
+                            counter_no_free_place++;
                         }
-                        if (counterproh > 0)
+                        if (counter_no_free_place > 0)
                         {
                             Console.WriteLine("ТЫ НЕ ПРОЙДЕШЬ");
                             break;
                         }
                     }
-                    if (counterproh == 0 && matrix[dig3, dig4] != allyП && matrix[dig3, dig4] != allyC && matrix[dig3, dig4] != allyH && matrix[dig3, dig4] != allyT && matrix[dig3, dig4] != allyT1 && matrix[dig3, dig4] != allyQ && matrix[dig3, dig4] != allyK)
+                    if (counter_no_free_place == 0 && matrix[dig3, dig4] != allyП && matrix[dig3, dig4] != allyC && matrix[dig3, dig4] != allyH && matrix[dig3, dig4] != allyT && matrix[dig3, dig4] != allyT1 && matrix[dig3, dig4] != allyQ && matrix[dig3, dig4] != allyK)
                     {
                         matrix[dig3, dig4] = figura;
                         matrix[dig1, dig2] = "*";
-                        counterhod++;
+                        counter_moves++;
                         if (figura == "Tg" || figura == "Tg1" || figura == "Qg")
                         {
-                            counterside++;
+                            counter_side++;
                         }
                         else if (figura == "Tr" || figura == "Tr1" || figura == "Qr")
                         {
-                            counterside--;
+                            counter_side--;
                         }
                         if (figura == "Tg")
                         {
-                            counterturagreenleft++;
+                            counter_tura1_green_moves++;
                         }
                         else if (figura == "Tg1")
                         {
-                            counterturagreenright++;
+                            counter_tura2_green_moves++;
                         }
                         else if (figura == "Tr")
                         {
-                            counterturaredleft++;
+                            counter_tura1_red_moves++;
                         }
                         else if (figura == "Tr1")
                         {
-                            counterturaredright++;
+                            counter_tura2_red_moves++;
                         }
                     }
                 }
@@ -1058,11 +1018,11 @@ namespace program
                 {
                     Console.WriteLine("Не-а, так нельзя ходить");
                 }
-                counterproh = 0;
+                counter_no_free_place = 0;
             }
             void slon()
             {
-                enemyally(figura);
+                enemy_ally(figura);
                 if (attempt(figura))
                 {
                     Console.WriteLine("Король: Та за шо");
@@ -1075,10 +1035,10 @@ namespace program
                         {
                             if (matrix[dig1 - i, dig2 - i] != "*")
                             {
-                                counterproh++;
+                                counter_no_free_place++;
                             }
                         }
-                        if (counterproh > 1)
+                        if (counter_no_free_place > 1)
                         {
                             Console.WriteLine("ТЫ НЕ ПРОЙДЕШЬ");
                         }
@@ -1086,11 +1046,11 @@ namespace program
                         {
                             if (figura == "Cg" || figura == "Qg")
                             {
-                                counterside++;
+                                counter_side++;
                             }
                             else
                             {
-                                counterside--;
+                                counter_side--;
                             }
                             matrix[dig1, dig2] = "*";
                             matrix[dig3, dig4] = figura;
@@ -1102,10 +1062,10 @@ namespace program
                         {
                             if (matrix[dig1 - i, dig2 + i] != "*")
                             {
-                                counterproh++;
+                                counter_no_free_place++;
                             }
                         }
-                        if (counterproh > 1)
+                        if (counter_no_free_place > 1)
                         {
                             Console.WriteLine("ТЫ НЕ ПРОЙДЕШЬ");
                         }
@@ -1113,13 +1073,13 @@ namespace program
                         {
                             if (figura == "Cg" || figura == "Qg")
                             {
-                                counterside++;
+                                counter_side++;
                             }
                             else
                             {
-                                counterside--;
+                                counter_side--;
                             }
-                            counterhod++;
+                            counter_moves++;
                             matrix[dig1, dig2] = "*";
                             matrix[dig3, dig4] = figura;
                         }
@@ -1130,10 +1090,10 @@ namespace program
                         {
                             if (matrix[dig1 + i, dig2 - i] != "*")
                             {
-                                counterproh++;
+                                counter_no_free_place++;
                             }
                         }
-                        if (counterproh > 1)
+                        if (counter_no_free_place > 1)
                         {
                             Console.WriteLine("ТЫ НЕ ПРОЙДЕШЬ");
                         }
@@ -1141,13 +1101,13 @@ namespace program
                         {
                             if (figura == "Cg" || figura == "Qg")
                             {
-                                counterside++;
+                                counter_side++;
                             }
                             else
                             {
-                                counterside--;
+                                counter_side--;
                             }
-                            counterhod++;
+                            counter_moves++;
                             matrix[dig1, dig2] = "*";
                             matrix[dig3, dig4] = figura;
                         }
@@ -1158,10 +1118,10 @@ namespace program
                         {
                             if (matrix[dig1 + i, dig2 + i] != "*")
                             {
-                                counterproh++;
+                                counter_no_free_place++;
                             }
                         }
-                        if (counterproh > 1)
+                        if (counter_no_free_place > 1)
                         {
                             Console.WriteLine("ТЫ НЕ ПРОЙДЕШЬ");
                         }
@@ -1169,13 +1129,13 @@ namespace program
                         {
                             if (figura == "Cg" || figura == "Qg")
                             {
-                                counterside++;
+                                counter_side++;
                             }
                             else
                             {
-                                counterside--;
+                                counter_side--;
                             }
-                            counterhod++;
+                            counter_moves++;
                             matrix[dig1, dig2] = "*";
                             matrix[dig3, dig4] = figura;
                         }
@@ -1185,11 +1145,11 @@ namespace program
                 {
                     Console.WriteLine("Не-а, так нельзя ходить");
                 }
-                counterproh = 0;
+                counter_no_free_place = 0;
             }
             void king(string hero)
             {
-                enemyally(hero);
+                enemy_ally(hero);
                 matrix[dig1, dig2] = "*";
                 if (hero == "Kg")
                 {
@@ -1207,7 +1167,7 @@ namespace program
                     }
                     matrix[dig1, dig2] = hero;
                 }
-                if ((hero == "Kg" && greenchaxmat == false) || (hero == "Kr" && redchaxmat == false))
+                if (chaxmat == false)
                 {
                     if (((Math.Abs(dig3 - dig1) == 1 && Math.Abs(dig4 - dig2) == 1) || (dig3 - dig1 == 0 && Math.Abs(dig4 - dig2) == 1) || (dig4 - dig2 == 0 && Math.Abs(dig3 - dig1) == 1)) && (matrix[dig3, dig4] != " " && matrix[dig3, dig4] != allyП && matrix[dig3, dig4] != allyC && matrix[dig3, dig4] != allyH && matrix[dig3, dig4] != allyT && matrix[dig3, dig4] != allyT1 && matrix[dig3, dig4] != allyQ))
                     {
@@ -1215,15 +1175,15 @@ namespace program
                         matrix[dig1, dig2] = "*";
                         if (hero == "Kg")
                         {
-                            counterkinggreen++;
-                            counterside++;
+                            counter_king_green_moves++;
+                            counter_side++;
                         }
                         else
                         {
-                            counterkingred++;
-                            counterside--;
+                            counter_king_red_moves++;
+                            counter_side--;
                         }
-                        counterhod++;
+                        counter_moves++;
                     }
                     else
                     {
@@ -1231,7 +1191,7 @@ namespace program
                     }
                 }
             }
-            void killerdetector(int x, int y, string hero, List<int> firstcoor, List<int> secondcoor)
+            void killer_detector(int x, int y, string hero, List<int> firstcoor, List<int> secondcoor)
             {
                 if (matrix[x, y] == hero)
                 {
@@ -1239,7 +1199,7 @@ namespace program
                     secondcoor.Add(y);
                 }
             }
-            void slondetector(int x, int y, ref bool noobstacle, List<int> firstcoor, List<int> secondcoor)
+            void slon_detector(int x, int y, ref bool noobstacle, List<int> firstcoor, List<int> secondcoor)
             {
                 if (matrix[x, y] != "*" && matrix[x, y] != enemyC && matrix[x, y] != enemyQ)
                 {
@@ -1251,7 +1211,7 @@ namespace program
                     secondcoor.Add(y);
                 }
             }
-            void turadetector(int x, int y, ref bool noobstacle, List<int> firstcoor, List<int> secondcoor)
+            void tura_detector(int x, int y, ref bool noobstacle, List<int> firstcoor, List<int> secondcoor)
             {
                 if (matrix[x, y] != "*" && matrix[x, y] != enemyQ && matrix[x, y] != enemyT && matrix[x, y] != enemyT1)
                 {
@@ -1265,215 +1225,180 @@ namespace program
             }
             bool chax(int n, int m, string color)
             {
-                firstcoordeath.Clear();
-                secondcoordeath.Clear();
+                first_coor_death.Clear();
+                second_coor_death.Clear();
                 chaxmat = false;
-                chaxrighttopslon = true;
-                chaxlefttopslon = true;
-                chaxrightdownslon = true;
-                chaxleftdownslon = true;
-                chaxlefttura = true;
-                chaxrighttura = true;
-                chaxtoptura = true;
-                chaxdowntura = true;
+                chax_right_top_slon = true;
+                chax_left_top_slon = true;
+                chax_right_down_slon = true;
+                chax_left_down_slon = true;
+                chax_left_tura = true;
+                chax_right_tura = true;
+                chax_top_tura = true;
+                chax_down_tura = true;
                 if (color == "green")
                 {
-                    enemyally("Kg");
-                    killerdetector(n - 1, m + 1, enemyП, firstcoordeath, secondcoordeath);
-                    killerdetector(n - 1, m - 1, enemyП, firstcoordeath, secondcoordeath);
+                    enemy_ally("Kg");
+                    killer_detector(n - 1, m + 1, enemyП, first_coor_death, second_coor_death);
+                    killer_detector(n - 1, m - 1, enemyП, first_coor_death, second_coor_death);
                 }
                 else if (color == "red")
                 {
-                    enemyally("Kr");
-                    killerdetector(n + 1, m + 1, enemyП, firstcoordeath, secondcoordeath);
-                    killerdetector(n + 1, m - 1, enemyП, firstcoordeath, secondcoordeath);
+                    enemy_ally("Kr");
+                    killer_detector(n + 1, m + 1, enemyП, first_coor_death, second_coor_death);
+                    killer_detector(n + 1, m - 1, enemyП, first_coor_death, second_coor_death);
                 }
-                killerdetector(n - 1, m - 2, enemyH, firstcoordeath, secondcoordeath);
-                killerdetector(n - 1, m + 2, enemyH, firstcoordeath, secondcoordeath);
-                killerdetector(n + 1, m - 2, enemyH, firstcoordeath, secondcoordeath);
-                killerdetector(n + 1, m + 2, enemyH, firstcoordeath, secondcoordeath);
-                killerdetector(n - 2, m - 1, enemyH, firstcoordeath, secondcoordeath);
-                killerdetector(n - 2, m + 1, enemyH, firstcoordeath, secondcoordeath);
-                killerdetector(n + 2, m - 1, enemyH, firstcoordeath, secondcoordeath);
-                killerdetector(n + 2, m + 1, enemyH, firstcoordeath, secondcoordeath);
+                killer_detector(n - 1, m - 2, enemyH, first_coor_death, second_coor_death);
+                killer_detector(n - 1, m + 2, enemyH, first_coor_death, second_coor_death);
+                killer_detector(n + 1, m - 2, enemyH, first_coor_death, second_coor_death);
+                killer_detector(n + 1, m + 2, enemyH, first_coor_death, second_coor_death);
+                killer_detector(n - 2, m - 1, enemyH, first_coor_death, second_coor_death);
+                killer_detector(n - 2, m + 1, enemyH, first_coor_death, second_coor_death);
+                killer_detector(n + 2, m - 1, enemyH, first_coor_death, second_coor_death);
+                killer_detector(n + 2, m + 1, enemyH, first_coor_death, second_coor_death);
                 for (int i = 1; i < 12; i++)
                 {
                     if (0 < n - i && 0 < m - i)
                     {
-                        slondetector(n - i, m - i, ref chaxrighttopslon, firstcoordeath, secondcoordeath);
+                        slon_detector(n - i, m - i, ref chax_right_top_slon, first_coor_death, second_coor_death);
                     }
                     if (0 < n - i && m + i < 11)
                     {
-                        slondetector(n - i, m + i, ref chaxlefttopslon, firstcoordeath, secondcoordeath);
+                        slon_detector(n - i, m + i, ref chax_left_top_slon, first_coor_death, second_coor_death);
                     }
                     if (n + i < 11 && 0 < m - i)
                     {
-                        slondetector(n + i, m - i, ref chaxrightdownslon, firstcoordeath, secondcoordeath);
+                        slon_detector(n + i, m - i, ref chax_right_down_slon, first_coor_death, second_coor_death);
                     }
                     if (n + i < 11 && m + i < 11)
                     {
-                        slondetector(n + i, m + i, ref chaxleftdownslon, firstcoordeath, secondcoordeath);
+                        slon_detector(n + i, m + i, ref chax_left_down_slon, first_coor_death, second_coor_death);
                     }
                     if (0 < n - i)
                     {
-                        turadetector(n - i, m, ref chaxtoptura, firstcoordeath, secondcoordeath);
+                        tura_detector(n - i, m, ref chax_top_tura, first_coor_death, second_coor_death);
                     }
                     if (n + i < 11)
                     {
-                        turadetector(n + i, m, ref chaxdowntura, firstcoordeath, secondcoordeath);
+                        tura_detector(n + i, m, ref chax_down_tura, first_coor_death, second_coor_death);
                     }
                     if (0 < m - i)
                     {
-                        turadetector(n, m - i, ref chaxlefttura, firstcoordeath, secondcoordeath);
+                        tura_detector(n, m - i, ref chax_left_tura, first_coor_death, second_coor_death);
                     }
                     if (m + i < 11)
                     {
-                        turadetector(n, m + i, ref chaxrighttura, firstcoordeath, secondcoordeath);
+                        tura_detector(n, m + i, ref chax_right_tura, first_coor_death, second_coor_death);
                     }
 
-                    killerdetector(n - 1, m, enemyK, firstcoordeath, secondcoordeath);
-                    killerdetector(n + 1, m, enemyK, firstcoordeath, secondcoordeath);
-                    killerdetector(n - 1, m - 1, enemyK, firstcoordeath, secondcoordeath);
-                    killerdetector(n - 1, m + 1, enemyK, firstcoordeath, secondcoordeath);
-                    killerdetector(n, m - 1, enemyK, firstcoordeath, secondcoordeath);
-                    killerdetector(n, m + 1, enemyK, firstcoordeath, secondcoordeath);
-                    killerdetector(n + 1, m - 1, enemyK, firstcoordeath, secondcoordeath);
-                    killerdetector(n + 1, m + 1, enemyK, firstcoordeath, secondcoordeath);
+                    killer_detector(n - 1, m, enemyK, first_coor_death, second_coor_death);
+                    killer_detector(n + 1, m, enemyK, first_coor_death, second_coor_death);
+                    killer_detector(n - 1, m - 1, enemyK, first_coor_death, second_coor_death);
+                    killer_detector(n - 1, m + 1, enemyK, first_coor_death, second_coor_death);
+                    killer_detector(n, m - 1, enemyK, first_coor_death, second_coor_death);
+                    killer_detector(n, m + 1, enemyK, first_coor_death, second_coor_death);
+                    killer_detector(n + 1, m - 1, enemyK, first_coor_death, second_coor_death);
+                    killer_detector(n + 1, m + 1, enemyK, first_coor_death, second_coor_death);
                 }
-                if (firstcoordeath.Count > 0)
+                if (first_coor_death.Count > 0)
                 {
                     chaxmat = true;
                 }
-                /*for (int i = 0; i < firstcoordeath.Count; i++)
-                {
-                    Console.WriteLine($"firstcoordeath[{i}] = {firstcoordeath[i]}");
-                    Console.WriteLine($"secondcoordeath[{i}] = {secondcoordeath[i]}");
-                    Console.WriteLine($"matrix[firstcoordeath[i], secondcoordeath[i] = " + matrix[firstcoordeath[i], secondcoordeath[i]]);
-                    if (firstcoordeath[i] == firstcoordeath[i + 1] && secondcoordeath[i] == secondcoordeath[i + 1])
-                    {
-                        firstcoordeath.Remove(firstcoordeath[i]);
-                        secondcoordeath.Remove(secondcoordeath[i]);
-                    }
-                }*/
-                if (color == "green")
-                {
-                    greenchaxmat = chaxmat;
-                    greenfirstcoordeath = firstcoordeath;
-                    greensecondcoordeath = secondcoordeath;
-                    return greenchaxmat;
-                }
-                else if (color == "red")
-                {
-                    redchaxmat = chaxmat;
-                    redfirstcoordeath = firstcoordeath;
-                    redsecondcoordeath = secondcoordeath;
-                    return redchaxmat;
-                }
-                return false;
+                return chaxmat;
             }
             
             void block(int n, int m, string color) // указывать цвет который блокирует атаку оппонента
             {
-                firstcoorblock.Clear();
-                secondcoorblock.Clear();
-                chaxrighttopslon = true;
-                chaxlefttopslon = true;
-                chaxrightdownslon = true;
-                chaxleftdownslon = true;
-                chaxlefttura = true;
-                chaxrighttura = true;
-                chaxtoptura = true;
-                chaxdowntura = true;
+                first_coor_block.Clear();
+                second_coor_block.Clear();
+                chax_right_top_slon = true;
+                chax_left_top_slon = true;
+                chax_right_down_slon = true;
+                chax_left_down_slon = true;
+                chax_left_tura = true;
+                chax_right_tura = true;
+                chax_top_tura = true;
+                chax_down_tura = true;
                 if (color == "green")
                 {
-                    enemyally("Kr");
-                    killerdetector(n + 1, m, enemyП, firstcoorblock, secondcoorblock);
+                    enemy_ally("Kr");
+                    killer_detector(n + 1, m, enemyП, first_coor_block, second_coor_block);
                     if (matrix[n + 2, m] == enemyП && n == 6 && matrix[n + 1, m] == "*")
                     {
-                        killerdetector(n + 2, m, enemyП, firstcoorblock, secondcoorblock);
+                        killer_detector(n + 2, m, enemyП, first_coor_block, second_coor_block);
                     }
                 }
                 else if (color == "red")
                 {
-                    enemyally("Kg");
-                    killerdetector(n - 1, m, enemyП, firstcoorblock, secondcoorblock);
+                    enemy_ally("Kg");
+                    killer_detector(n - 1, m, enemyП, first_coor_block, second_coor_block);
                     if (matrix[n - 2, m] == enemyП && n == 5 && matrix[n - 1, m] == "*")
                     {
-                        killerdetector(n - 2, m, enemyП, firstcoorblock, secondcoorblock);
+                        killer_detector(n - 2, m, enemyП, first_coor_block, second_coor_block);
                     }
                 }
 
-                killerdetector(n - 1, m - 2, enemyH, firstcoorblock, secondcoorblock);
-                killerdetector(n - 1, m + 2, enemyH, firstcoorblock, secondcoorblock);
-                killerdetector(n + 1, m - 2, enemyH, firstcoorblock, secondcoorblock);
-                killerdetector(n + 1, m + 2, enemyH, firstcoorblock, secondcoorblock);
-                killerdetector(n - 2, m - 1, enemyH, firstcoorblock, secondcoorblock);
-                killerdetector(n - 2, m + 1, enemyH, firstcoorblock, secondcoorblock);
-                killerdetector(n + 2, m - 1, enemyH, firstcoorblock, secondcoorblock);
-                killerdetector(n + 2, m + 1, enemyH, firstcoorblock, secondcoorblock);
+                killer_detector(n - 1, m - 2, enemyH, first_coor_block, second_coor_block);
+                killer_detector(n - 1, m + 2, enemyH, first_coor_block, second_coor_block);
+                killer_detector(n + 1, m - 2, enemyH, first_coor_block, second_coor_block);
+                killer_detector(n + 1, m + 2, enemyH, first_coor_block, second_coor_block);
+                killer_detector(n - 2, m - 1, enemyH, first_coor_block, second_coor_block);
+                killer_detector(n - 2, m + 1, enemyH, first_coor_block, second_coor_block);
+                killer_detector(n + 2, m - 1, enemyH, first_coor_block, second_coor_block);
+                killer_detector(n + 2, m + 1, enemyH, first_coor_block, second_coor_block);
 
                 for (int i = 1; i < 12; i++)
                 {
                     if (0 < n - i && 0 < m - i)
                     {
-                        slondetector(n - i, m - i, ref chaxrighttopslon, firstcoorblock, secondcoorblock);
+                        slon_detector(n - i, m - i, ref chax_right_top_slon, first_coor_block, second_coor_block);
                     }
                     if (0 < n - i && m + i < 11)
                     {
-                        slondetector(n - i, m + i, ref chaxlefttopslon, firstcoorblock, secondcoorblock);
+                        slon_detector(n - i, m + i, ref chax_left_top_slon, first_coor_block, second_coor_block);
                     }
                     if (n + i < 11 && 0 < m - i)
                     {
-                        slondetector(n + i, m - i, ref chaxrightdownslon, firstcoorblock, secondcoorblock);
+                        slon_detector(n + i, m - i, ref chax_right_down_slon, first_coor_block, second_coor_block);
                     }
                     if (n + i < 11 && m + i < 11)
                     {
-                        slondetector(n + i, m + i, ref chaxleftdownslon, firstcoorblock, secondcoorblock);
+                        slon_detector(n + i, m + i, ref chax_left_down_slon, first_coor_block, second_coor_block);
                     }
                     if (0 < n - i)
                     {
-                        turadetector(n - i, m, ref chaxtoptura, firstcoorblock, secondcoorblock);
+                        tura_detector(n - i, m, ref chax_top_tura, first_coor_block, second_coor_block);
                     }
                     if (n + i < 11)
                     {
-                        turadetector(n + i, m, ref chaxdowntura, firstcoorblock, secondcoorblock);
+                        tura_detector(n + i, m, ref chax_down_tura, first_coor_block, second_coor_block);
                     }
                     if (0 < m - i)
                     {
-                        turadetector(n, m - i, ref chaxlefttura, firstcoorblock, secondcoorblock);
+                        tura_detector(n, m - i, ref chax_left_tura, first_coor_block, second_coor_block);
                     }
                     if (m + i < 11)
                     {
-                        turadetector(n, m + i, ref chaxrighttura, firstcoorblock, secondcoorblock);
+                        tura_detector(n, m + i, ref chax_right_tura, first_coor_block, second_coor_block);
                     }
                 }
-                for (int i = 0; i < firstcoorblock.Count - 1; i++)
+                for (int i = 0; i < first_coor_block.Count - 1; i++)
                 {
-                    if (firstcoorblock[i] == firstcoorblock[i + 1] && secondcoorblock[i] == secondcoorblock[i + 1])
+                    if (first_coor_block[i] == first_coor_block[i + 1] && second_coor_block[i] == second_coor_block[i + 1])
                     {
-                        firstcoorblock.Remove(firstcoorblock[i]);
-                        secondcoorblock.Remove(secondcoorblock[i]);
+                        first_coor_block.Remove(first_coor_block[i]);
+                        second_coor_block.Remove(second_coor_block[i]);
                     }
-                }
-                if (color == "green")
-                {
-                    greenfirstcoorblock = firstcoorblock;
-                    greensecondcoorblock = secondcoorblock;
-                }
-                else if (color == "red")
-                {
-                    redfirstcoorblock = firstcoorblock;
-                    redsecondcoorblock = secondcoorblock;
                 }
             }
             bool free_area_around_king(int limitcoor1, int limitcoor2, int x, int y, string col)
             {
-                if (kingplace1 != limitcoor1 && kingplace2 != limitcoor2 && matrix[x, y] != allyП && matrix[x, y] != allyC && matrix[x, y] != allyH && matrix[x, y] != allyT && matrix[x, y] != allyT1 && matrix[x, y] != allyQ)
+                if (king_coor1 != limitcoor1 && king_coor2 != limitcoor2 && matrix[x, y] != allyП && matrix[x, y] != allyC && matrix[x, y] != allyH && matrix[x, y] != allyT && matrix[x, y] != allyT1 && matrix[x, y] != allyQ)
                 {
-                    temp = matrix[kingplace1, kingplace2];
-                    matrix[kingplace1, kingplace2] = "*";
+                    temp = matrix[king_coor1, king_coor2];
+                    matrix[king_coor1, king_coor2] = "*";
                     chax(x, y, col);
-                    matrix[kingplace1, kingplace2] = temp;
+                    matrix[king_coor1, king_coor2] = temp;
                     if (chaxmat == false)
                     {
                         return false;
@@ -1493,44 +1418,44 @@ namespace program
                 if (color == "green")
                 {
                     oppositecolor = "red";
-                    kingplace1 = kinggreenplace1;
-                    kingplace2 = kinggreenplace2;
+                    king_coor1 = king_green_coor1;
+                    king_coor2 = king_green_coor2;
                 }
                 else if (color == "red")
                 {
                     oppositecolor = "green";
-                    kingplace1 = kingredplace1;
-                    kingplace2 = kingredplace2;
+                    king_coor1 = king_red_coor1;
+                    king_coor2 = king_red_coor2;
                 }
                 
-                if (chax(kingplace1, kingplace2, color))
+                if (chax(king_coor1, king_coor2, color))
                 {
-                    range1 = firstcoordeath.Count;
-                    myfirstcoordeath = firstcoordeath;
-                    mysecondcoordeath = secondcoordeath;
+                    range1 = first_coor_death.Count;
+                    ally_first_coor_death = first_coor_death;
+                    ally_second_coor_death = second_coor_death;
                     for (int i = 0; i < range1; i++)
                     {
-                        if (chax(myfirstcoordeath[i], mysecondcoordeath[i], oppositecolor))
+                        if (chax(ally_first_coor_death[i], ally_second_coor_death[i], oppositecolor))
                         {
-                            oppositefirstcoordeath = firstcoordeath;
-                            oppositesecondcoordeath = secondcoordeath;
-                            for (int j = 0; j < oppositefirstcoordeath.Count; j++)
+                            opposite_first_coor_death = first_coor_death;
+                            opposite_second_coor_death = second_coor_death;
+                            for (int j = 0; j < opposite_first_coor_death.Count; j++)
                             {
-                                enemyally(matrix[kingplace1, kingplace2]);
-                                if (matrix[oppositefirstcoordeath[j], oppositesecondcoordeath[j]] == allyK)
+                                enemy_ally(matrix[king_coor1, king_coor2]);
+                                if (matrix[opposite_first_coor_death[j], opposite_second_coor_death[j]] == allyK)
                                 {
-                                    if (chax(myfirstcoordeath[i], mysecondcoordeath[i], color))
+                                    if (chax(ally_first_coor_death[i], ally_second_coor_death[i], color))
                                     {
                                         continue;
                                     }
                                 }
-                                temp = matrix[myfirstcoordeath[i], mysecondcoordeath[i]];
-                                tempdigit1 = myfirstcoordeath[i];
-                                tempdigit2 = mysecondcoordeath[i];
-                                matrix[myfirstcoordeath[i], mysecondcoordeath[i]] = matrix[oppositefirstcoordeath[j], oppositesecondcoordeath[j]];
-                                matrix[oppositefirstcoordeath[j], oppositesecondcoordeath[j]] = "*";
-                                chax(kingplace1, kingplace2, color);
-                                matrix[oppositefirstcoordeath[j], oppositesecondcoordeath[j]] = matrix[tempdigit1, tempdigit2];
+                                temp = matrix[ally_first_coor_death[i], ally_second_coor_death[i]];
+                                tempdigit1 = ally_first_coor_death[i];
+                                tempdigit2 = ally_second_coor_death[i];
+                                matrix[ally_first_coor_death[i], ally_second_coor_death[i]] = matrix[opposite_first_coor_death[j], opposite_second_coor_death[j]];
+                                matrix[opposite_first_coor_death[j], opposite_second_coor_death[j]] = "*";
+                                chax(king_coor1, king_coor2, color);
+                                matrix[opposite_first_coor_death[j], opposite_second_coor_death[j]] = matrix[tempdigit1, tempdigit2];
                                 matrix[tempdigit1, tempdigit2] = temp;
                                 if (chaxmat == false)
                                 {
@@ -1548,12 +1473,12 @@ namespace program
                             if (matrix[i, j] == "*")
                             {
                                 block(i, j, color);
-                                for (int k = 0; k < firstcoorblock.Count; k++)
+                                for (int k = 0; k < first_coor_block.Count; k++)
                                 {
-                                    matrix[i, j] = matrix[firstcoorblock[k], secondcoorblock[k]];
-                                    matrix[firstcoorblock[k], secondcoorblock[k]] = "*";
-                                    chax(kingplace1, kingplace2, color);
-                                    matrix[firstcoorblock[k], secondcoorblock[k]] = matrix[i, j];
+                                    matrix[i, j] = matrix[first_coor_block[k], second_coor_block[k]];
+                                    matrix[first_coor_block[k], second_coor_block[k]] = "*";
+                                    chax(king_coor1, king_coor2, color);
+                                    matrix[first_coor_block[k], second_coor_block[k]] = matrix[i, j];
                                     matrix[i, j] = "*";
                                     if (chaxmat == false)
                                     {
@@ -1565,35 +1490,35 @@ namespace program
                         }
                     }
                 }
-                if (free_area_around_king(2, 0, kingplace1 - 1, kingplace2, color) == false)
+                if (free_area_around_king(2, 0, king_coor1 - 1, king_coor2, color) == false)
                 {
                     return false;
                 }
-                if (free_area_around_king(2, 9, kingplace1 - 1, kingplace2 + 1, color) == false)
+                if (free_area_around_king(2, 9, king_coor1 - 1, king_coor2 + 1, color) == false)
                 {
                     return false;
                 }
-                if (free_area_around_king(0, 2, kingplace1, kingplace2 - 1, color) == false)
+                if (free_area_around_king(0, 2, king_coor1, king_coor2 - 1, color) == false)
                 {
                     return false;
                 }
-                if (free_area_around_king(2, 0, kingplace1 - 1, kingplace2, color) == false)
+                if (free_area_around_king(2, 0, king_coor1 - 1, king_coor2, color) == false)
                 {
                     return false;
                 }
-                if (free_area_around_king(0, 9, kingplace1 - 1, kingplace2 + 1, color) == false)
+                if (free_area_around_king(0, 9, king_coor1 - 1, king_coor2 + 1, color) == false)
                 {
                     return false;
                 }
-                if (free_area_around_king(9, 0, kingplace1 + 1, kingplace2, color) == false)
+                if (free_area_around_king(9, 0, king_coor1 + 1, king_coor2, color) == false)
                 {
                     return false;
                 }
-                if (free_area_around_king(9, 9, kingplace1 + 1, kingplace2 + 1, color) == false)
+                if (free_area_around_king(9, 9, king_coor1 + 1, king_coor2 + 1, color) == false)
                 {
                     return false;
                 }
-                if (free_area_around_king(9, 2, kingplace1 + 1, kingplace2 - 1, color) == false)
+                if (free_area_around_king(9, 2, king_coor1 + 1, king_coor2 - 1, color) == false)
                 {
                     return false;
                 }
@@ -1606,14 +1531,14 @@ namespace program
                     return true;
                 }
             }
-            void possiblemove(int x_start, int y_start, int x_finish, int y_finish, string hero, ref int counter_moves, string color)
+            void possible_move(int x_start, int y_start, int x_finish, int y_finish, string hero, ref int counter_moves, string color)
             {
                 if (matrix[x_finish, y_finish] == "*" || matrix[x_finish, y_finish] == enemyП || matrix[x_finish, y_finish] == enemyC && matrix[x_finish, y_finish] == enemyH && matrix[x_finish, y_finish] == enemyT && matrix[x_finish, y_finish] == enemyT1 && matrix[x_finish, y_finish] == enemyQ)
                 {
                     temp = matrix[x_finish, y_finish];
                     matrix[x_finish, y_finish] = hero;
                     matrix[x_start, y_start] = "*";
-                    chax(kingplace1, kingplace2, color);
+                    chax(king_coor1, king_coor2, color);
                     if (chaxmat)
                     { 
                         counter_moves++;
@@ -1631,51 +1556,51 @@ namespace program
                 int counterimposmoves;
                 if (color == "green")
                 {
-                    enemyally("Kg");
-                    kingplace1 = kinggreenplace1;
-                    kingplace2 = kinggreenplace2;
+                    enemy_ally("Kg");
+                    king_coor1 = king_green_coor1;
+                    king_coor2 = king_green_coor2;
                 }
                 else if (color == "red")
                 {
-                    enemyally("Kr");
-                    kingplace1 = kingredplace1;
-                    kingplace2 = kingredplace2;
+                    enemy_ally("Kr");
+                    king_coor1 = king_red_coor1;
+                    king_coor2 = king_red_coor2;
                 }
-                if (chax(kingplace1, kingplace2, color))
+                if (chax(king_coor1, king_coor2, color))
                 {
                     return false;
                 }
                 else
                 {
-                    if (free_area_around_king(2, 0, kingplace1 - 1, kingplace2, color) == false)
+                    if (free_area_around_king(2, 0, king_coor1 - 1, king_coor2, color) == false)
                     {
                         return false;
                     }
-                    if (free_area_around_king(2, 9, kingplace1 - 1, kingplace2 + 1, color) == false)
+                    if (free_area_around_king(2, 9, king_coor1 - 1, king_coor2 + 1, color) == false)
                     {
                         return false;
                     }
-                    if (free_area_around_king(0, 2, kingplace1, kingplace2 - 1, color) == false)
+                    if (free_area_around_king(0, 2, king_coor1, king_coor2 - 1, color) == false)
                     {
                         return false;
                     }
-                    if (free_area_around_king(2, 0, kingplace1 - 1, kingplace2, color) == false)
+                    if (free_area_around_king(2, 0, king_coor1 - 1, king_coor2, color) == false)
                     {
                         return false;
                     }
-                    if (free_area_around_king(0, 9, kingplace1, kingplace2 + 1, color) == false)
+                    if (free_area_around_king(0, 9, king_coor1, king_coor2 + 1, color) == false)
                     {
                         return false;
                     }
-                    if (free_area_around_king(9, 0, kingplace1 + 1, kingplace2, color) == false)
+                    if (free_area_around_king(9, 0, king_coor1 + 1, king_coor2, color) == false)
                     {
                         return false;
                     }
-                    if (free_area_around_king(9, 9, kingplace1 + 1, kingplace2 + 1, color) == false)
+                    if (free_area_around_king(9, 9, king_coor1 + 1, king_coor2 + 1, color) == false)
                     {
                         return false;
                     }
-                    if (free_area_around_king(9, 2, kingplace1 + 1, kingplace2 - 1, color) == false)
+                    if (free_area_around_king(9, 2, king_coor1 + 1, king_coor2 - 1, color) == false)
                     {
                         return false;
                     }
@@ -1697,7 +1622,7 @@ namespace program
                                 temp = matrix[i - 1, j - 1];
                                 matrix[i - 1, j - 1] = allyП;
                                 matrix[i, j] = "*";
-                                chax(kingplace1, kingplace2, color);
+                                chax(king_coor1, king_coor2, color);
                                 if (chaxmat)
                                 {
                                     counterimposmoves++;
@@ -1714,7 +1639,7 @@ namespace program
                                 temp = matrix[i - 1, j + 1];
                                 matrix[i - 1, j + 1] = allyП;
                                 matrix[i, j] = "*";
-                                chax(kingplace1, kingplace2, color);
+                                chax(king_coor1, king_coor2, color);
                                 if (chaxmat)
                                 {
                                     counterimposmoves++;
@@ -1733,14 +1658,14 @@ namespace program
                         }
                         else if (matrix[i, j] == allyH)
                         {
-                            possiblemove(i, j, i - 2, j - 1, allyH, ref counterimposmoves, color);
-                            possiblemove(i, j, i - 2, j + 1, allyH, ref counterimposmoves, color);
-                            possiblemove(i, j, i + 2, j - 1, allyH, ref counterimposmoves, color);
-                            possiblemove(i, j, i + 2, j + 1, allyH, ref counterimposmoves, color);
-                            possiblemove(i, j, i - 1, j - 2, allyH, ref counterimposmoves, color);
-                            possiblemove(i, j, i - 1, j + 2, allyH, ref counterimposmoves, color);
-                            possiblemove(i, j, i + 1, j - 2, allyH, ref counterimposmoves, color);
-                            possiblemove(i, j, i + 1, j + 2, allyH, ref counterimposmoves, color);
+                            possible_move(i, j, i - 2, j - 1, allyH, ref counterimposmoves, color);
+                            possible_move(i, j, i - 2, j + 1, allyH, ref counterimposmoves, color);
+                            possible_move(i, j, i + 2, j - 1, allyH, ref counterimposmoves, color);
+                            possible_move(i, j, i + 2, j + 1, allyH, ref counterimposmoves, color);
+                            possible_move(i, j, i - 1, j - 2, allyH, ref counterimposmoves, color);
+                            possible_move(i, j, i - 1, j + 2, allyH, ref counterimposmoves, color);
+                            possible_move(i, j, i + 1, j - 2, allyH, ref counterimposmoves, color);
+                            possible_move(i, j, i + 1, j + 2, allyH, ref counterimposmoves, color);
                             if (counterimposmoves != 8)
                             {
                                 return false;
@@ -1748,10 +1673,10 @@ namespace program
                         }
                         else if (matrix[i, j] == allyT)
                         {
-                            possiblemove(i, j, i - 1, j, allyT, ref counterimposmoves, color);
-                            possiblemove(i, j, i + 1, j, allyT, ref counterimposmoves, color);
-                            possiblemove(i, j, i, j - 1, allyT, ref counterimposmoves, color);
-                            possiblemove(i, j, i, j + 1, allyT, ref counterimposmoves, color);
+                            possible_move(i, j, i - 1, j, allyT, ref counterimposmoves, color);
+                            possible_move(i, j, i + 1, j, allyT, ref counterimposmoves, color);
+                            possible_move(i, j, i, j - 1, allyT, ref counterimposmoves, color);
+                            possible_move(i, j, i, j + 1, allyT, ref counterimposmoves, color);
                             if (counterimposmoves != 4)
                             {
                                 return false;
@@ -1759,10 +1684,10 @@ namespace program
                         }
                         else if (matrix[i, j] == allyT1)
                         {
-                            possiblemove(i, j, i - 1, j, allyT1, ref counterimposmoves, color);
-                            possiblemove(i, j, i + 1, j, allyT1, ref counterimposmoves, color);
-                            possiblemove(i, j, i, j - 1, allyT1, ref counterimposmoves, color);
-                            possiblemove(i, j, i, j + 1, allyT1, ref counterimposmoves, color);
+                            possible_move(i, j, i - 1, j, allyT1, ref counterimposmoves, color);
+                            possible_move(i, j, i + 1, j, allyT1, ref counterimposmoves, color);
+                            possible_move(i, j, i, j - 1, allyT1, ref counterimposmoves, color);
+                            possible_move(i, j, i, j + 1, allyT1, ref counterimposmoves, color);
                             if (counterimposmoves != 4)
                             {
                                 return false;
@@ -1770,10 +1695,10 @@ namespace program
                         }
                         else if (matrix[i, j] == allyC)
                         {
-                            possiblemove(i, j, i - 1, j - 1, allyC, ref counterimposmoves, color);
-                            possiblemove(i, j, i - 1, j + 1, allyC, ref counterimposmoves, color);
-                            possiblemove(i, j, i + 1, j - 1, allyC, ref counterimposmoves, color);
-                            possiblemove(i, j, i + 1, j + 1, allyC, ref counterimposmoves, color);
+                            possible_move(i, j, i - 1, j - 1, allyC, ref counterimposmoves, color);
+                            possible_move(i, j, i - 1, j + 1, allyC, ref counterimposmoves, color);
+                            possible_move(i, j, i + 1, j - 1, allyC, ref counterimposmoves, color);
+                            possible_move(i, j, i + 1, j + 1, allyC, ref counterimposmoves, color);
                             if (counterimposmoves != 4)
                             {
                                 return false;
@@ -1781,14 +1706,14 @@ namespace program
                         }
                         else if (matrix[i, j] == allyQ)
                         {
-                            possiblemove(i, j, i - 1, j, allyQ, ref counterimposmoves, color);
-                            possiblemove(i, j, i + 1, j, allyQ, ref counterimposmoves, color);
-                            possiblemove(i, j, i, j - 1, allyQ, ref counterimposmoves, color);
-                            possiblemove(i, j, i, j + 1, allyQ, ref counterimposmoves, color);
-                            possiblemove(i, j, i - 1, j - 1, allyQ, ref counterimposmoves, color);
-                            possiblemove(i, j, i - 1, j + 1, allyQ, ref counterimposmoves, color);
-                            possiblemove(i, j, i + 1, j - 1, allyQ, ref counterimposmoves, color);
-                            possiblemove(i, j, i + 1, j + 1, allyQ, ref counterimposmoves, color);
+                            possible_move(i, j, i - 1, j, allyQ, ref counterimposmoves, color);
+                            possible_move(i, j, i + 1, j, allyQ, ref counterimposmoves, color);
+                            possible_move(i, j, i, j - 1, allyQ, ref counterimposmoves, color);
+                            possible_move(i, j, i, j + 1, allyQ, ref counterimposmoves, color);
+                            possible_move(i, j, i - 1, j - 1, allyQ, ref counterimposmoves, color);
+                            possible_move(i, j, i - 1, j + 1, allyQ, ref counterimposmoves, color);
+                            possible_move(i, j, i + 1, j - 1, allyQ, ref counterimposmoves, color);
+                            possible_move(i, j, i + 1, j + 1, allyQ, ref counterimposmoves, color);
                             if (counterimposmoves != 8)
                             {
                                 return false;
