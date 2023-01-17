@@ -88,12 +88,12 @@ namespace program
             Console.WriteLine("Обозначения: Т - тура, Н - horse, С - слон, Q - queen, К - король, П - пешка");
             Console.WriteLine("Структура хода: сначала пишешь букву и цифру клетки, где стоит фигура, потом куда хочешь ею походить(пример G3 E3)");
             Console.WriteLine("Для рокировки - рокировка вправо/рокировка влево");
-            string[,] matrix = new string[12, 12] { { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " }, { " ", " ", "1", "2", "3", "4", "5", "6", "7", "8", " ", " " }, { " ", "A", "Tr", "*", "Cr", "Qr", "Hr", "Tr1", "Kr", "*", "A", " " }, { " ", "B", "Пr", "Пr", "*", "Пr", "Пr", "Пr", "Cr", "Пr", "B", " " }, { " ", "C", "*", "*", "Kr", "*", "*", "*", "Пr", "*", "C", " " }, { " ", "D", "Hr", "*", "*", "*", "Пg", "*", "*", "*", "D", " " }, { " ", "E", "*", "*", "*", "Hg", "*", "*", "*", "*", "E", " " }, { " ", "F", "*", "Cg", "Kg", "*", "Cg", "*", "*", "*", "F", " " }, { " ", "G", "Пg", "Пg", "Пg", "*", "*", "Пg", "Пg", "Пg", "G", " " }, { " ", "Н", "Tg", "*", "*", "Qg", "Kg", "*", "*", "Tg1", "Н", " " }, { " ", " ", "1", "2", "3", "4", "5", "6", "7", "8", " ", " " }, { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " } };
+            string[,] matrix = new string[12, 12] { { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " }, { " ", " ", "A", "B", "C", "D", "E", "F", "G", "H", " ", " " }, { " ", "8", "*", "*", "*", "*", "*", "*", "*", "*", "8", " " }, { " ", "7", "*", "*", "*", "*", "*", "*", "*", "*", "7", " " }, { " ", "6", "*", "*", "*", "*", "*", "*", "*", "*", "6", " " }, { " ", "5", "*", "*", "*", "*", "*", "*", "*", "*", "5", " " }, { " ", "4", "*", "*", "*", "Kr", "*", "*", "*", "*", "4", " " }, { " ", "3", "*", "*", "*", "Пr", "*", "*", "*", "*", "3", " " }, { " ", "2", "*", "*", "*", "Tg", "*", "*", "*", "*", "2", " " }, { " ", "1", "*", "*", "Tg", "*", "Tg", "*", "Tg", "*", "1", " " }, { " ", " ", "A", "B", "C", "D", "E", "F", "G", "H", " ", " " }, { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " } };
             matrixbuild();
             while (true)
             {
-                 try
-                 {
+                 //try
+                 //
                     if (counterside == 0)
                     {
                         errorcell = false;
@@ -107,7 +107,7 @@ namespace program
                         greensecondcoorblock.Clear();
                         firstcoordeath.Clear();
                         secondcoordeath.Clear();
-                        if (greenstalemate())
+                        if (stalemate("green"))
                         {
                             Console.WriteLine("Шах и ПАТ! Зеленый рад");
                             break;
@@ -122,7 +122,7 @@ namespace program
                             Console.WriteLine("ATTENTION! ШАХ!(зеленый! Алло)");
                         }
                         Console.WriteLine($"Ход зеленых {counterhod} ");
-                        cell1 = Console.ReadLine();
+                        cell1 = Console.ReadLine().ToUpper();
                         if (cell1 == "s")
                         {
                             counterside = 1;
@@ -134,11 +134,15 @@ namespace program
                             Console.WriteLine("Внеси данные правильно");
                             continue;
                         }
+                        Console.WriteLine(dig1);
+                        Console.WriteLine(dig2);
+                        Console.WriteLine("DWA");
+                        Console.WriteLine(58 - Convert.ToInt32(cell1[1]));
                         switch (matrix[dig1, dig2])
                         {
                             case "Пg":
                                 Console.WriteLine("(пешка)");
-                                cell2 = Console.ReadLine();
+                                cell2 = Console.ReadLine().ToUpper();
                                 place2(cell2);
                                 if (errorcell)
                                 {
@@ -151,7 +155,7 @@ namespace program
 
                             case "Hg":
                                 Console.WriteLine("(конь)");
-                                cell2 = Console.ReadLine();
+                                cell2 = Console.ReadLine().ToUpper();
                                 place2(cell2);
                                 if (errorcell)
                                 {
@@ -172,7 +176,7 @@ namespace program
 
                             case "Tg + Tg1":
                                 Console.WriteLine("(тура)");
-                                cell2 = Console.ReadLine();
+                                cell2 = Console.ReadLine().ToUpper();
                                 place2(cell2);
                                 if (errorcell)
                                 {
@@ -185,7 +189,7 @@ namespace program
 
                             case "Cg":
                                 Console.WriteLine("(слон)");
-                                cell2 = Console.ReadLine();
+                                cell2 = Console.ReadLine().ToUpper();
                                 place2(cell2);
                                 if (errorcell)
                                 {
@@ -199,7 +203,7 @@ namespace program
 
                             case "Qg":
                                 Console.WriteLine("(королева)");
-                                cell2 = Console.ReadLine();
+                                cell2 = Console.ReadLine().ToUpper();
                                 place2(cell2);
                                 if (errorcell)
                                 {
@@ -218,7 +222,7 @@ namespace program
 
                             case "Kg":
                                 Console.WriteLine("(король)");
-                                cell2 = Console.ReadLine();
+                                cell2 = Console.ReadLine().ToUpper();
                                 place2(cell2);
                                 if (errorcell)
                                 {
@@ -307,7 +311,7 @@ namespace program
                         redsecondcoordeath.Clear();
                         redfirstcoorblock.Clear();
                         redsecondcoorblock.Clear();
-                        if (redstalemate())
+                        if (stalemate("red"))
                         {
                             Console.WriteLine("Шах и ПАТ! Красный рад");
                             break;
@@ -338,7 +342,7 @@ namespace program
                         {
                             case "Пr":
                                 Console.WriteLine("(пешка)");
-                                cell2 = Console.ReadLine();
+                                cell2 = Console.ReadLine().ToUpper();
                                 place2(cell2);
                                 if (errorcell)
                                 {
@@ -350,7 +354,7 @@ namespace program
                                 break;
                             case "Hr":
                                 Console.WriteLine("(конь)");
-                                cell2 = Console.ReadLine();
+                                cell2 = Console.ReadLine().ToUpper();
                                 place2(cell2);
                                 if (errorcell)
                                 {
@@ -371,7 +375,7 @@ namespace program
 
                             case "Tr + Tr1":
                                 Console.WriteLine("(тура)");
-                                cell2 = Console.ReadLine();
+                                cell2 = Console.ReadLine().ToUpper();
                                 place2(cell2);
                                 if (errorcell)
                                 {
@@ -384,7 +388,7 @@ namespace program
 
                             case "Cr":
                                 Console.WriteLine("(слон)");
-                                cell2 = Console.ReadLine();
+                                cell2 = Console.ReadLine().ToUpper();
                                 place2(cell2);
                                 if (errorcell)
                                 {
@@ -398,7 +402,7 @@ namespace program
 
                             case "Qr":
                                 Console.WriteLine("(королева)");
-                                cell2 = Console.ReadLine();
+                                cell2 = Console.ReadLine().ToUpper();
                                 place2(cell2);
                                 if (errorcell)
                                 {
@@ -416,7 +420,7 @@ namespace program
 
                             case "Kr":
                                     Console.WriteLine("(король)");
-                                    cell2 = Console.ReadLine();
+                                    cell2 = Console.ReadLine().ToUpper();
                                     place2(cell2);
                                     if (errorcell)
                                     {
@@ -496,12 +500,12 @@ namespace program
                         }
                         matrixbuild();
                     }
-                 }
+                 /*}
                  catch
                  {
                      Console.WriteLine("Ай, код поплавило");
                      matrixbuild();
-                 }
+                 }*/
             }
             Console.WriteLine("Ось i казочцi кiнець, а хто слухав - молодець");
             void matrixbuild()
@@ -638,7 +642,7 @@ namespace program
                     {
                         switch (matrix[i, j])
                         {
-                            case "Tg":
+                            /*case "Tg":
                                 goto case "Tg1";
                             case "Tg1":
                                 losecountergreentura++;
@@ -647,7 +651,7 @@ namespace program
                                 goto case "Tr1";
                             case "Tr1":
                                 losecounterredtura++;
-                                break;
+                                break;*/
                             case "Cg":
                                 losecountergreenslon++;
                                 break;
@@ -691,10 +695,10 @@ namespace program
             {
                 if (cell1.Length == 2)
                 {
-                    letterconverter(cell1, ref dig1);
-                    if (1 < Convert.ToInt32(cell1[1]) - 47 && Convert.ToInt32(cell1[1]) - 47 < 10)
+                    letterconverter(cell1, ref dig2);
+                    if (1 < 58 - Convert.ToInt32(cell1[1]) && 58 - Convert.ToInt32(cell1[1]) < 10)
                     {
-                        dig2 = Convert.ToInt32(cell1[1]) - 47;
+                        dig1 = 58 - Convert.ToInt32(cell1[1]);
                     }
                 }
                 if (cell1 == "рокировка вправо" || cell1 == "рокировка влево")
@@ -710,10 +714,10 @@ namespace program
             {
                 if (cell2.Length == 2)
                 {
-                    letterconverter(cell2, ref dig3);
-                    if (1 < Convert.ToInt32(cell2[1]) - 47 && Convert.ToInt32(cell2[1]) - 47 < 10)
+                    letterconverter(cell2, ref dig4);
+                    if (1 < 58 - Convert.ToInt32(cell1[1]) && 58 - Convert.ToInt32(cell1[1]) < 10)
                     {
-                        dig4 = Convert.ToInt32(cell2[1]) - 47;
+                        dig3 = 58 - Convert.ToInt32(cell1[1]);
                     }
                 }
                 if (cell2.Length != 2 || (Convert.ToString(cell2[1]) != "1" && Convert.ToString(cell2[1]) != "2" && Convert.ToString(cell2[1]) != "3" && Convert.ToString(cell2[1]) != "4" && Convert.ToString(cell2[1]) != "5" && Convert.ToString(cell2[1]) != "6" && Convert.ToString(cell2[1]) != "7" && Convert.ToString(cell2[1]) != "8"))
@@ -1275,7 +1279,7 @@ namespace program
                 chaxlefttura = true;
                 chaxrighttura = true;
                 chaxtoptura = true;
-                chaxdowntura = true; 
+                chaxdowntura = true;
                 if (color == "green")
                 {
                     enemyally("Kg");
@@ -1296,7 +1300,6 @@ namespace program
                 killerdetector(n - 2, m + 1, enemyH, firstcoordeath, secondcoordeath);
                 killerdetector(n + 2, m - 1, enemyH, firstcoordeath, secondcoordeath);
                 killerdetector(n + 2, m + 1, enemyH, firstcoordeath, secondcoordeath);
-                
                 for (int i = 1; i < 12; i++)
                 {
                     if (0 < n - i && 0 < m - i)
@@ -1345,14 +1348,17 @@ namespace program
                 {
                     chaxmat = true;
                 }
-                for (int i = 0; i < firstcoordeath.Count - 1; i++)
+                /*for (int i = 0; i < firstcoordeath.Count; i++)
                 {
+                    Console.WriteLine($"firstcoordeath[{i}] = {firstcoordeath[i]}");
+                    Console.WriteLine($"secondcoordeath[{i}] = {secondcoordeath[i]}");
+                    Console.WriteLine($"matrix[firstcoordeath[i], secondcoordeath[i] = " + matrix[firstcoordeath[i], secondcoordeath[i]]);
                     if (firstcoordeath[i] == firstcoordeath[i + 1] && secondcoordeath[i] == secondcoordeath[i + 1])
                     {
                         firstcoordeath.Remove(firstcoordeath[i]);
                         secondcoordeath.Remove(secondcoordeath[i]);
                     }
-                }
+                }*/
                 if (color == "green")
                 {
                     greenchaxmat = chaxmat;
@@ -1466,7 +1472,7 @@ namespace program
             }
             bool free_area_around_king(int limitcoor1, int limitcoor2, int x, int y, string col)
             {
-                if (kinggreenplace1 != limitcoor1 && kinggreenplace2 != limitcoor2 && matrix[x, y] != allyП && matrix[x, y] != allyC && matrix[x, y] != allyH && matrix[x, y] != allyT && matrix[x, y] != allyT1 && matrix[x, y] != allyQ)
+                if (kingplace1 != limitcoor1 && kingplace2 != limitcoor2 && matrix[x, y] != allyП && matrix[x, y] != allyC && matrix[x, y] != allyH && matrix[x, y] != allyT && matrix[x, y] != allyT1 && matrix[x, y] != allyQ)
                 {
                     temp = matrix[kingplace1, kingplace2];
                     matrix[kingplace1, kingplace2] = "*";
@@ -1563,35 +1569,35 @@ namespace program
                         }
                     }
                 }
-                if (free_area_around_king(2, 0, kinggreenplace1 - 1, kinggreenplace2, color) == false)
+                if (free_area_around_king(2, 0, kingplace1 - 1, kingplace2, color) == false)
                 {
                     return false;
                 }
-                if (free_area_around_king(2, 9, kinggreenplace1 - 1, kinggreenplace2 + 1, color) == false)
+                if (free_area_around_king(2, 9, kingplace1 - 1, kingplace2 + 1, color) == false)
                 {
                     return false;
                 }
-                if (free_area_around_king(0, 2, kinggreenplace1, kinggreenplace2 - 1, color) == false)
+                if (free_area_around_king(0, 2, kingplace1, kingplace2 - 1, color) == false)
                 {
                     return false;
                 }
-                if (free_area_around_king(2, 0, kinggreenplace1 - 1, kinggreenplace2, color) == false)
+                if (free_area_around_king(2, 0, kingplace1 - 1, kingplace2, color) == false)
                 {
                     return false;
                 }
-                if (free_area_around_king(0, 9, kinggreenplace1 - 1, kinggreenplace2 + 1, color) == false)
+                if (free_area_around_king(0, 9, kingplace1 - 1, kingplace2 + 1, color) == false)
                 {
                     return false;
                 }
-                if (free_area_around_king(9, 0, kinggreenplace1 + 1, kinggreenplace2, color) == false)
+                if (free_area_around_king(9, 0, kingplace1 + 1, kingplace2, color) == false)
                 {
                     return false;
                 }
-                if (free_area_around_king(9, 9, kinggreenplace1 + 1, kinggreenplace2 + 1, color) == false)
+                if (free_area_around_king(9, 9, kingplace1 + 1, kingplace2 + 1, color) == false)
                 {
                     return false;
                 }
-                if (free_area_around_king(9, 2, kinggreenplace1 + 1, kinggreenplace2 - 1, color) == false)
+                if (free_area_around_king(9, 2, kingplace1 + 1, kingplace2 - 1, color) == false)
                 {
                     return false;
                 }
@@ -1604,137 +1610,120 @@ namespace program
                     return true;
                 }
             }
-            
-            bool greenstalemate()
+            void possiblemove(int x_start, int y_start, int x_finish, int y_finish, string hero, ref int counter_moves, string color)
             {
-                if (chax(kinggreenplace1, kinggreenplace2, "green"))
+                if (matrix[x_finish, y_finish] == "*" || matrix[x_finish, y_finish] == enemyП || matrix[x_finish, y_finish] == enemyC && matrix[x_finish, y_finish] == enemyH && matrix[x_finish, y_finish] == enemyT && matrix[x_finish, y_finish] == enemyT1 && matrix[x_finish, y_finish] == enemyQ)
+                {
+                    temp = matrix[x_finish, y_finish];
+                    matrix[x_finish, y_finish] = hero;
+                    matrix[x_start, y_start] = "*";
+                    chax(kingplace1, kingplace2, color);
+                    if (chaxmat)
+                    { 
+                        counter_moves++;
+                    }
+                    matrix[x_start, y_start] = hero;
+                    matrix[x_finish, y_finish] = temp;
+                }
+                else
+                {
+                    counter_moves++;
+                }
+            }
+            bool stalemate(string color)
+            {
+                int counterimposmoves;
+                if (color == "green")
+                {
+                    enemyally("Kg");
+                    kingplace1 = kinggreenplace1;
+                    kingplace2 = kinggreenplace2;
+                }
+                else if (color == "red")
+                {
+                    enemyally("Kr");
+                    kingplace1 = kingredplace1;
+                    kingplace2 = kingredplace2;
+                }
+                if (chax(kingplace1, kingplace2, color))
                 {
                     return false;
                 }
                 else
                 {
-                    if (kinggreenplace1 != 2 && matrix[kinggreenplace1 - 1, kinggreenplace2] != "Tg" && matrix[kinggreenplace1 - 1, kinggreenplace2] != "Tg1" && matrix[kinggreenplace1 - 1, kinggreenplace2] != "Cg" && matrix[kinggreenplace1 - 1, kinggreenplace2] != "Hg" && matrix[kinggreenplace1 - 1, kinggreenplace2] != "Qg")
+                    if (free_area_around_king(2, 0, kingplace1 - 1, kingplace2, color) == false)
                     {
-                        matrix[kinggreenplace1, kinggreenplace2] = "*";
-                        chax(kinggreenplace1 - 1, kinggreenplace2, "green");
-                        matrix[kinggreenplace1, kinggreenplace2] = "Kg";
-                        if (greenchaxmat == false)
-                        {
-                            return false;
-                        }
+                        return false;
                     }
-                    if (kinggreenplace1 != 2 && kinggreenplace2 != 2 && matrix[kinggreenplace1 - 1, kinggreenplace2 - 1] != "Tg" && matrix[kinggreenplace1 - 1, kinggreenplace2 - 1] != "Tg1" && matrix[kinggreenplace1 - 1, kinggreenplace2 - 1] != "Cg" && matrix[kinggreenplace1 - 1, kinggreenplace2 - 1] != "Hg" && matrix[kinggreenplace1 - 1, kinggreenplace2 - 1] != "Qg")
+                    if (free_area_around_king(2, 9, kingplace1 - 1, kingplace2 + 1, color) == false)
                     {
-                        matrix[kinggreenplace1, kinggreenplace2] = "*";
-                        chax(kinggreenplace1 - 1, kinggreenplace2 - 1, "green");
-                        matrix[kinggreenplace1, kinggreenplace2] = "Kg";
-                        if (greenchaxmat == false)
-                        {
-                            return false;
-                        }
+                        return false;
                     }
-                    if (kinggreenplace2 != 9 && kinggreenplace1 != 2 && matrix[kinggreenplace1 - 1, kinggreenplace2 + 1] != "Tg" && matrix[kinggreenplace1 - 1, kinggreenplace2 + 1] != "Tg1" && matrix[kinggreenplace1 - 1, kinggreenplace2 + 1] != "Cg" && matrix[kinggreenplace1 - 1, kinggreenplace2 + 1] != "Hg" && matrix[kinggreenplace1 - 1, kinggreenplace2 + 1] != "Qg")
+                    if (free_area_around_king(0, 2, kingplace1, kingplace2 - 1, color) == false)
                     {
-                        matrix[kinggreenplace1, kinggreenplace2] = "*";
-                        chax(kinggreenplace1 - 1, kinggreenplace2 + 1, "green");
-                        matrix[kinggreenplace1, kinggreenplace2] = "Kg";
-                        if (greenchaxmat == false)
-                        {
-                            return false;
-                        }
+                        return false;
                     }
-                    if (kinggreenplace2 != 2 && matrix[kinggreenplace1, kinggreenplace2 - 1] != "Tg" && matrix[kinggreenplace1, kinggreenplace2 - 1] != "Tg1" && matrix[kinggreenplace1, kinggreenplace2 - 1] != "Cg" && matrix[kinggreenplace1, kinggreenplace2 - 1] != "Hg" && matrix[kinggreenplace1, kinggreenplace2 - 1] != "Qg")
+                    if (free_area_around_king(2, 0, kingplace1 - 1, kingplace2, color) == false)
                     {
-                        matrix[kinggreenplace1, kinggreenplace2] = "*";
-                        chax(kinggreenplace1, kinggreenplace2 - 1, "green");
-                        matrix[kinggreenplace1, kinggreenplace2] = "Kg";
-                        if (greenchaxmat == false)
-                        {
-                            return false;
-                        }
+                        return false;
                     }
-                    if (kinggreenplace2 != 9 && matrix[kinggreenplace1, kinggreenplace2 + 1] != "Tg" && matrix[kinggreenplace1, kinggreenplace2 + 1] != "Tg1" && matrix[kinggreenplace1, kinggreenplace2 + 1] != "Cg" && matrix[kinggreenplace1, kinggreenplace2 + 1] != "Hg" && matrix[kinggreenplace1, kinggreenplace2 + 1] != "Qg")
+                    if (free_area_around_king(0, 9, kingplace1 - 1, kingplace2 + 1, color) == false)
                     {
-                        matrix[kinggreenplace1, kinggreenplace2] = "*";
-                        chax(kinggreenplace1, kinggreenplace2 + 1, "green");
-                        matrix[kinggreenplace1, kinggreenplace2] = "Kg";
-                        if (greenchaxmat == false)
-                        {
-                            return false;
-                        }
+                        return false;
                     }
-                    if (kinggreenplace1 != 9 && matrix[kinggreenplace1 + 1, kinggreenplace2] != "Tg" && matrix[kinggreenplace1 + 1, kinggreenplace2] != "Tg1" && matrix[kinggreenplace1 + 1, kinggreenplace2] != "Cg" && matrix[kinggreenplace1 + 1, kinggreenplace2] != "Hg" && matrix[kinggreenplace1 + 1, kinggreenplace2] != "Qg")
+                    if (free_area_around_king(9, 0, kingplace1 + 1, kingplace2, color) == false)
                     {
-                        matrix[kinggreenplace1, kinggreenplace2] = "*";
-                        chax(kinggreenplace1 + 1, kinggreenplace2, "green");
-                        matrix[kinggreenplace1, kinggreenplace2] = "Kg";
-                        if (greenchaxmat == false)
-                        {
-                            return false;
-                        }
+                        return false;
                     }
-                    if (kinggreenplace1 != 9 && kinggreenplace2 != 9 && matrix[kinggreenplace1 + 1, kinggreenplace2 + 1] != "Tg" && matrix[kinggreenplace1 + 1, kinggreenplace2 + 1] != "Tg1" && matrix[kinggreenplace1 + 1, kinggreenplace2 + 1] != "Cg" && matrix[kinggreenplace1 + 1, kinggreenplace2 + 1] != "Hg" && matrix[kinggreenplace1 + 1, kinggreenplace2 + 1] != "Qg")
+                    if (free_area_around_king(9, 9, kingplace1 + 1, kingplace2 + 1, color) == false)
                     {
-                        matrix[kinggreenplace1, kinggreenplace2] = "*";
-                        chax(kinggreenplace1 + 1, kinggreenplace2 + 1, "green");
-                        matrix[kinggreenplace1, kinggreenplace2] = "Kg";
-                        if (greenchaxmat == false)
-                        {
-                            return false;
-                        }
+                        return false;
                     }
-                    if (kinggreenplace1 != 9 && kinggreenplace2 != 2 && matrix[kinggreenplace1 + 1, kinggreenplace2 - 1] != "Tg" && matrix[kinggreenplace1 + 1, kinggreenplace2 - 1] != "Tg1" && matrix[kinggreenplace1 + 1, kinggreenplace2 - 1] != "Cg" && matrix[kinggreenplace1 + 1, kinggreenplace2 - 1] != "Hg" && matrix[kinggreenplace1 + 1, kinggreenplace2 - 1] != "Qg")
+                    if (free_area_around_king(9, 2, kingplace1 + 1, kingplace2 - 1, color) == false)
                     {
-                        matrix[kinggreenplace1, kinggreenplace2] = "*";
-                        chax(kinggreenplace1 + 1, kinggreenplace2 - 1, "green");
-                        matrix[kinggreenplace1, kinggreenplace2] = "Kg";
-                        if (greenchaxmat == false)
-                        {
-                            return false;
-                        }
+                        return false;
                     }
                 }
-                int counterimposmoves;
-                string temp;
+                
                 for (int i = 2; i < 10; i++)
                 {
                     for (int j = 2; j < 10; j++)
                     {
                         counterimposmoves = 0;
-                        if (matrix[i, j] == "Пg")
+                        if (matrix[i, j] == allyП)
                         {
                             if (matrix[i - 1, j] != "*")
                             {
                                 counterimposmoves++;
                             }
-                            if (matrix[i - 1, j - 1] == "Tr" || matrix[i - 1, j - 1] == "Tr1" && matrix[i - 1, j - 1] == "Qr" && matrix[i - 1, j - 1] == "Cr" && matrix[i - 1, j - 1] == "Hr" && matrix[i - 1, j - 1] == "Пr")
+                            if (matrix[i - 1, j - 1] == enemyП || matrix[i - 1, j - 1] == enemyC || matrix[i - 1, j - 1] == enemyH || matrix[i - 1, j - 1] == enemyT || matrix[i - 1, j - 1] == enemyT1 || matrix[i - 1, j - 1] == enemyQ)
                             {
                                 temp = matrix[i - 1, j - 1];
-                                matrix[i - 1, j - 1] = "Пg";
+                                matrix[i - 1, j - 1] = allyП;
                                 matrix[i, j] = "*";
-                                chax(kinggreenplace1, kinggreenplace2, "green");
-                                if (greenchaxmat == true)
+                                chax(kingplace1, kingplace2, color);
+                                if (chaxmat)
                                 {
                                     counterimposmoves++;
                                 }
-                                matrix[i, j] = "Пg";
+                                matrix[i, j] = allyП;
                                 matrix[i - 1, j - 1] = temp;
                             }
                             else
                             {
                                 counterimposmoves++;
                             }
-                            if (matrix[i - 1, j + 1] == "Tr" || matrix[i - 1, j + 1] == "Tr1" && matrix[i - 1, j + 1] == "Qr" && matrix[i - 1, j - 1] == "Cr" && matrix[i - 1, j + 1] == "Hr" && matrix[i - 1, j + 1] == "Пr")
+                            if (matrix[i - 1, j + 1] == enemyП || matrix[i - 1, j + 1] == enemyC || matrix[i - 1, j + 1] == enemyH || matrix[i - 1, j + 1] == enemyT || matrix[i - 1, j + 1] == enemyT1 || matrix[i - 1, j + 1] == enemyQ)
                             {
                                 temp = matrix[i - 1, j + 1];
-                                matrix[i - 1, j + 1] = "Пg";
+                                matrix[i - 1, j + 1] = allyП;
                                 matrix[i, j] = "*";
-                                chax(kinggreenplace1, kinggreenplace2, "green");
-                                if (greenchaxmat == true)
+                                chax(kingplace1, kingplace2, color);
+                                if (chaxmat)
                                 {
                                     counterimposmoves++;
                                 }
-                                matrix[i, j] = "Пg";
+                                matrix[i, j] = allyП;
                                 matrix[i - 1, j + 1] = temp;
                             }
                             else
@@ -1746,1018 +1735,64 @@ namespace program
                                 return false;
                             }
                         }
-                        else if (matrix[i, j] == "Hg")
+                        else if (matrix[i, j] == allyH)
                         {
-                            if (matrix[i - 2, j - 1] == "*" || matrix[i - 2, j - 1] == "Tr" || matrix[i - 2, j - 1] == "Tr1" || matrix[i - 2, j - 1] == "Cr" || matrix[i - 2, j - 1] == "Hr" || matrix[i - 2, j - 1] == "Qr" || matrix[i - 2, j - 1] == "Пr")
-                            {
-                                temp = matrix[i - 2, j - 1];
-                                matrix[i - 2, j - 1] = "Hg";
-                                matrix[i, j] = "*";
-                                chax(kinggreenplace1, kinggreenplace2, "green");
-                                if (greenchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = "Hg";
-                                matrix[i - 2, j - 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i - 2, j + 1] == "*" || matrix[i - 2, j + 1] == "Tr" || matrix[i - 2, j + 1] == "Tr1" || matrix[i - 2, j + 1] == "Cr" || matrix[i - 2, j + 1] == "Hr" || matrix[i - 2, j + 1] == "Qr" || matrix[i - 2, j + 1] == "Пr")
-                            {
-                                temp = matrix[i - 2, j + 1];
-                                matrix[i - 2, j + 1] = "Hg";
-                                matrix[i, j] = "*";
-                                chax(kinggreenplace1, kinggreenplace2, "green");
-                                if (greenchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = "Hg";
-                                matrix[i - 2, j + 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i - 1, j - 2] == "*" || matrix[i - 1, j - 2] == "Tr" || matrix[i - 1, j - 2] == "Tr1" || matrix[i - 1, j - 2] == "Cr" || matrix[i - 1, j - 2] == "Hr" || matrix[i - 1, j - 2] == "Qr" || matrix[i - 1, j - 2] == "Пr")
-                            {
-                                temp = matrix[i - 1, j - 2];
-                                matrix[i - 1, j - 2] = "Hg";
-                                matrix[i, j] = "*";
-                                chax(kinggreenplace1, kinggreenplace2, "green");
-                                if (greenchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = "Hg";
-                                matrix[i - 1, j - 2] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i - 1, j + 2] == "*" || matrix[i - 1, j + 2] == "Tr" || matrix[i - 1, j + 2] == "Tr1" || matrix[i - 1, j + 2] == "Cr" || matrix[i - 1, j + 2] == "Hr" || matrix[i - 1, j + 2] == "Qr" || matrix[i - 1, j + 2] == "Пr")
-                            {
-                                temp = matrix[i - 1, j + 2];
-                                matrix[i - 1, j + 2] = "Hg";
-                                matrix[i, j] = "*";
-                                chax(kinggreenplace1, kinggreenplace2, "green");
-                                if (greenchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = "Hg";
-                                matrix[i - 1, j + 2] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i + 2, j + 1] == "*" || matrix[i + 2, j + 1] == "Tr" || matrix[i + 2, j + 1] == "Tr1" || matrix[i + 2, j + 1] == "Cr" || matrix[i + 2, j + 1] == "Hr" || matrix[i + 2, j + 1] == "Qr" || matrix[i + 2, j + 1] == "Пr")
-                            {
-                                temp = matrix[i + 2, j + 1];
-                                matrix[i + 2, j + 1] = "Hg";
-                                matrix[i, j] = "*";
-                                chax(kinggreenplace1, kinggreenplace2, "green");
-                                if (greenchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = "Hg";
-                                matrix[i + 2, j + 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i + 2, j - 1] == "*" || matrix[i + 2, j - 1] == "Tr" || matrix[i + 2, j - 1] == "Tr1" || matrix[i + 2, j - 1] == "Cr" || matrix[i + 2, j - 1] == "Hr" || matrix[i + 2, j - 1] == "Qr" || matrix[i + 2, j - 1] == "Пr")
-                            {
-                                temp = matrix[i + 2, j - 1];
-                                matrix[i + 2, j - 1] = "Hg";
-                                matrix[i, j] = "*";
-                                chax(kinggreenplace1, kinggreenplace2, "green");
-                                if (greenchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = "Hg";
-                                matrix[i + 2, j - 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i + 1, j + 2] == "*" || matrix[i + 1, j + 2] == "Tr" || matrix[i + 1, j + 2] == "Tr1" || matrix[i + 1, j + 2] == "Cr" || matrix[i + 1, j + 2] == "Hr" || matrix[i + 1, j + 2] == "Qr" || matrix[i + 1, j + 2] == "Пr")
-                            {
-                                temp = matrix[i + 1, j + 2];
-                                matrix[i + 1, j + 2] = "Hg";
-                                matrix[i, j] = "*";
-                                chax(kinggreenplace1, kinggreenplace2, "green");
-                                if (greenchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = "Hg";
-                                matrix[i + 1, j + 2] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i + 1, j - 2] == "*" || matrix[i + 1, j - 2] == "Tr" || matrix[i + 1, j - 2] == "Tr1" || matrix[i + 1, j - 2] == "Cr" || matrix[i + 1, j - 2] == "Hr" || matrix[i + 1, j - 2] == "Qr" || matrix[i + 1, j - 2] == "Пr")
-                            {
-                                temp = matrix[i + 1, j - 2];
-                                matrix[i + 1, j - 2] = "Hg";
-                                matrix[i, j] = "*";
-                                chax(kinggreenplace1, kinggreenplace2, "green");
-                                if (greenchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = "Hg";
-                                matrix[i + 1, j - 2] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
+                            possiblemove(i, j, i - 2, j - 1, allyH, ref counterimposmoves, color);
+                            possiblemove(i, j, i - 2, j + 1, allyH, ref counterimposmoves, color);
+                            possiblemove(i, j, i + 2, j - 1, allyH, ref counterimposmoves, color);
+                            possiblemove(i, j, i + 2, j + 1, allyH, ref counterimposmoves, color);
+                            possiblemove(i, j, i - 1, j - 2, allyH, ref counterimposmoves, color);
+                            possiblemove(i, j, i - 1, j + 2, allyH, ref counterimposmoves, color);
+                            possiblemove(i, j, i + 1, j - 2, allyH, ref counterimposmoves, color);
+                            possiblemove(i, j, i + 1, j + 2, allyH, ref counterimposmoves, color);
                             if (counterimposmoves != 8)
                             {
                                 return false;
                             }
                         }
-                        else if (matrix[i, j] == "Tg" || matrix[i, j] == "Tg1")
+                        else if (matrix[i, j] == allyT)
                         {
-                            if (matrix[i, j - 1] == "*" || matrix[i, j - 1] == "Tr" || matrix[i, j - 1] == "Tr1" || matrix[i, j - 1] == "Cr" || matrix[i, j - 1] == "Hr" || matrix[i, j - 1] == "Qr" || matrix[i, j - 1] == "Пr")
-                            {
-                                temp = matrix[i, j - 1];
-                                matrix[i, j - 1] = matrix[i, j];
-                                matrix[i, j] = "*";
-                                chax(kinggreenplace1, kinggreenplace2, "green");
-                                if (greenchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = matrix[i, j - 1];
-                                matrix[i, j - 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i, j + 1] == "*" || matrix[i, j + 1] == "Tr" || matrix[i, j + 1] == "Tr1" || matrix[i, j + 1] == "Cr" || matrix[i, j + 1] == "Hr" || matrix[i, j + 1] == "Qr" || matrix[i, j + 1] == "Пr")
-                            {
-                                temp = matrix[i, j + 1];
-                                matrix[i, j + 1] = matrix[i, j];
-                                matrix[i, j] = "*";
-                                chax(kinggreenplace1, kinggreenplace2, "green");
-                                if (greenchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = matrix[i, j + 1];
-                                matrix[i, j + 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i - 1, j] == "*" || matrix[i - 1, j] == "Tr" || matrix[i - 1, j] == "Tr1" || matrix[i - 1, j] == "Cr" || matrix[i - 1, j] == "Hr" || matrix[i - 1, j] == "Qr" || matrix[i - 1, j] == "Пr")
-                            {
-                                temp = matrix[i - 1, j];
-                                matrix[i - 1, j] = matrix[i, j];
-                                matrix[i, j] = "*";
-                                chax(kinggreenplace1, kinggreenplace2, "green");
-                                if (greenchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = matrix[i - 1, j];
-                                matrix[i - 1, j] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i + 1, j] == "*" || matrix[i + 1, j] == "Tr" || matrix[i + 1, j] == "Tr1" || matrix[i + 1, j] == "Cr" || matrix[i + 1, j] == "Hr" || matrix[i + 1, j] == "Qr" || matrix[i + 1, j] == "Пr")
-                            {
-                                temp = matrix[i + 1, j];
-                                matrix[i + 1, j] = matrix[i, j];
-                                matrix[i, j] = "*";
-                                chax(kinggreenplace1, kinggreenplace2, "green");
-                                if (greenchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = matrix[i + 1, j];
-                                matrix[i + 1, j] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
+                            possiblemove(i, j, i - 1, j, allyT, ref counterimposmoves, color);
+                            possiblemove(i, j, i + 1, j, allyT, ref counterimposmoves, color);
+                            possiblemove(i, j, i, j - 1, allyT, ref counterimposmoves, color);
+                            possiblemove(i, j, i, j + 1, allyT, ref counterimposmoves, color);
                             if (counterimposmoves != 4)
                             {
                                 return false;
                             }
                         }
-                        else if (matrix[i, j] == "Cg")
+                        else if (matrix[i, j] == allyT1)
                         {
-                            if (matrix[i - 1, j - 1] == "*" || matrix[i - 1, j - 1] == "Tr" || matrix[i - 1, j - 1] == "Tr1" || matrix[i - 1, j - 1] == "Cr" || matrix[i - 1, j - 1] == "Hr" || matrix[i - 1, j - 1] == "Qr" || matrix[i - 1, j - 1] == "Пr")
-                            {
-                                temp = matrix[i - 1, j - 1];
-                                matrix[i - 1, j - 1] = "Cg";
-                                matrix[i, j] = "*";
-                                chax(kinggreenplace1, kinggreenplace2, "green");
-                                if (greenchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = "Cg";
-                                matrix[i - 1, j - 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i + 1, j - 1] == "*" || matrix[i + 1, j - 1] == "Tr" || matrix[i + 1, j - 1] == "Tr1" || matrix[i + 1, j - 1] == "Cr" || matrix[i + 1, j - 1] == "Hr" || matrix[i + 1, j - 1] == "Qr" || matrix[i + 1, j - 1] == "Пr")
-                            {
-                                temp = matrix[i + 1, j - 1];
-                                matrix[i + 1, j - 1] = "Cg";
-                                matrix[i, j] = "*";
-                                chax(kinggreenplace1, kinggreenplace2, "green");
-                                if (greenchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = "Cg";
-                                matrix[i + 1, j - 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i - 1, j + 1] == "*" || matrix[i - 1, j + 1] == "Tr" || matrix[i - 1, j + 1] == "Tr1" || matrix[i - 1, j + 1] == "Cr" || matrix[i - 1, j + 1] == "Hr" || matrix[i - 1, j + 1] == "Qr" || matrix[i - 1, j + 1] == "Пr")
-                            {
-                                temp = matrix[i - 1, j + 1];
-                                matrix[i - 1, j + 1] = "Cg";
-                                matrix[i, j] = "*";
-                                chax(kinggreenplace1, kinggreenplace2, "green");
-                                if (greenchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = "Cg";
-                                matrix[i - 1, j + 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i + 1, j + 1] == "*" || matrix[i + 1, j + 1] == "Tr" || matrix[i + 1, j + 1] == "Tr1" || matrix[i + 1, j + 1] == "Cr" || matrix[i + 1, j + 1] == "Hr" || matrix[i + 1, j + 1] == "Qr" || matrix[i + 1, j + 1] == "Пr")
-                            {
-                                temp = matrix[i + 1, j + 1];
-                                matrix[i + 1, j + 1] = "Cg";
-                                matrix[i, j] = "*";
-                                chax(kinggreenplace1, kinggreenplace2, "green");
-                                if (greenchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = "Cg";
-                                matrix[i + 1, j + 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
+                            possiblemove(i, j, i - 1, j, allyT1, ref counterimposmoves, color);
+                            possiblemove(i, j, i + 1, j, allyT1, ref counterimposmoves, color);
+                            possiblemove(i, j, i, j - 1, allyT1, ref counterimposmoves, color);
+                            possiblemove(i, j, i, j + 1, allyT1, ref counterimposmoves, color);
                             if (counterimposmoves != 4)
                             {
                                 return false;
                             }
                         }
-                        else if (matrix[i, j] == "Qg")
+                        else if (matrix[i, j] == allyC)
                         {
-                            if (matrix[i, j - 1] == "*" || matrix[i, j - 1] == "Tr" || matrix[i, j - 1] == "Tr1" || matrix[i, j - 1] == "Cr" || matrix[i, j - 1] == "Hr" || matrix[i, j - 1] == "Qr" || matrix[i, j - 1] == "Пr")
-                            {
-                                temp = matrix[i, j - 1];
-                                matrix[i, j - 1] = matrix[i, j];
-                                matrix[i, j] = "*";
-                                chax(kinggreenplace1, kinggreenplace2, "green");
-                                if (greenchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = matrix[i, j - 1];
-                                matrix[i, j - 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i, j + 1] == "*" || matrix[i, j + 1] == "Tr" || matrix[i, j + 1] == "Tr1" || matrix[i, j + 1] == "Cr" || matrix[i, j + 1] == "Hr" || matrix[i, j + 1] == "Qr" || matrix[i, j + 1] == "Пr")
-                            {
-                                temp = matrix[i, j + 1];
-                                matrix[i, j + 1] = matrix[i, j];
-                                matrix[i, j] = "*";
-                                chax(kinggreenplace1, kinggreenplace2, "green");
-                                if (greenchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = matrix[i, j + 1];
-                                matrix[i, j + 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i - 1, j] == "*" || matrix[i - 1, j] == "Tr" || matrix[i - 1, j] == "Tr1" || matrix[i - 1, j] == "Cr" || matrix[i - 1, j] == "Hr" || matrix[i - 1, j] == "Qr" || matrix[i - 1, j] == "Пr")
-                            {
-                                temp = matrix[i - 1, j];
-                                matrix[i - 1, j] = matrix[i, j];
-                                matrix[i, j] = "*";
-                                chax(kinggreenplace1, kinggreenplace2, "green");
-                                if (greenchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = matrix[i - 1, j];
-                                matrix[i - 1, j] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i + 1, j] == "*" || matrix[i + 1, j] == "Tr" || matrix[i + 1, j] == "Tr1" || matrix[i + 1, j] == "Cr" || matrix[i + 1, j] == "Hr" || matrix[i + 1, j] == "Qr" || matrix[i + 1, j] == "Пr")
-                            {
-                                temp = matrix[i + 1, j];
-                                matrix[i + 1, j] = matrix[i, j];
-                                matrix[i, j] = "*";
-                                chax(kinggreenplace1, kinggreenplace2, "green");
-                                if (greenchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = matrix[i + 1, j];
-                                matrix[i + 1, j] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i - 1, j - 1] == "*" || matrix[i - 1, j - 1] == "Tr" || matrix[i - 1, j - 1] == "Tr1" || matrix[i - 1, j - 1] == "Cr" || matrix[i - 1, j - 1] == "Hr" || matrix[i - 1, j - 1] == "Qr" || matrix[i - 1, j - 1] == "Пr")
-                            {
-                                temp = matrix[i - 1, j - 1];
-                                matrix[i - 1, j - 1] = matrix[i, j];
-                                matrix[i, j] = "*";
-                                chax(kinggreenplace1, kinggreenplace2, "green");
-                                if (greenchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = matrix[i, j];
-                                matrix[i - 1, j - 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i + 1, j - 1] == "*" || matrix[i + 1, j - 1] == "Tr" || matrix[i + 1, j - 1] == "Tr1" || matrix[i + 1, j - 1] == "Cr" || matrix[i + 1, j - 1] == "Hr" || matrix[i + 1, j - 1] == "Qr" || matrix[i + 1, j - 1] == "Пr")
-                            {
-                                temp = matrix[i + 1, j - 1];
-                                matrix[i + 1, j - 1] = matrix[i, j];
-                                matrix[i, j] = "*";
-                                chax(kinggreenplace1, kinggreenplace2, "green");
-                                if (greenchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = matrix[i, j];
-                                matrix[i + 1, j - 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i - 1, j + 1] == "*" || matrix[i - 1, j + 1] == "Tr" || matrix[i - 1, j + 1] == "Tr1" || matrix[i - 1, j + 1] == "Cr" || matrix[i - 1, j + 1] == "Hr" || matrix[i - 1, j + 1] == "Qr" || matrix[i - 1, j + 1] == "Пr")
-                            {
-                                temp = matrix[i - 1, j + 1];
-                                matrix[i - 1, j + 1] = matrix[i, j];
-                                matrix[i, j] = "*";
-                                chax(kinggreenplace1, kinggreenplace2, "green");
-                                if (greenchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = matrix[i, j];
-                                matrix[i - 1, j + 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i + 1, j + 1] == "*" || matrix[i + 1, j + 1] == "Tr" || matrix[i + 1, j + 1] == "Tr1" || matrix[i + 1, j + 1] == "Cr" || matrix[i + 1, j + 1] == "Hr" || matrix[i + 1, j + 1] == "Qr" || matrix[i + 1, j + 1] == "Пr")
-                            {
-                                temp = matrix[i + 1, j + 1];
-                                matrix[i + 1, j + 1] = matrix[i, j];
-                                matrix[i, j] = "*";
-                                chax(kinggreenplace1, kinggreenplace2, "green");
-                                if (greenchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = matrix[i, j];
-                                matrix[i + 1, j + 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (counterimposmoves != 8)
-                            {
-                                return false;
-                            }
-                        }
-                    }
-                }
-                return true;
-            }
-            bool redstalemate()
-            {
-                if (chax(kingredplace1, kingredplace2, "red"))
-                {
-                    return false;
-                }
-                else
-                {
-                    if (kingredplace1 != 2 && matrix[kingredplace1 - 1, kingredplace2] != "Tr" && matrix[kingredplace1 - 1, kingredplace2] != "Tr1" && matrix[kingredplace1 - 1, kingredplace2] != "Cr" && matrix[kingredplace1 - 1, kingredplace2] != "Hr" && matrix[kingredplace1 - 1, kingredplace2] != "Qr")
-                    {
-                        matrix[kingredplace1, kingredplace2] = "*";
-                        chax(kingredplace1 - 1, kingredplace2, "red");
-                        matrix[kingredplace1, kingredplace2] = "Kr";
-                        if (redchaxmat == false)
-                        {
-                            return false;
-                        }
-                    }
-                    if (kingredplace1 != 2 && kingredplace2 != 2 && matrix[kingredplace1 - 1, kingredplace2 - 1] != "Tr" && matrix[kingredplace1 - 1, kingredplace2 - 1] != "Tr1" && matrix[kingredplace1 - 1, kingredplace2 - 1] != "Cr" && matrix[kingredplace1 - 1, kingredplace2 - 1] != "Hr" && matrix[kingredplace1 - 1, kingredplace2 - 1] != "Qr")
-                    {
-                        matrix[kingredplace1, kingredplace2] = "*";
-                        chax(kingredplace1 - 1, kingredplace2 - 1, "red");
-                        matrix[kingredplace1, kingredplace2] = "Kr";
-                        if (redchaxmat == false)
-                        {
-                            return false;
-                        }
-                    }
-                    if (kingredplace2 != 9 && kingredplace1 != 2 && matrix[kingredplace1 - 1, kingredplace2 + 1] != "Tr" && matrix[kingredplace1 - 1, kingredplace2 + 1] != "Tr1" && matrix[kingredplace1 - 1, kingredplace2 + 1] != "Cr" && matrix[kingredplace1 - 1, kingredplace2 + 1] != "Hr" && matrix[kingredplace1 - 1, kingredplace2 + 1] != "Qr")
-                    {
-                        matrix[kingredplace1, kingredplace2] = "*";
-                        chax(kingredplace1 - 1, kingredplace2 + 1, "red");
-                        matrix[kingredplace1, kingredplace2] = "Kr";
-                        if (redchaxmat == false)
-                        {
-                            return false;
-                        }
-                    }
-                    if (kingredplace2 != 2 && matrix[kingredplace1, kingredplace2 - 1] != "Tr" && matrix[kingredplace1, kingredplace2 - 1] != "Tr1" && matrix[kingredplace1, kingredplace2 - 1] != "Cr" && matrix[kingredplace1, kingredplace2 - 1] != "Hr" && matrix[kingredplace1, kingredplace2 - 1] != "Qr")
-                    {
-                        matrix[kingredplace1, kingredplace2] = "*";
-                        chax(kingredplace1, kingredplace2 - 1, "red");
-                        matrix[kingredplace1, kingredplace2] = "Kr";
-                        if (redchaxmat == false)
-                        {
-                            return false;
-                        }
-                    }
-                    if (kingredplace2 != 9 && matrix[kingredplace1, kingredplace2 + 1] != "Tr" && matrix[kingredplace1, kingredplace2 + 1] != "Tr1" && matrix[kingredplace1, kingredplace2 + 1] != "Cr" && matrix[kingredplace1, kingredplace2 + 1] != "Hr" && matrix[kingredplace1, kingredplace2 + 1] != "Qr")
-                    {
-                        matrix[kingredplace1, kingredplace2] = "*";
-                        chax(kingredplace1, kingredplace2 + 1, "red");
-                        matrix[kingredplace1, kingredplace2] = "Kr";
-                        if (redchaxmat == false)
-                        {
-                            return false;
-                        }
-                    }
-                    if (kingredplace1 != 9 && matrix[kingredplace1 + 1, kingredplace2] != "Tr" && matrix[kingredplace1 + 1, kingredplace2] != "Tr1" && matrix[kingredplace1 + 1, kingredplace2] != "Cr" && matrix[kingredplace1 + 1, kingredplace2] != "Hr" && matrix[kingredplace1 + 1, kingredplace2] != "Qr")
-                    {
-                        matrix[kingredplace1, kingredplace2] = "*";
-                        chax(kingredplace1 + 1, kingredplace2, "red");
-                        matrix[kingredplace1, kingredplace2] = "Kr";
-                        if (redchaxmat == false)
-                        {
-                            return false;
-                        }
-                    }
-                    if (kingredplace1 != 9 && kingredplace2 != 9 && matrix[kingredplace1 + 1, kingredplace2 + 1] != "Tr" && matrix[kingredplace1 + 1, kingredplace2 + 1] != "Tr1" && matrix[kingredplace1 + 1, kingredplace2 + 1] != "Cr" && matrix[kingredplace1 + 1, kingredplace2 + 1] != "Hr" && matrix[kingredplace1 + 1, kingredplace2 + 1] != "Qr")
-                    {
-                        matrix[kingredplace1, kingredplace2] = "*";
-                        chax(kingredplace1 + 1, kingredplace2 + 1, "red");
-                        matrix[kingredplace1, kingredplace2] = "Kr";
-                        if (redchaxmat == false)
-                        {
-                            return false;
-                        }
-                    }
-                    if (kingredplace1 != 9 && kingredplace2 != 2 && matrix[kingredplace1 + 1, kingredplace2 - 1] != "Tr" && matrix[kingredplace1 + 1, kingredplace2 - 1] != "Tr1" && matrix[kingredplace1 + 1, kingredplace2 - 1] != "Cr" && matrix[kingredplace1 + 1, kingredplace2 - 1] != "Hr" && matrix[kingredplace1 + 1, kingredplace2 - 1] != "Qr")
-                    {
-                        matrix[kingredplace1, kingredplace2] = "*";
-                        chax(kingredplace1 + 1, kingredplace2 - 1, "red");
-                        matrix[kingredplace1, kingredplace2] = "Kr";
-                        if (redchaxmat == false)
-                        {
-                            return false;
-                        }
-                    }
-                }
-                int counterimposmoves;
-                string temp;
-                for (int i = 2; i < 10; i++)
-                {
-                    for (int j = 2; j < 10; j++)
-                    {
-                        counterimposmoves = 0;
-                        if (matrix[i, j] == "Пr")
-                        {
-                            if (matrix[i + 1, j] != "*")
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i + 1, j + 1] == "Tg" || matrix[i + 1, j + 1] == "Tg1" && matrix[i + 1, j + 1] == "Qg" && matrix[i + 1, j + 1] == "Cg" && matrix[i + 1, j + 1] == "Hg" && matrix[i + 1, j + 1] == "Пg")
-                            {
-                                temp = matrix[i + 1, j + 1];
-                                matrix[i + 1, j + 1] = "Пr";
-                                matrix[i, j] = "*";
-                                chax(kingredplace1, kingredplace2, "red");
-                                if (redchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = "Пr";
-                                matrix[i + 1, j + 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i + 1, j - 1] == "Tg" || matrix[i + 1, j - 1] == "Tg1" && matrix[i + 1, j - 1] == "Qg" && matrix[i + 1, j - 1] == "Cg" && matrix[i + 1, j - 1] == "Hg" && matrix[i + 1, j - 1] == "Пg")
-                            {
-                                temp = matrix[i + 1, j - 1];
-                                matrix[i + 1, j - 1] = "Пr";
-                                matrix[i, j] = "*";
-                                chax(kingredplace1, kingredplace2, "red");
-                                if (redchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = "Пr";
-                                matrix[i + 1, j - 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (counterimposmoves != 3)
-                            {
-                                return false;
-                            }
-                        }
-                        else if (matrix[i, j] == "Hr")
-                        {
-                            if (matrix[i - 2, j - 1] == "*" || matrix[i - 2, j - 1] == "Tg" || matrix[i - 2, j - 1] == "Tg1" || matrix[i - 2, j - 1] == "Cg" || matrix[i - 2, j - 1] == "Hg" || matrix[i - 2, j - 1] == "Qg" || matrix[i - 2, j - 1] == "Пg")
-                            {
-                                temp = matrix[i - 2, j - 1];
-                                matrix[i - 2, j - 1] = "Hr";
-                                matrix[i, j] = "*";
-                                chax(kingredplace1, kingredplace2, "red");
-                                if (redchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = "Hr";
-                                matrix[i - 2, j - 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i - 2, j + 1] == "*" || matrix[i - 2, j + 1] == "Tg" || matrix[i - 2, j + 1] == "Tg1" || matrix[i - 2, j + 1] == "Cg" || matrix[i - 2, j + 1] == "Hg" || matrix[i - 2, j + 1] == "Qg" || matrix[i - 2, j + 1] == "Пg")
-                            {
-                                temp = matrix[i - 2, j + 1];
-                                matrix[i - 2, j + 1] = "Hr";
-                                matrix[i, j] = "*";
-                                chax(kingredplace1, kingredplace2, "red");
-                                if (redchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = "Hr";
-                                matrix[i - 2, j + 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i - 1, j - 2] == "*" || matrix[i - 1, j - 2] == "Tg" || matrix[i - 1, j - 2] == "Tg1" || matrix[i - 1, j - 2] == "Cg" || matrix[i - 1, j - 2] == "Hg" || matrix[i - 1, j - 2] == "Qg" || matrix[i - 1, j - 2] == "Пg")
-                            {
-                                temp = matrix[i - 1, j - 2];
-                                matrix[i - 1, j - 2] = "Hr";
-                                matrix[i, j] = "*";
-                                chax(kingredplace1, kingredplace2, "red");
-                                if (redchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = "Hr";
-                                matrix[i - 1, j - 2] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i - 1, j + 2] == "*" || matrix[i - 1, j + 2] == "Tg" || matrix[i - 1, j + 2] == "Tg1" || matrix[i - 1, j + 2] == "Cg" || matrix[i - 1, j + 2] == "Hg" || matrix[i - 1, j + 2] == "Qg" || matrix[i - 1, j + 2] == "Пg")
-                            {
-                                temp = matrix[i - 1, j + 2];
-                                matrix[i - 1, j + 2] = "Hr";
-                                matrix[i, j] = "*";
-                                chax(kingredplace1, kingredplace2, "red");
-                                if (redchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = "Hg";
-                                matrix[i - 1, j + 2] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i + 2, j + 1] == "*" || matrix[i + 2, j + 1] == "Tg" || matrix[i + 2, j + 1] == "Tg1" || matrix[i + 2, j + 1] == "Cg" || matrix[i + 2, j + 1] == "Hg" || matrix[i + 2, j + 1] == "Qg" || matrix[i + 2, j + 1] == "Пg")
-                            {
-                                temp = matrix[i + 2, j + 1];
-                                matrix[i + 2, j + 1] = "Hr";
-                                matrix[i, j] = "*";
-                                chax(kingredplace1, kingredplace2, "red");
-                                if (redchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = "Hr";
-                                matrix[i + 2, j + 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i + 2, j - 1] == "*" || matrix[i + 2, j - 1] == "Tg" || matrix[i + 2, j - 1] == "Tg1" || matrix[i + 2, j - 1] == "Cg" || matrix[i + 2, j - 1] == "Hg" || matrix[i + 2, j - 1] == "Qg" || matrix[i + 2, j - 1] == "Пg")
-                            {
-                                temp = matrix[i + 2, j - 1];
-                                matrix[i + 2, j - 1] = "Hr";
-                                matrix[i, j] = "*";
-                                chax(kingredplace1, kingredplace2, "red");
-                                if (redchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = "Hr";
-                                matrix[i + 2, j - 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i + 1, j + 2] == "*" || matrix[i + 1, j + 2] == "Tg" || matrix[i + 1, j + 2] == "Tg1" || matrix[i + 1, j + 2] == "Cg" || matrix[i + 1, j + 2] == "Hg" || matrix[i + 1, j + 2] == "Qg" || matrix[i + 1, j + 2] == "Пg")
-                            {
-                                temp = matrix[i + 1, j + 2];
-                                matrix[i + 1, j + 2] = "Hr";
-                                matrix[i, j] = "*";
-                                chax(kingredplace1, kingredplace2, "red");
-                                if (redchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = "Hr";
-                                matrix[i + 1, j + 2] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i + 1, j - 2] == "*" || matrix[i + 1, j - 2] == "Tg" || matrix[i + 1, j - 2] == "Tg1" || matrix[i + 1, j - 2] == "Cg" || matrix[i + 1, j - 2] == "Hg" || matrix[i + 1, j - 2] == "Qg" || matrix[i + 1, j - 2] == "Пg")
-                            {
-                                temp = matrix[i + 1, j - 2];
-                                matrix[i + 1, j - 2] = "Hr";
-                                matrix[i, j] = "*";
-                                chax(kingredplace1, kingredplace2, "red");
-                                if (redchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = "Hr";
-                                matrix[i + 1, j - 2] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (counterimposmoves != 8)
-                            {
-                                return false;
-                            }
-                        }
-                        else if (matrix[i, j] == "Tr" || matrix[i, j] == "Tr1")
-                        {
-                            if (matrix[i, j - 1] == "*" || matrix[i, j - 1] == "Tg" || matrix[i, j - 1] == "Tg1" || matrix[i, j - 1] == "Cg" || matrix[i, j - 1] == "Hg" || matrix[i, j - 1] == "Qg" || matrix[i, j - 1] == "Пg")
-                            {
-                                temp = matrix[i, j - 1];
-                                matrix[i, j - 1] = matrix[i, j];
-                                matrix[i, j] = "*";
-                                chax(kingredplace1, kingredplace2, "red");
-                                if (redchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = matrix[i, j - 1];
-                                matrix[i, j - 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i, j + 1] == "*" || matrix[i, j + 1] == "Tg" || matrix[i, j + 1] == "Tg1" || matrix[i, j + 1] == "Cg" || matrix[i, j + 1] == "Hg" || matrix[i, j + 1] == "Qg" || matrix[i, j + 1] == "Пg")
-                            {
-                                temp = matrix[i, j + 1];
-                                matrix[i, j + 1] = matrix[i, j];
-                                matrix[i, j] = "*";
-                                chax(kingredplace1, kingredplace2, "red");
-                                if (redchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = matrix[i, j + 1];
-                                matrix[i, j + 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i - 1, j] == "*" || matrix[i - 1, j] == "Tg" || matrix[i - 1, j] == "Tg1" || matrix[i - 1, j] == "Cg" || matrix[i - 1, j] == "Hg" || matrix[i - 1, j] == "Qg" || matrix[i - 1, j] == "Пg")
-                            {
-                                temp = matrix[i - 1, j];
-                                matrix[i - 1, j] = matrix[i, j];
-                                matrix[i, j] = "*";
-                                chax(kingredplace1, kingredplace2, "red");
-                                if (redchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = matrix[i - 1, j];
-                                matrix[i - 1, j] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i + 1, j] == "*" || matrix[i + 1, j] == "Tg" || matrix[i + 1, j] == "Tg1" || matrix[i + 1, j] == "Cg" || matrix[i + 1, j] == "Hg" || matrix[i + 1, j] == "Qg" || matrix[i + 1, j] == "Пg")
-                            {
-                                temp = matrix[i + 1, j];
-                                matrix[i + 1, j] = matrix[i, j];
-                                matrix[i, j] = "*";
-                                chax(kingredplace1, kingredplace2, "red");
-                                if (redchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = matrix[i + 1, j];
-                                matrix[i + 1, j] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
+                            possiblemove(i, j, i - 1, j - 1, allyC, ref counterimposmoves, color);
+                            possiblemove(i, j, i - 1, j + 1, allyC, ref counterimposmoves, color);
+                            possiblemove(i, j, i + 1, j - 1, allyC, ref counterimposmoves, color);
+                            possiblemove(i, j, i + 1, j + 1, allyC, ref counterimposmoves, color);
                             if (counterimposmoves != 4)
                             {
                                 return false;
                             }
                         }
-                        else if (matrix[i, j] == "Cr")
+                        else if (matrix[i, j] == allyQ)
                         {
-                            if (matrix[i - 1, j - 1] == "*" || matrix[i - 1, j - 1] == "Tg" || matrix[i - 1, j - 1] == "Tg1" || matrix[i - 1, j - 1] == "Cg" || matrix[i - 1, j - 1] == "Hg" || matrix[i - 1, j - 1] == "Qg" || matrix[i - 1, j - 1] == "Пg")
-                            {
-                                temp = matrix[i - 1, j - 1];
-                                matrix[i - 1, j - 1] = "Cr";
-                                matrix[i, j] = "*";
-                                chax(kingredplace1, kingredplace2, "red");
-                                if (redchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = "Cr";
-                                matrix[i - 1, j - 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i + 1, j - 1] == "*" || matrix[i + 1, j - 1] == "Tg" || matrix[i + 1, j - 1] == "Tg1" || matrix[i + 1, j - 1] == "Cg" || matrix[i + 1, j - 1] == "Hg" || matrix[i + 1, j - 1] == "Qg" || matrix[i + 1, j - 1] == "Пg")
-                            {
-                                temp = matrix[i + 1, j - 1];
-                                matrix[i + 1, j - 1] = "Cr";
-                                matrix[i, j] = "*";
-                                chax(kingredplace1, kingredplace2, "red");
-                                if (redchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = "Cr";
-                                matrix[i + 1, j - 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i - 1, j + 1] == "*" || matrix[i - 1, j + 1] == "Tg" || matrix[i - 1, j + 1] == "Tg1" || matrix[i - 1, j + 1] == "Cg" || matrix[i - 1, j + 1] == "Hg" || matrix[i - 1, j + 1] == "Qg" || matrix[i - 1, j + 1] == "Пg")
-                            {
-                                temp = matrix[i - 1, j + 1];
-                                matrix[i - 1, j + 1] = "Cr";
-                                matrix[i, j] = "*";
-                                chax(kingredplace1, kingredplace2, "red");
-                                if (redchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = "Cr";
-                                matrix[i - 1, j + 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i + 1, j + 1] == "*" || matrix[i + 1, j + 1] == "Tg" || matrix[i + 1, j + 1] == "Tg1" || matrix[i + 1, j + 1] == "Cg" || matrix[i + 1, j + 1] == "Hg" || matrix[i + 1, j + 1] == "Qg" || matrix[i + 1, j + 1] == "Пg")
-                            {
-                                temp = matrix[i + 1, j + 1];
-                                matrix[i + 1, j + 1] = "Cr";
-                                matrix[i, j] = "*";
-                                chax(kingredplace1, kingredplace2, "red");
-                                if (redchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = "Cr";
-                                matrix[i + 1, j + 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (counterimposmoves != 4)
-                            {
-                                return false;
-                            }
-                        }
-                        else if (matrix[i, j] == "Qr")
-                        {
-                            if (matrix[i, j - 1] == "*" || matrix[i, j - 1] == "Tg" || matrix[i, j - 1] == "Tg1" || matrix[i, j - 1] == "Cg" || matrix[i, j - 1] == "Hg" || matrix[i, j - 1] == "Qg" || matrix[i, j - 1] == "Пg")
-                            {
-                                temp = matrix[i, j - 1];
-                                matrix[i, j - 1] = matrix[i, j];
-                                matrix[i, j] = "*";
-                                chax(kingredplace1, kingredplace2, "red");
-                                if (redchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = matrix[i, j - 1];
-                                matrix[i, j - 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i, j + 1] == "*" || matrix[i, j + 1] == "Tg" || matrix[i, j + 1] == "Tg1" || matrix[i, j + 1] == "Cg" || matrix[i, j + 1] == "Hg" || matrix[i, j + 1] == "Qg" || matrix[i, j + 1] == "Пg")
-                            {
-                                temp = matrix[i, j + 1];
-                                matrix[i, j + 1] = matrix[i, j];
-                                matrix[i, j] = "*";
-                                chax(kingredplace1, kingredplace2, "red");
-                                if (redchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = matrix[i, j + 1];
-                                matrix[i, j + 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i - 1, j] == "*" || matrix[i - 1, j] == "Tg" || matrix[i - 1, j] == "Tg1" || matrix[i - 1, j] == "Cg" || matrix[i - 1, j] == "Hg" || matrix[i - 1, j] == "Qg" || matrix[i - 1, j] == "Пg")
-                            {
-                                temp = matrix[i - 1, j];
-                                matrix[i - 1, j] = matrix[i, j];
-                                matrix[i, j] = "*";
-                                chax(kingredplace1, kingredplace2, "red");
-                                if (redchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = matrix[i - 1, j];
-                                matrix[i - 1, j] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i + 1, j] == "*" || matrix[i + 1, j] == "Tg" || matrix[i + 1, j] == "Tg1" || matrix[i + 1, j] == "Cg" || matrix[i + 1, j] == "Hg" || matrix[i + 1, j] == "Qg" || matrix[i + 1, j] == "Пg")
-                            {
-                                temp = matrix[i + 1, j];
-                                matrix[i + 1, j] = matrix[i, j];
-                                matrix[i, j] = "*";
-                                chax(kingredplace1, kingredplace2, "red");
-                                if (redchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = matrix[i + 1, j];
-                                matrix[i + 1, j] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i - 1, j - 1] == "*" || matrix[i - 1, j - 1] == "Tg" || matrix[i - 1, j - 1] == "Tg1" || matrix[i - 1, j - 1] == "Cg" || matrix[i - 1, j - 1] == "Hg" || matrix[i - 1, j - 1] == "Qg" || matrix[i - 1, j - 1] == "Пg")
-                            {
-                                temp = matrix[i - 1, j - 1];
-                                matrix[i - 1, j - 1] = matrix[i, j];
-                                matrix[i, j] = "*";
-                                chax(kingredplace1, kingredplace2, "red");
-                                if (redchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = matrix[i, j];
-                                matrix[i - 1, j - 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i + 1, j - 1] == "*" || matrix[i + 1, j - 1] == "Tg" || matrix[i + 1, j - 1] == "Tg1" || matrix[i + 1, j - 1] == "Cg" || matrix[i + 1, j - 1] == "Hg" || matrix[i + 1, j - 1] == "Qg" || matrix[i + 1, j - 1] == "Пg")
-                            {
-                                temp = matrix[i + 1, j - 1];
-                                matrix[i + 1, j - 1] = matrix[i, j];
-                                matrix[i, j] = "*";
-                                chax(kingredplace1, kingredplace2, "red");
-                                if (redchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = matrix[i, j];
-                                matrix[i + 1, j - 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i - 1, j + 1] == "*" || matrix[i - 1, j + 1] == "Tg" || matrix[i - 1, j + 1] == "Tg1" || matrix[i - 1, j + 1] == "Cg" || matrix[i - 1, j + 1] == "Hg" || matrix[i - 1, j + 1] == "Qg" || matrix[i - 1, j + 1] == "Пg")
-                            {
-                                temp = matrix[i - 1, j + 1];
-                                matrix[i - 1, j + 1] = matrix[i, j];
-                                matrix[i, j] = "*";
-                                chax(kingredplace1, kingredplace2, "red");
-                                if (redchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = matrix[i, j];
-                                matrix[i - 1, j + 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
-                            if (matrix[i + 1, j + 1] == "*" || matrix[i + 1, j + 1] == "Tg" || matrix[i + 1, j + 1] == "Tg1" || matrix[i + 1, j + 1] == "Cg" || matrix[i + 1, j + 1] == "Hg" || matrix[i + 1, j + 1] == "Qg" || matrix[i + 1, j + 1] == "Пg")
-                            {
-                                temp = matrix[i + 1, j + 1];
-                                matrix[i + 1, j + 1] = matrix[i, j];
-                                matrix[i, j] = "*";
-                                chax(kingredplace1, kingredplace2, "red");
-                                if (redchaxmat == true)
-                                {
-                                    counterimposmoves++;
-                                }
-                                matrix[i, j] = matrix[i, j];
-                                matrix[i + 1, j + 1] = temp;
-                            }
-                            else
-                            {
-                                counterimposmoves++;
-                            }
+                            possiblemove(i, j, i - 1, j, allyQ, ref counterimposmoves, color);
+                            possiblemove(i, j, i + 1, j, allyQ, ref counterimposmoves, color);
+                            possiblemove(i, j, i, j - 1, allyQ, ref counterimposmoves, color);
+                            possiblemove(i, j, i, j + 1, allyQ, ref counterimposmoves, color);
+                            possiblemove(i, j, i - 1, j - 1, allyQ, ref counterimposmoves, color);
+                            possiblemove(i, j, i - 1, j + 1, allyQ, ref counterimposmoves, color);
+                            possiblemove(i, j, i + 1, j - 1, allyQ, ref counterimposmoves, color);
+                            possiblemove(i, j, i + 1, j + 1, allyQ, ref counterimposmoves, color);
                             if (counterimposmoves != 8)
                             {
                                 return false;
