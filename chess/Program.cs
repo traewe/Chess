@@ -7,7 +7,7 @@ using System.Text;
 
 namespace program
 {
-    class Chess
+    public class Chess
     {
         static void Main(string[] args)
         {
@@ -62,6 +62,14 @@ namespace program
             string red_losses = "";
             int king_coor1 = -1;
             int king_coor2 = -1;
+            int tura_green_possible_quantity = 2;
+            int slon_green_possible_quantity = 2;
+            int queen_green_possible_quantity = 1;
+            int horse_green_possible_quantity = 2;
+            int tura_red_possible_quantity = 2;
+            int slon_red_possible_quantity = 2;
+            int queen_red_possible_quantity = 1;
+            int horse_red_possible_quantity = 2;
             List<int> first_coor_death = new();
             List<int> second_coor_death = new();
             List<int> first_coor_block = new();
@@ -71,14 +79,14 @@ namespace program
             List<int> ally_first_coor_death = new();
             List<int> ally_second_coor_death = new();
             Console.WriteLine("Обозначения: Т - тура, Н - horse, С - слон, Q - queen, К - король, П - пешка");
-            Console.WriteLine("Структура хода: сначала пишешь букву и цифру клетки, где стоит фигура, потом куда хочешь ею походить(пример G3 E3)");
+            Console.WriteLine("Структура хода: сначала пишешь букву и цифру клетки, где стоит фигура, потом куда хочешь ею походить(пример c2 c4)");
             Console.WriteLine("Для рокировки - рокировка вправо/рокировка влево");
-            string[,] matrix = new string[12, 12] { { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " }, { " ", " ", "A", "B", "C", "D", "E", "F", "G", "H", " ", " " }, { " ", "8", "Tr", "Hr", "Cr", "Qr", "Kr", "Cr", "Hr", "Tr1", "8", " " }, { " ", "7", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "7", " " }, { " ", "6", "*", "*", "*", "Hg", "*", "*", "*", "*", "6", " " }, { " ", "5", "*", "*", "*", "*", "*", "*", "*", "*", "5", " " }, { " ", "4", "*", "*", "*", "*", "*", "*", "*", "*", "4", " " }, { " ", "3", "*", "*", "*", "*", "*", "*", "*", "*", "3", " " }, { " ", "2", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "2", " " }, { " ", "1", "Tg", "*", "*", "Cg", "Kg", "Cg", "*", "Tg1", "1", " " }, { " ", " ", "A", "B", "C", "D", "E", "F", "G", "H", " ", " " }, { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " } };
+            string[,] matrix = new string[12, 12] { { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " }, { " ", " ", "A", "B", "C", "D", "E", "F", "G", "H", " ", " " }, { " ", "8", "Tr", "Hr", "Cr", "Qr", "Kr", "Cr", "Hr", "Tr1", "8", " " }, { " ", "7", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "Пr", "7", " " }, { " ", "6", "*", "*", "*", "*", "*", "*", "*", "*", "6", " " }, { " ", "5", "*", "*", "*", "*", "*", "*", "*", "*", "5", " " }, { " ", "4", "*", "*", "*", "*", "*", "*", "*", "*", "4", " " }, { " ", "3", "*", "*", "*", "*", "*", "*", "*", "*", "3", " " }, { " ", "2", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "Пg", "2", " " }, { " ", "1", "Tg", "Hg", "Cg", "Qg", "Kg", "Cg", "Hg", "Tg1", "1", " " }, { " ", " ", "A", "B", "C", "D", "E", "F", "G", "H", " ", " " }, { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " } };
             matrix_build();
             while (true)
             {
-                 //try
-                 //{
+                try
+                {
                     if (counter_side == 0)
                     {
                         int a = 1;
@@ -394,17 +402,17 @@ namespace program
                                 break;
 
                             case "Kr":
-                                    Console.WriteLine("(король)");
-                                    cell2 = Console.ReadLine().ToUpper();
-                                    place2(cell2);
-                                    if (error_cell)
-                                    {
-                                        matrix_build();
-                                        Console.WriteLine("Внеси данные правильно");
-                                        continue;
-                                    }
-                                    king("Kr");
-                                    break;
+                                Console.WriteLine("(король)");
+                                cell2 = Console.ReadLine().ToUpper();
+                                place2(cell2);
+                                if (error_cell)
+                                {
+                                    matrix_build();
+                                    Console.WriteLine("Внеси данные правильно");
+                                    continue;
+                                }
+                                king("Kr");
+                                break;
                         }
                         if (cell1 == "РОКИРОВКА ВЛЕВО")
                         {
@@ -483,12 +491,12 @@ namespace program
                         }
                         matrix_build();
                     }
-                 /*}
-                 catch
-                 {
+                }
+                catch
+                {
                      Console.WriteLine("Ай, код поплавило");
                      matrix_build();
-                 }*/
+                }
             }
             Console.WriteLine("Ось i казочцi кiнець, а хто слухав - молодець");
             void matrix_build()
@@ -662,16 +670,16 @@ namespace program
                         }
                     }
                 }
-                advantage = 8 - lose_counter_red_peshak + 3 * (2 - lose_counter_red_horse) + 3 * (2 - lose_counter_red_slon) + 5 * (2 - lose_counter_red_tura) + 9 * (1 - lose_counter_red_queen) - (8 - lose_counter_green_peshak + 3 * (2 - lose_counter_green_horse) + 3 * (2 - lose_counter_green_slon) + 5 * (2 - lose_counter_green_tura) + 9 * (1 - lose_counter_green_queen));
-                green_losses = string.Concat(Enumerable.Repeat("П", 8 - lose_counter_green_peshak)) + string.Concat(Enumerable.Repeat("H", 2 - lose_counter_green_horse)) + string.Concat(Enumerable.Repeat("C", 2 - lose_counter_green_slon)) + string.Concat(Enumerable.Repeat("T", 2 - lose_counter_green_tura)) + string.Concat(Enumerable.Repeat("Q", 1 - lose_counter_green_queen));
-                red_losses = string.Concat(Enumerable.Repeat("П", 8 - lose_counter_red_peshak)) + string.Concat(Enumerable.Repeat("H", 2 - lose_counter_red_horse)) + string.Concat(Enumerable.Repeat("C", 2 - lose_counter_red_slon)) + string.Concat(Enumerable.Repeat("T", 2 - lose_counter_red_tura)) + string.Concat(Enumerable.Repeat("Q", 1 - lose_counter_red_queen));
+                advantage = 8 - lose_counter_red_peshak + 3 * (horse_red_possible_quantity - lose_counter_red_horse) + 3 * (slon_red_possible_quantity - lose_counter_red_slon) + 5 * (tura_red_possible_quantity - lose_counter_red_tura) + 9 * (queen_red_possible_quantity - lose_counter_red_queen) - (8 - lose_counter_green_peshak + 3 * (horse_green_possible_quantity - lose_counter_green_horse) + 3 * (slon_green_possible_quantity - lose_counter_green_slon) + 5 * (tura_green_possible_quantity - lose_counter_green_tura) + 9 * (queen_green_possible_quantity - lose_counter_green_queen));
+                green_losses = string.Concat(Enumerable.Repeat("П", 8 - lose_counter_green_peshak)) + string.Concat(Enumerable.Repeat("H", horse_green_possible_quantity - lose_counter_green_horse)) + string.Concat(Enumerable.Repeat("C", slon_green_possible_quantity - lose_counter_green_slon)) + string.Concat(Enumerable.Repeat("T", tura_green_possible_quantity - lose_counter_green_tura)) + string.Concat(Enumerable.Repeat("Q", queen_green_possible_quantity - lose_counter_green_queen));
+                red_losses = string.Concat(Enumerable.Repeat("П", 8 - lose_counter_red_peshak)) + string.Concat(Enumerable.Repeat("H", horse_red_possible_quantity - lose_counter_red_horse)) + string.Concat(Enumerable.Repeat("C", slon_red_possible_quantity - lose_counter_red_slon)) + string.Concat(Enumerable.Repeat("T", tura_red_possible_quantity - lose_counter_red_tura)) + string.Concat(Enumerable.Repeat("Q", queen_red_possible_quantity - lose_counter_red_queen));
                 if (advantage > 0)
                 {
-                    red_losses += " +" + Convert.ToString(8 - lose_counter_red_peshak + 3 * (2 - lose_counter_red_horse) + 3 * (2 - lose_counter_red_slon) + 5 * (2 - lose_counter_red_tura) + 9 * (1 - lose_counter_red_queen) - (8 - lose_counter_green_peshak + 3 * (2 - lose_counter_green_horse) + 3 * (2 - lose_counter_green_slon) + 5 * (2 - lose_counter_green_tura) + 9 * (1 - lose_counter_green_queen)));
+                    red_losses += " +" + Convert.ToString(8 - lose_counter_red_peshak + 3 * (horse_red_possible_quantity - lose_counter_red_horse) + 3 * (slon_red_possible_quantity - lose_counter_red_slon) + 5 * (tura_red_possible_quantity - lose_counter_red_tura) + 9 * (queen_red_possible_quantity - lose_counter_red_queen));
                 }
                 else if (advantage < 0)
                 {
-                    green_losses += " +" + Convert.ToString((8 - lose_counter_green_peshak + 3 * (2 - lose_counter_green_horse) + 3 * (2 - lose_counter_green_slon) + 5 * (2 - lose_counter_green_tura) + 9 * (1 - lose_counter_green_queen)) - (8 - lose_counter_red_peshak + 3 * (2 - lose_counter_red_horse) + 3 * (2 - lose_counter_red_slon) + 5 * (2 - lose_counter_red_tura) + 9 * (1 - lose_counter_red_queen)));
+                    green_losses += " +" + Convert.ToString(8 - lose_counter_green_peshak + 3 * (horse_green_possible_quantity - lose_counter_green_horse) + 3 * (slon_green_possible_quantity - lose_counter_green_slon) + 5 * (tura_green_possible_quantity - lose_counter_green_tura) + 9 * (queen_green_possible_quantity - lose_counter_green_queen));
                 }
             }
             void place1(string green)
@@ -835,15 +843,51 @@ namespace program
                         {
                             case 1:
                                 matrix[dig3, dig4] = allyT;
+                                if (hero == "Пg")
+                                {
+                                    tura_green_possible_quantity++;
+                                }
+                                else
+                                {
+
+                                    tura_red_possible_quantity++;
+                                }
                                 break;
                             case 2:
                                 matrix[dig3, dig4] = allyC;
+                                if (hero == "Пg")
+                                {
+                                    slon_green_possible_quantity++;
+                                }
+                                else
+                                {
+
+                                    slon_red_possible_quantity++;
+                                }
                                 break;
                             case 3:
                                 matrix[dig3, dig4] = allyQ;
+                                if (hero == "Пg")
+                                {
+                                    queen_green_possible_quantity++;
+                                }
+                                else
+                                {
+
+                                    queen_red_possible_quantity++;
+                                }
                                 break;
                             case 4:
                                 matrix[dig3, dig4] = allyH;
+                                if (hero == "Пg")
+                                {
+                                    horse_green_possible_quantity++;
+                                }
+                                else
+                                {
+
+                                    horse_red_possible_quantity++;
+                                }
                                 break;
                         }
                     }
@@ -1274,6 +1318,8 @@ namespace program
                     killer_detector(n + 1, m + 1, enemyП, first_coor_death, second_coor_death);
                     killer_detector(n + 1, m - 1, enemyП, first_coor_death, second_coor_death);
                 }
+                //Console.WriteLine("До коней");
+                //matrix_build();
                 killer_detector(n - 1, m - 2, enemyH, first_coor_death, second_coor_death);
                 killer_detector(n - 1, m + 2, enemyH, first_coor_death, second_coor_death);
                 killer_detector(n + 1, m - 2, enemyH, first_coor_death, second_coor_death);
@@ -1282,6 +1328,8 @@ namespace program
                 killer_detector(n - 2, m + 1, enemyH, first_coor_death, second_coor_death);
                 killer_detector(n + 2, m - 1, enemyH, first_coor_death, second_coor_death);
                 killer_detector(n + 2, m + 1, enemyH, first_coor_death, second_coor_death);
+                //Console.WriteLine("После коней");
+                //matrix_build();
                 for (int i = 1; i < 12; i++)
                 {
                     if (0 < n - i && 0 < m - i)
@@ -1363,7 +1411,7 @@ namespace program
                         killer_detector(n - 2, m, enemyП, first_coor_block, second_coor_block);
                     }
                 }
-
+                
                 killer_detector(n - 1, m - 2, enemyH, first_coor_block, second_coor_block);
                 killer_detector(n - 1, m + 2, enemyH, first_coor_block, second_coor_block);
                 killer_detector(n + 1, m - 2, enemyH, first_coor_block, second_coor_block);
@@ -1372,7 +1420,7 @@ namespace program
                 killer_detector(n - 2, m + 1, enemyH, first_coor_block, second_coor_block);
                 killer_detector(n + 2, m - 1, enemyH, first_coor_block, second_coor_block);
                 killer_detector(n + 2, m + 1, enemyH, first_coor_block, second_coor_block);
-
+                
                 for (int i = 1; i < 12; i++)
                 {
                     if (0 < n - i && 0 < m - i)
@@ -1439,6 +1487,15 @@ namespace program
                 bool blocked = false;
                 string temp;
                 int range1;
+                int range2;
+                string copy_list_ally_coor1 = "";
+                string copy_list_ally_coor2 = "";
+                string copy_list_opposite_coor1 = "";
+                string copy_list_opposite_coor2 = "";
+                int ally_coor1 = 0;
+                int ally_coor2 = 0;
+                int opposite_coor1 = 0;
+                int opposite_coor2 = 0;
                 if (color == "green")
                 {
                     oppositecolor = "red";
@@ -1457,28 +1514,37 @@ namespace program
                     range1 = first_coor_death.Count;
                     ally_first_coor_death = first_coor_death;
                     ally_second_coor_death = second_coor_death;
+                    for (int k = 0; k < range1; k++)
+                    {
+                        copy_list_ally_coor1 += ally_first_coor_death[k];
+                        copy_list_ally_coor2 += ally_second_coor_death[k];
+                    }
                     for (int i = 0; i < range1; i++)
                     {
-                        if (chax(ally_first_coor_death[i], ally_second_coor_death[i], oppositecolor))
+                        ally_coor1 = Convert.ToInt32(copy_list_ally_coor1[i]) - 48;
+                        ally_coor2 = Convert.ToInt32(copy_list_ally_coor2[i]) - 48;
+                        if (chax(ally_coor1, ally_coor2, oppositecolor))
                         {
                             opposite_first_coor_death = first_coor_death;
                             opposite_second_coor_death = second_coor_death;
-                            for (int j = 0; j < opposite_first_coor_death.Count; j++)
+                            for (int k = 0; k < opposite_first_coor_death.Count; k++)
                             {
+                                copy_list_opposite_coor1 += opposite_first_coor_death[k];
+                                copy_list_opposite_coor2 += opposite_second_coor_death[k];
+                            }
+                            range2 = copy_list_opposite_coor1.Length;
+                            for (int j = 0; j < range2; j++)
+                            {
+                                opposite_coor1 = Convert.ToInt32(copy_list_opposite_coor1[i]) - 48;
+                                opposite_coor2 = Convert.ToInt32(copy_list_opposite_coor2[i]) - 48;
                                 enemy_ally(matrix[king_coor1, king_coor2]);
-                                if (matrix[opposite_first_coor_death[j], opposite_second_coor_death[j]] == allyK)
+                                if (matrix[opposite_coor1, opposite_coor2] == allyK)
                                 {
-                                    if (chax(ally_first_coor_death[i], ally_second_coor_death[i], color))
+                                    if (chax(ally_coor1, ally_coor2, color))
                                     {
                                         continue;
                                     }
                                 }
-                                temp = matrix[ally_first_coor_death[i], ally_second_coor_death[i]];
-                                matrix[ally_first_coor_death[i], ally_second_coor_death[i]] = matrix[opposite_first_coor_death[j], opposite_first_coor_death[j]];
-                                matrix[opposite_first_coor_death[j], opposite_first_coor_death[j]] = "*";
-                                chax(king_coor1, king_coor2, color);
-                                matrix[opposite_first_coor_death[j], opposite_first_coor_death[j]] = matrix[ally_first_coor_death[i], ally_second_coor_death[i]];
-                                matrix[ally_first_coor_death[i], ally_second_coor_death[i]] = temp;
                                 if (chaxmat == false)
                                 {
                                     killed = true;
